@@ -27,7 +27,7 @@ public class UfficioDto{
     
     private String nomeUfficio;
     
-    private Long stanza_id;
+    private Long stanzaId;
 
 	public Long getId() {
 		return id;
@@ -57,8 +57,8 @@ public class UfficioDto{
 		return nomeUfficio;
 	}
 
-	public Long getStanza_id() {
-		return stanza_id;
+	public Long getStanzaId() {
+		return stanzaId;
 	}
 
 	public void setId(Long id) {
@@ -89,8 +89,8 @@ public class UfficioDto{
 		this.nomeUfficio = nomeUfficio;
 	}
 
-	public void setStanza_id(Long stanza_id) {
-		this.stanza_id = stanza_id;
+	public void setStanzaId(Long stanzaId) {
+		this.stanzaId = stanzaId;
 	}
     
 	
