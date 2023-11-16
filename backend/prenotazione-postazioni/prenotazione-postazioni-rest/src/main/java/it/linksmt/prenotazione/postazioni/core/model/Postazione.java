@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 public class Postazione {
 	 	@Id
@@ -25,15 +27,21 @@ public class Postazione {
 	    @Column(name = "edit_date")
 	    private Date editDate;
 	    
-	    @Column
+	    @Column(name = "width")
 	    private Float width;
 	    
-	    @Column
+	    @Column (name = "height")
 	    private Float height;
 	    
-	    @Column
+	    @Column (name = "x")
 	    private Float x;
 	    
-	    @Column
-	    private Float y;    	
+	    @Column (name = "y")
+	    private Float y;
+	    
+	    @ManyToOne
+	    @JoinColumn(name = "stanza_id")
+	    private Stanza stanza;
+	    
+	    
 }
