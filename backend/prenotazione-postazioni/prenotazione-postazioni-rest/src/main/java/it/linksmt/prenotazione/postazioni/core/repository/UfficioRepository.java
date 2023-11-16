@@ -9,4 +9,5 @@ import it.linksmt.prenotazione.postazioni.core.model.Ufficio;
 @EnableJpaRepositories
 public interface UfficioRepository extends CrudRepository<Ufficio, Long>, JpaSpecificationExecutor<Ufficio>{
 
+	
 }
