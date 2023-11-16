@@ -1,4 +1,4 @@
-package it.linksmt.prenotazione.postazioni.prenotazionePostazioni;
+package it.linksmt.prenotazione.postazioni;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
