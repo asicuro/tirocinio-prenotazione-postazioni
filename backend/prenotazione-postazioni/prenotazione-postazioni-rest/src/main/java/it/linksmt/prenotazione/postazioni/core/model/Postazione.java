@@ -42,6 +42,86 @@ public class Postazione {
 	    @ManyToOne
 	    @JoinColumn(name = "stanza_id")
 	    private Stanza stanza;
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+		public Long getCreateUserId() {
+			return createUserId;
+		}
+
+		public void setCreateUserId(Long createUserId) {
+			this.createUserId = createUserId;
+		}
+
+		public Date getCreateDate() {
+			return createDate;
+		}
+
+		public void setCreateDate(Date createDate) {
+			this.createDate = createDate;
+		}
+
+		public Long getEditUserId() {
+			return editUserId;
+		}
+
+		public void setEditUserId(Long editUserId) {
+			this.editUserId = editUserId;
+		}
+
+		public Date getEditDate() {
+			return editDate;
+		}
+
+		public void setEditDate(Date editDate) {
+			this.editDate = editDate;
+		}
+
+		public Float getWidth() {
+			return width;
+		}
+
+		public void setWidth(Float width) {
+			this.width = width;
+		}
+
+		public Float getHeight() {
+			return height;
+		}
+
+		public void setHeight(Float height) {
+			this.height = height;
+		}
+
+		public Float getX() {
+			return x;
+		}
+
+		public void setX(Float x) {
+			this.x = x;
+		}
+
+		public Float getY() {
+			return y;
+		}
+
+		public void setY(Float y) {
+			this.y = y;
+		}
+
+		public Stanza getStanza() {
+			return stanza;
+		}
+
+		public void setStanza(Stanza stanza) {
+			this.stanza = stanza;
+		}
 	    
 	    
 }
