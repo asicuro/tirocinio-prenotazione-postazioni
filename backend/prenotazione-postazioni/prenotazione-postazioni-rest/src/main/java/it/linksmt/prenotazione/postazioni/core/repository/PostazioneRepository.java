@@ -1,7 +1,15 @@
 package it.linksmt.prenotazione.postazioni.core.repository;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.repository.CrudRepository;
 
-@Repository
-public interface PostazioneRepository {
+
+import it.linksmt.prenotazione.postazioni.core.model.Postazione;
+
+
+@EnableJpaRepositories
+public interface PostazioneRepository extends CrudRepository<Postazione, Long>, JpaSpecificationExecutor<Postazione>{
+
+	
 }

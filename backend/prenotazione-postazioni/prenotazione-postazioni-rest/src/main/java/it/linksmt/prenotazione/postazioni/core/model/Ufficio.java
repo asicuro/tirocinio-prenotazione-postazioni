@@ -32,6 +32,7 @@ public class Ufficio {
     private String nomeUfficio;
     @OneToMany(mappedBy = "ufficio")
     private List<Stanza> stanze;
+    
 	public Long getId() {
 		return id;
 	}
