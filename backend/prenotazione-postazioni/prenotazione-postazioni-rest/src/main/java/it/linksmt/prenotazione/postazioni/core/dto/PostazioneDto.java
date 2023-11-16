@@ -4,95 +4,104 @@ import java.util.Date;
 
 public class PostazioneDto {
 	
-	 private Long id;
-
-	    
-	    private Long createUserId;
-   
+	private Long id;
+	
+	private Long createUserId;
 	    private Date createDate;
 	    
 	    private Long editUserId;
-	      
+	   
 	    private Date editDate;    
 	    
 	    private Float width;
 	    
 	    private Float height;
 	    
-	    public void setId(Long id) {
-			this.id = id;
-		}
+	    private StanzaDto stanza;
 
-		public void setCreateUserId(Long createUserId) {
-			this.createUserId = createUserId;
-		}
-
-		public void setCreateDate(Date createDate) {
-			this.createDate = createDate;
-		}
-
-		public void setEditUserId(Long editUserId) {
-			this.editUserId = editUserId;
-		}
-
-		public void setEditDate(Date editDate) {
-			this.editDate = editDate;
-		}
-
-		public void setWidth(Float width) {
-			this.width = width;
-		}
-
-		public void setHeight(Float height) {
-			this.height = height;
-		}
-
-		public void setX(Float x) {
-			this.x = x;
-		}
-
-		public void setY(Float y) {
-			this.y = y;
-		}
+		private Float x;
+	    
+	    private Float y;
 
 		public Long getId() {
 			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
 		}
 
 		public Long getCreateUserId() {
 			return createUserId;
 		}
 
+		public void setCreateUserId(Long createUserId) {
+			this.createUserId = createUserId;
+		}
+
 		public Date getCreateDate() {
 			return createDate;
+		}
+
+		public void setCreateDate(Date createDate) {
+			this.createDate = createDate;
 		}
 
 		public Long getEditUserId() {
 			return editUserId;
 		}
 
+		public void setEditUserId(Long editUserId) {
+			this.editUserId = editUserId;
+		}
+
 		public Date getEditDate() {
 			return editDate;
+		}
+
+		public void setEditDate(Date editDate) {
+			this.editDate = editDate;
 		}
 
 		public Float getWidth() {
 			return width;
 		}
 
+		public void setWidth(Float width) {
+			this.width = width;
+		}
+
 		public Float getHeight() {
 			return height;
+		}
+
+		public void setHeight(Float height) {
+			this.height = height;
+		}
+
+		public StanzaDto getStanza() {
+			return stanza;
+		}
+
+		public void setStanza(StanzaDto stanza) {
+			this.stanza = stanza;
 		}
 
 		public Float getX() {
 			return x;
 		}
 
+		public void setX(Float x) {
+			this.x = x;
+		}
+
 		public Float getY() {
 			return y;
 		}
 
-		private Float x;
-	    
-	    private Float y;
+		public void setY(Float y) {
+			this.y = y;
+		}
 
+	    
 }
