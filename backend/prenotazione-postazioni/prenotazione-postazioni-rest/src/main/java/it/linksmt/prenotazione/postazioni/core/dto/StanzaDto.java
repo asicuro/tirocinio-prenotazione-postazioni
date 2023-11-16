@@ -11,7 +11,7 @@ public class StanzaDto {
 	
 	private Date createDate;
 	
-	private long editUserId;
+	private Long editUserId;
 	
 	private Date editDate;
 	
@@ -38,7 +38,7 @@ public class StanzaDto {
 	public Date getCreateDate() {
 		return createDate;
 	}
-	public long getEditUserId() {
+	public Long getEditUserId() {
 		return editUserId;
 	}
 	public Date getEditDate() {
@@ -74,7 +74,7 @@ public class StanzaDto {
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
-	public void setEditUserId(long editUserId) {
+	public void setEditUserId(Long editUserId) {
 		this.editUserId = editUserId;
 	}
 	public void setEditDate(Date editDate) {

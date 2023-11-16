@@ -29,7 +29,7 @@ public class Stanza {
 	private Date createDate;
 	
 	@Column(name = "edit_user_id")
-	private long editUserId;
+	private Long editUserId;
 	
 	@Column(name = "edit_date")
 	private Date editDate;
@@ -80,11 +80,11 @@ public class Stanza {
 		this.createDate = createDate;
 	}
 
-	public long getEditUserId() {
+	public Long getEditUserId() {
 		return editUserId;
 	}
 
-	public void setEditUserId(long editUserId) {
+	public void setEditUserId(Long editUserId) {
 		this.editUserId = editUserId;
 	}
 
