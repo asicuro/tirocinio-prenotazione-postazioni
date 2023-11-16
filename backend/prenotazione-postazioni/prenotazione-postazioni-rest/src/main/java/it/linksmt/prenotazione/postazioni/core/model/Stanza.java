@@ -1,12 +1,16 @@
 package it.linksmt.prenotazione.postazioni.core.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -45,7 +49,11 @@ public class Stanza {
 	@Column(name = "y")
 	private Float y;
 	
-	@Column(name = "ufficio_id")
-	private Float ufficioId;
+	@ManyToOne
+	@JoinColumn(name = "ufficio_id")
+	private Ufficio ufficio;
+	
+	@OneToMany(mappedBy = "stanza")
+	private List<Postazione> postazioni;
 
 }
