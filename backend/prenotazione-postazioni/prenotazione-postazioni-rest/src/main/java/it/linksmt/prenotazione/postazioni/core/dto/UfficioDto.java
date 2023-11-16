@@ -1,15 +1,6 @@
 package it.linksmt.prenotazione.postazioni.core.dto;
 
 import java.util.Date;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import it.linksmt.prenotazione.postazioni.core.model.Stanza;
 
 public class UfficioDto{ 
  
