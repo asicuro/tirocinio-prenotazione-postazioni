@@ -10,9 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "prenotazione")
-public class Prenotazione {
-
+@Table(name = "stanza")
+public class Stanza {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
@@ -25,18 +25,27 @@ public class Prenotazione {
 	private Date createDate;
 	
 	@Column(name = "edit_user_id")
-	private Long editUserId;
+	private long editUserId;
 	
 	@Column(name = "edit_date")
 	private Date editDate;
 	
-	@Column(name = "data_creazione")
-	private Date dataCreazione;
+	@Column(name = "name")
+	private String nome;
 	
-	@Column(name = "user_id")
-	private Long userId;
+	@Column(name = "width")
+	private Float width;
 	
-	@Column(name = "postazione_id")
-	private Long postazioneId;
+	@Column(name = "height")
+	private Float height;
+	
+	@Column(name = "x")
+	private Float x;
+	
+	@Column(name = "y")
+	private Float y;
+	
+	@Column(name = "ufficio_id")
+	private Float ufficioId;
 
 }
