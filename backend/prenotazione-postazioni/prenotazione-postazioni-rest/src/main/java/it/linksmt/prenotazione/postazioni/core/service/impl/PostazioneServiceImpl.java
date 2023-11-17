@@ -31,4 +31,16 @@ public PostazioneDto findPostazioneById(Long id) {
 		return postazioneConverter.toDto(postazioneOptional.get());
 	}
 
+	@Override
+public void savePostazione(PostazioneDto postazioneDto) {
+	
+	if(postazioneRepository.existsById(postazioneDto.getId())) {
+		
+		return;
+		
+		}
+	
+	postazioneRepository.save(postazioneConverter.toEntity(postazioneDto));
+	
+	}
 }

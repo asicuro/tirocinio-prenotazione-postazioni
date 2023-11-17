@@ -15,6 +15,7 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
 	@Autowired 
 	PrenotazioneConverter prenotazioneConverter;
 	
+	
 	public PrenotazioneDto findPrenotazioneById(Long id) {
 		
 		if (id == null || id < 0) {
@@ -27,5 +28,15 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
 			}
 			return prenotazioneConverter.toDto(prenotazioneOptional.get());
 	}
+	
 
+	@Override
+	public void savePrenotazione(PrenotazioneDto prenotazioneDto) {	
+		
+		if(prenotazioneRepository.existsById(prenotazioneDto.getId())){
+			return;
+		}
+		
+		prenotazioneRepository.save(prenotazioneConverter.toEntity(prenotazioneDto));
+	}
 }
