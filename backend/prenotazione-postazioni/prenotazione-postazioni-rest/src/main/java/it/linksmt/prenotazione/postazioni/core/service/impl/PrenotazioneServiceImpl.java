@@ -22,7 +22,6 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
 				return null; 
 			}
 			return prenotazioneConverter.toDto(prenotazioneOptional.get());
-		
 	}
 
 }
