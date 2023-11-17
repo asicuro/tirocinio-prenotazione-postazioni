@@ -33,12 +33,12 @@ public class UtenteServiceImpl implements UtenteService{
 //		}
 //		return utenteConverter.toDto(utenteOptional.get());
 		
-		UtenteDto u = new UtenteDto();
+		Utente u = new Utente();
 		u.setId(id);
 		u.setPassword("password");
 		u.setUsername("username");
 		u.setRuolo("ruolo");
-		return u;
+		return utenteConverter.toDto(u);
 		
 	}
 
