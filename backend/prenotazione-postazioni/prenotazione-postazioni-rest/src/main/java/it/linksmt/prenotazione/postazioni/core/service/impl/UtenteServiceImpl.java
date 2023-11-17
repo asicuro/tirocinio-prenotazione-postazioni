@@ -19,7 +19,11 @@ public class UtenteServiceImpl implements UtenteService{
 	UtenteConverter utenteConverter;
 
 	@Override
-	public UtenteDto findUtente(Long id) {
+	public UtenteDto findUtenteById(Long id) {
+		
+		if (id == null || id<0){
+			return null;
+		}
 		
 		Optional<Utente> utenteOptional = utenteRepository.findById(id);
 		if (utenteOptional.isEmpty()) {

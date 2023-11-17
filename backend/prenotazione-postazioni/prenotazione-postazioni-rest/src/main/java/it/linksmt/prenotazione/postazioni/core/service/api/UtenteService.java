@@ -7,5 +7,5 @@ import it.linksmt.prenotazione.postazioni.core.dto.UtenteDto;
 @Service
 public interface UtenteService {
 	
-	public UtenteDto findUtente(Long id);
+	public UtenteDto findUtenteById(Long id);
 }
