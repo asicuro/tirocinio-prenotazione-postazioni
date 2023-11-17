@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 //		DataSourceAutoConfiguration.class,
 		SecurityAutoConfiguration.class })
 @PropertySources({ @PropertySource("classpath:application.yml")})
-@ComponentScan({"it.linksmt.prenotazione.postazioni.core.converter"})
 public class PrenotazionePostazioniApplication {
 
 	public static void main(String[] args) {
