@@ -18,7 +18,7 @@ public class UfficioServiceImpl implements UfficioService{
 	@Autowired
 	UfficioConverter ufficioConverter;
 	
-
+	@Override
 	public UfficioDto findUfficiobyId(Long id) {
 		if (id == null || id<0) {
 			return null;
@@ -28,6 +28,14 @@ public class UfficioServiceImpl implements UfficioService{
 			return null;
 		}
 		return ufficioConverter.toDto(ufficioOptional.get());
+	}
+
+	@Override
+	public void saveUfficio(UfficioDto ufficioDto) {
+		if (ufficioRepository.existsById(ufficioDto.getId())) {
+			return;
+		}
+		ufficioRepository.save(ufficioConverter.toEntity(ufficioDto));
 	}
 
 }
