@@ -2,3 +2,4 @@
 /.metadata/
 /.sonarlint/
 *.yml
+/backend/prenotazione-postazioni/Servers

@@ -1,7 +1,6 @@
 package it.linksmt.prenotazione.postazioni.core.converter;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import it.linksmt.prenotazione.postazioni.core.dto.PostazioneDto;
 import it.linksmt.prenotazione.postazioni.core.model.Postazione;
