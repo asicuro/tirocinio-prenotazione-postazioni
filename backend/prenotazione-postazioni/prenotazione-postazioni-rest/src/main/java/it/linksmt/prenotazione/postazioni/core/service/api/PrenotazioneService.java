@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import it.linksmt.prenotazione.postazioni.core.dto.PrenotazioneDto;
 
 @Service
-public interface PrenotazioneService {
+public interface PrenotazioneService{
 	
-	public PrenotazioneDto findPrenotazione(Long id);
+	public PrenotazioneDto findPrenotazioneById(Long id);
 
 }

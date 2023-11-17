@@ -15,7 +15,11 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
 	@Autowired 
 	PrenotazioneConverter prenotazioneConverter;
 	
-	public PrenotazioneDto findPrenotazione(Long id) {
+	public PrenotazioneDto findPrenotazioneById(Long id) {
+		
+		if (id == null || id < 0) {
+			return null;
+		}
 		
 		Optional<Prenotazione> prenotazioneOptional = prenotazioneRepository.findById(id);
 			if (prenotazioneOptional.isEmpty()) {
