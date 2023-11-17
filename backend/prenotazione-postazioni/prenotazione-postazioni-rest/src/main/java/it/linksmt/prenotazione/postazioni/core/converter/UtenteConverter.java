@@ -9,4 +9,5 @@ import it.linksmt.prenotazione.postazioni.core.model.Utente;
 public interface UtenteConverter {
 
 	UtenteDto toDto(Utente utente);
+	Utente toEntity(UtenteDto utenteDto);
 }

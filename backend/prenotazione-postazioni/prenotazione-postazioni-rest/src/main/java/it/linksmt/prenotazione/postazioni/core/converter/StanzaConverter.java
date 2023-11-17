@@ -11,4 +11,7 @@ public interface StanzaConverter {
 
 	@Mapping(target = "ufficio_id", source = "Ufficio.id")
 	StanzaDto toDto(Stanza stanza);
+	
+	@Mapping(target = "Ufficio.id", source = "ufficio_id")
+	Stanza toEntity(StanzaDto stanzaDto);
 }

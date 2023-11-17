@@ -9,5 +9,6 @@ import it.linksmt.prenotazione.postazioni.core.model.Postazione;
 @Mapper(componentModel = "spring", uses = {StanzaConverter.class})
 public interface PostazioneConverter {
 	
-	PostazioneDto toDto(Postazione p);
+	PostazioneDto toDto(Postazione postazione);
+	Postazione toEntity(PostazioneDto postazione);
 }
