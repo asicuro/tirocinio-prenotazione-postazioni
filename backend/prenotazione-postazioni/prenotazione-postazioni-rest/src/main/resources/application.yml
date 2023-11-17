@@ -4,7 +4,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/prenotazione
     username: postgres
-    password: deh
+    password: postgres
     driver-class-name: org.postgresql.Driver
     hikari:
       idle-timeout: 600000

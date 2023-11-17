@@ -15,14 +15,14 @@ import it.linksmt.prenotazione.postazioni.rest.constants.PrenotazionePostzioniCo
 public class PostazioneController {
 	
 	
-	@Autowired
-	PostazioneServiceImpl postazioneServiceImpl;
+//	@Autowired
+//	PostazioneServiceImpl postazioneServiceImpl;
 	
-	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE )
-	public PostazioneDto getPostazioneDto(@PathVariable(value="id")Long id) {
-		
-		return postazioneServiceImpl.findPostazioneById(id);
-		
-	}
+//	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE )
+//	public PostazioneDto getPostazioneDto(@PathVariable(value="id")Long id) {
+//		
+//		return postazioneServiceImpl.findPostazioneById(id);
+//		
+//	}
 	
 }

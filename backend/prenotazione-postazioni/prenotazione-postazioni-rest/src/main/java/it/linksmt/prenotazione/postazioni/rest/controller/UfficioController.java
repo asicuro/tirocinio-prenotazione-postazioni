@@ -15,14 +15,14 @@ import it.linksmt.prenotazione.postazioni.rest.constants.PrenotazionePostzioniCo
 @RequestMapping(PrenotazionePostzioniConst.UFFICIO_PATH)
 public class UfficioController {
 		
-	@Autowired
-	private UfficioServiceImpl ufficioServiceImpl;
-	
-	
-	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE )
-	public UfficioDto getUfficioById(@PathVariable(value = "id") Long id){
-		
-		return ufficioServiceImpl.findUfficiobyId(id);
-		
-	}
+//	@Autowired
+//	private UfficioServiceImpl ufficioServiceImpl;
+//	
+//	
+//	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE )
+//	public UfficioDto getUfficioById(@PathVariable(value = "id") Long id){
+//		
+//		return ufficioServiceImpl.findUfficiobyId(id);
+//		
+//	}
 }
