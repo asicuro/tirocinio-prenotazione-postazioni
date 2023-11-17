@@ -11,6 +11,7 @@ import it.linksmt.prenotazione.postazioni.core.model.Ufficio;
 import it.linksmt.prenotazione.postazioni.core.repository.UfficioRepository;
 import it.linksmt.prenotazione.postazioni.core.service.api.UfficioService;
 
+@Service
 public class UfficioServiceImpl implements UfficioService{
 	
 	@Autowired

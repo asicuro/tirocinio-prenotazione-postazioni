@@ -3,6 +3,7 @@ package it.linksmt.prenotazione.postazioni.core.service.impl;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import it.linksmt.prenotazione.postazioni.core.converter.StanzaConverter;
 import it.linksmt.prenotazione.postazioni.core.dto.StanzaDto;
@@ -10,6 +11,7 @@ import it.linksmt.prenotazione.postazioni.core.model.Stanza;
 import it.linksmt.prenotazione.postazioni.core.repository.StanzaRepository;
 import it.linksmt.prenotazione.postazioni.core.service.api.StanzaService;
 
+@Service
 public class StanzaServiceImpl implements StanzaService{
 	
 	@Autowired
