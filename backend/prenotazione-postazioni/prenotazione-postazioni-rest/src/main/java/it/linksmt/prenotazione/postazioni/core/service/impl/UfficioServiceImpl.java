@@ -20,6 +20,9 @@ public class UfficioServiceImpl implements UfficioService{
 	
 
 	public UfficioDto findUfficiobyId(Long id) {
+		if (id == null || id<0) {
+			return null;
+		}
 		Optional<Ufficio> ufficioOptional=ufficioRepository.findById(id);
 		if (ufficioOptional.isEmpty()) {
 			return null;
