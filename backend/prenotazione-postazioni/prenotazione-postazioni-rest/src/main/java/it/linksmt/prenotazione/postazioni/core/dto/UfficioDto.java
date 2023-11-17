@@ -1,6 +1,8 @@
 package it.linksmt.prenotazione.postazioni.core.dto;
 
 import java.util.Date;
+import java.util.List;
+
 
 public class UfficioDto{ 
  
@@ -18,7 +20,7 @@ public class UfficioDto{
     
     private String nomeUfficio;
     
-    private Long stanzaId;
+    private List<StanzaDto> stanze;
 
 	public Long getId() {
 		return id;
@@ -47,9 +49,11 @@ public class UfficioDto{
 	public String getNomeUfficio() {
 		return nomeUfficio;
 	}
+	
+	
 
-	public Long getStanzaId() {
-		return stanzaId;
+	public List<StanzaDto> getStanze() {
+		return stanze;
 	}
 
 	public void setId(Long id) {
@@ -80,9 +84,10 @@ public class UfficioDto{
 		this.nomeUfficio = nomeUfficio;
 	}
 
-	public void setStanzaId(Long stanzaId) {
-		this.stanzaId = stanzaId;
+	public void setStanze(List<StanzaDto> stanze) {
+		this.stanze = stanze;
 	}
+	
     
 	
     

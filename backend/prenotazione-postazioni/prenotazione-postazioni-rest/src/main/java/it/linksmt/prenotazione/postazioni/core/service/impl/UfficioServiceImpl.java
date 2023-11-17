@@ -19,8 +19,7 @@ public class UfficioServiceImpl implements UfficioService{
 	UfficioConverter ufficioConverter;
 	
 
-	@Override
-	public UfficioDto findUfficio(Long id) {
+	public UfficioDto findUfficiobyId(Long id) {
 		Optional<Ufficio> ufficioOptional=ufficioRepository.findById(id);
 		if (ufficioOptional.isEmpty()) {
 			return null;

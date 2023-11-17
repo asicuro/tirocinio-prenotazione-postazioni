@@ -9,4 +9,6 @@ import it.linksmt.prenotazione.postazioni.core.model.Ufficio;
 public interface UfficioConverter {
 
 	UfficioDto toDto(Ufficio ufficio);
+	
+	Ufficio toEntity(UfficioDto ufficioDto);
 }
