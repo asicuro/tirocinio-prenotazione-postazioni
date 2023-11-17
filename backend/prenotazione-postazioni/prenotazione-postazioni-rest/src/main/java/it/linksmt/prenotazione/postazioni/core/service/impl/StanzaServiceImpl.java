@@ -28,4 +28,11 @@ public class StanzaServiceImpl implements StanzaService{
 		return stanzaConverter.toDto(stanzaDto.get());
 	}
 
+	@Override
+	public void saveStanza(StanzaDto stanza) {
+		
+		if (stanzaRepository.existsById(stanza.getId())) return;
+		stanzaRepository.save(stanzaConverter.toEntity(stanza));
+	}
+
 }

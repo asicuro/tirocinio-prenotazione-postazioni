@@ -18,29 +18,29 @@ public class PostazioneServiceImpl implements PostazioneService{
 	@Autowired
 	PostazioneConverter postazioneConverter;
 	
-public PostazioneDto findPostazioneById(Long id) {
-	
-	if (id == null || id < 0) {
-		return null;
-	}
-	
-	Optional<Postazione> postazioneOptional = postazioneRepository.findById(id);
-		if(postazioneOptional.isEmpty()) {
+	public PostazioneDto findPostazioneById(Long id) {
+		
+		if (id == null || id < 0) {
 			return null;
 		}
-		return postazioneConverter.toDto(postazioneOptional.get());
-	}
-
-	@Override
-public void savePostazione(PostazioneDto postazioneDto) {
-	
-	if(postazioneRepository.existsById(postazioneDto.getId())) {
 		
-		return;
-		
+		Optional<Postazione> postazioneOptional = postazioneRepository.findById(id);
+			if(postazioneOptional.isEmpty()) {
+				return null;
+			}
+			return postazioneConverter.toDto(postazioneOptional.get());
 		}
 	
-	postazioneRepository.save(postazioneConverter.toEntity(postazioneDto));
-	
+		@Override
+	public void savePostazione(PostazioneDto postazioneDto) {
+		
+		if(postazioneRepository.existsById(postazioneDto.getId())) {
+			
+			return;
+			
+		}
+		
+		postazioneRepository.save(postazioneConverter.toEntity(postazioneDto));
+		
+		}
 	}
-}

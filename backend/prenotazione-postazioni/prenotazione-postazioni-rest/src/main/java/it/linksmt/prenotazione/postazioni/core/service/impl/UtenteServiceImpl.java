@@ -33,4 +33,11 @@ public class UtenteServiceImpl implements UtenteService{
 		
 	}
 
+	@Override
+	public void saveUtente(UtenteDto utente) {
+		if (utenteRepository.existsById(utente.getId())) return;
+		utenteRepository.save(utenteConverter.toEntity(utente));
+		
+	}
+
 }

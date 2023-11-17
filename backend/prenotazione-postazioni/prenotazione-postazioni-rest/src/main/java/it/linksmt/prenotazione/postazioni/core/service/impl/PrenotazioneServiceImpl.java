@@ -26,7 +26,7 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
 			if (prenotazioneOptional.isEmpty()) {
 				return null; 
 			}
-			return prenotazioneConverter.toDto(prenotazioneOptional.get());
+		return prenotazioneConverter.toDto(prenotazioneOptional.get());
 	}
 	
 
