@@ -34,7 +34,7 @@ public class Stanza {
 	private java.util.Date editDate;
 	
 	@Column(name = "name")
-	private String nome;
+	private String name;
 	
 	@Column(name = "width")
 	private Float width;
@@ -96,11 +96,11 @@ public class Stanza {
 	}
 
 	public String getNome() {
-		return nome;
+		return name;
 	}
 
 	public void setNome(String nome) {
-		this.nome = nome;
+		this.name = nome;
 	}
 
 	public Float getWidth() {
