@@ -15,10 +15,10 @@ import it.linksmt.prenotazione.postazioni.core.service.api.StanzaService;
 public class StanzaServiceImpl implements StanzaService{
 	
 	@Autowired
-	StanzaRepository stanzaRepository;
+	private StanzaRepository stanzaRepository;
 	
 	@Autowired
-	StanzaConverter stanzaConverter;
+	private StanzaConverter stanzaConverter;
 
 	@Override
 	public StanzaDto finStanzaById(Long id) {

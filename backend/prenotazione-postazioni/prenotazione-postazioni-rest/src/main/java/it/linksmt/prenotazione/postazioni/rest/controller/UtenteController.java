@@ -16,7 +16,7 @@ import it.linksmt.prenotazione.postazioni.rest.constants.PrenotazionePostzioniCo
 public class UtenteController {
 	
 	@Autowired
-	UtenteService utenteService;
+	private UtenteService utenteService;
 		
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public UtenteDto getUtente(@PathVariable("id") Long id) {

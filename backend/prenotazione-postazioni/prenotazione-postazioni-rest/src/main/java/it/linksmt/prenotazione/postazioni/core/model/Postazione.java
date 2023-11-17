@@ -1,7 +1,5 @@
 package it.linksmt.prenotazione.postazioni.core.model;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,13 +21,13 @@ public class Postazione {
 	    private Long createUserId;
 
 	    @Column(name = "create_date")
-	    private Date createDate;
+	    private java.util.Date createDate;
 
 	    @Column(name = "edit_user_id")
 	    private Long editUserId;
 	   
 	    @Column(name = "edit_date")
-	    private Date editDate;
+	    private java.util.Date editDate;
 	    
 	    @Column(name = "width")
 	    private Float width;
@@ -63,11 +61,11 @@ public class Postazione {
 			this.createUserId = createUserId;
 		}
 
-		public Date getCreateDate() {
+		public java.util.Date getCreateDate() {
 			return createDate;
 		}
 
-		public void setCreateDate(Date createDate) {
+		public void setCreateDate(java.util.Date createDate) {
 			this.createDate = createDate;
 		}
 
@@ -79,11 +77,11 @@ public class Postazione {
 			this.editUserId = editUserId;
 		}
 
-		public Date getEditDate() {
+		public java.util.Date getEditDate() {
 			return editDate;
 		}
 
-		public void setEditDate(Date editDate) {
+		public void setEditDate(java.util.Date editDate) {
 			this.editDate = editDate;
 		}
 

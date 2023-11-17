@@ -15,15 +15,9 @@ import it.linksmt.prenotazione.postazioni.rest.constants.PrenotazionePostzioniCo
 @Controller
 @RequestMapping(PrenotazionePostzioniConst.UFFICIO_PATH)
 public class UfficioController {
-	
-	@GetMapping(value = "/test", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	public ResponseEntity<String> testController() {
-				
-		return ResponseEntity.ok("HELLO WORLD");
-	}
-	
+		
 	@Autowired
-	UfficioServiceImpl ufficioServiceImpl;
+	private UfficioServiceImpl ufficioServiceImpl;
 	
 	
 	@GetMapping(value = "/id/{id}", produces = MediaType.APPLICATION_JSON_VALUE )

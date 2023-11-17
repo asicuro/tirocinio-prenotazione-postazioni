@@ -1,5 +1,7 @@
 package it.linksmt.prenotazione.postazioni.core.model;
 
+
+
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -10,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "prenotazione")
@@ -24,20 +28,23 @@ public class Prenotazione {
 	private Long createUserId;
 	
 	@Column(name = "create_date")
+	
 	private Date createDate;
 	
 	@Column(name = "edit_user_id")
 	private Long editUserId;
 	
+	
 	@Column(name = "edit_date")
 	private Date editDate;
 	
 	@Column(name = "data_creazione")
+	@Temporal(TemporalType.DATE)
 	private Date dataCreazione;
 	
 	@ManyToOne
     @JoinColumn(name = "user_id")
-    private Utente utente; 
+    private Utente utente;
 
     @ManyToOne
     @JoinColumn(name = "postazione_id")
@@ -59,11 +66,11 @@ public class Prenotazione {
 		this.createUserId = createUserId;
 	}
 
-	public Date getCreateDate() {
+	public java.util.Date getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreateDate(Date createDate) {
+	public void setCreateDate(java.util.Date createDate) {
 		this.createDate = createDate;
 	}
 
@@ -75,11 +82,11 @@ public class Prenotazione {
 		this.editUserId = editUserId;
 	}
 
-	public Date getEditDate() {
+	public java.util.Date getEditDate() {
 		return editDate;
 	}
 
-	public void setEditDate(Date editDate) {
+	public void setEditDate(java.util.Date editDate) {
 		this.editDate = editDate;
 	}
 
