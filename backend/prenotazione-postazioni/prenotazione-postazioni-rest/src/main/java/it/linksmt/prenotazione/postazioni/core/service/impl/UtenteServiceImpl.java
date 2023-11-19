@@ -27,18 +27,11 @@ public class UtenteServiceImpl implements UtenteService{
 			return null;
 		}
 		
-//		Optional<Utente> utenteOptional = utenteRepository.findById(id);
-//		if (utenteOptional.isEmpty()) {
-//			return null;
-//		}
-//		return utenteConverter.toDto(utenteOptional.get());
-		
-		Utente u = new Utente();
-		u.setId(id);
-		u.setPassword("password");
-		u.setUsername("username");
-		u.setRuolo("ruolo");
-		return utenteConverter.toDto(u);
+		Optional<Utente> utenteOptional = utenteRepository.findById(id);
+		if (utenteOptional.isEmpty()) {
+			return null;
+		}
+		return utenteConverter.toDto(utenteOptional.get());
 		
 	}
 
