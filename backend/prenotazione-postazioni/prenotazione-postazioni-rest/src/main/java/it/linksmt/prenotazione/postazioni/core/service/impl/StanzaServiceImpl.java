@@ -21,7 +21,7 @@ public class StanzaServiceImpl implements StanzaService{
 	private StanzaConverter stanzaConverter;
 
 	@Override
-	public StanzaDto finStanzaById(Long id) {
+	public StanzaDto findStanzaById(Long id) {
 		
 		if (id == null || id < 0) return null;			
 		Optional<Stanza> stanzaDto = stanzaRepository.findById(id);

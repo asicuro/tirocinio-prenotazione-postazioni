@@ -4,6 +4,6 @@ import it.linksmt.prenotazione.postazioni.core.dto.StanzaDto;
 
 public interface StanzaService {
 
-	public StanzaDto finStanzaById(Long id);
+	public StanzaDto findStanzaById(Long id);
 	public void saveStanza(StanzaDto stanza);
 }
