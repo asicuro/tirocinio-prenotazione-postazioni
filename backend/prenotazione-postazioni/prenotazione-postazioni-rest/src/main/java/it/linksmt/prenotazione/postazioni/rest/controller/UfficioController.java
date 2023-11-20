@@ -34,7 +34,7 @@ public class UfficioController {
 		ufficioService.saveUfficio(ufficioDto);
 	}
 
-	@DeleteMapping(value = "/delete/{id}")
+	@DeleteMapping(value = "/{id}")
 	public void deleteUfficio(@PathVariable("id") Long id) {
 		ufficioService.removeUfficioById(id);
 	}
