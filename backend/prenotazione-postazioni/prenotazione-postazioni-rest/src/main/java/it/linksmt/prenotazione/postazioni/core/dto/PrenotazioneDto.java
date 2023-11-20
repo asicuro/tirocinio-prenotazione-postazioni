@@ -12,9 +12,9 @@ public class PrenotazioneDto {
 	
 	private Long editUserId;
 	
-	private UtenteDto utente;
+	private Long utenteId;
 	
-	private PostazioneDto postazione;
+	private	Long postazioneId;
 
 	private Date editDate;
 	
@@ -52,20 +52,20 @@ public class PrenotazioneDto {
 		this.editUserId = editUserId;
 	}
 
-	public UtenteDto getUtente() {
-		return utente;
+	public Long getUtenteId() {
+		return utenteId;
 	}
 
-	public void setUtente(UtenteDto utente) {
-		this.utente = utente;
+	public void setUtenteId(Long utenteId) {
+		this.utenteId = utenteId;
 	}
 
-	public PostazioneDto getPostazione() {
-		return postazione;
+	public Long getPostazioneId() {
+		return postazioneId;
 	}
 
-	public void setPostazione(PostazioneDto postazione) {
-		this.postazione = postazione;
+	public void setPostazioneId(Long postazioneId) {
+		this.postazioneId = postazioneId;
 	}
 
 	public Date getEditDate() {
@@ -83,5 +83,6 @@ public class PrenotazioneDto {
 	public void setDataCreazione(Date dataCreazione) {
 		this.dataCreazione = dataCreazione;
 	}
+
 
 }

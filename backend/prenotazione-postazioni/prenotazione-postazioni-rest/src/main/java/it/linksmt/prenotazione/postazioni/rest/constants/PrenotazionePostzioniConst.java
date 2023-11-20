@@ -6,4 +6,5 @@ public class PrenotazionePostzioniConst {
 	public static final String UFFICIO_PATH = "/ufficio";
 	public static final String POSTAZIONE_PATH = "/postazione";
 	public static final String STANZA_PATH = "/stanza";
+	public static final String PRENOTAZIONE_PATH = "/prenotazione";
 }
