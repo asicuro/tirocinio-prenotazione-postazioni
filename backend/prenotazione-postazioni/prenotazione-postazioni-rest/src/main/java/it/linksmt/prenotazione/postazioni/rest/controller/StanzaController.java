@@ -37,4 +37,8 @@ public class StanzaController {
 	public ResponseEntity<List<StanzaDto>> getStanze() {
 		return ResponseEntity.ok(stanzaService.getStanze());
 	}
+
+	public void removeStanza(@PathVariable("id") Long id) {
+		stanzaService.removeStanza(id);
+	}
 }

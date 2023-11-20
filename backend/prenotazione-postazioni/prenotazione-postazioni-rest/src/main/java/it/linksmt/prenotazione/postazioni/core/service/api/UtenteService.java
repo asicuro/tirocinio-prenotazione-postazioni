@@ -11,4 +11,6 @@ public interface UtenteService {
 	public void saveUtente(UtenteDto utente);
 
 	public List<UtenteDto> getUtenti();
+
+	public void removeUtente(Long id);
 }

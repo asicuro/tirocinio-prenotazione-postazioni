@@ -56,4 +56,14 @@ public class UtenteServiceImpl implements UtenteService {
 		return utenti;
 	}
 
+	@Override
+	public void removeUtente(Long id) {
+
+		if (id == null || id < 0 || !utenteRepository.existsById(id))
+			return;
+
+		utenteRepository.deleteById(id);
+
+	}
+
 }

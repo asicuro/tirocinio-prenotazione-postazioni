@@ -51,4 +51,13 @@ public class StanzaServiceImpl implements StanzaService {
 		return stanze;
 	}
 
+	@Override
+	public void removeStanza(Long id) {
+
+		if (id == null || id < 0 || !stanzaRepository.existsById(id))
+			return;
+
+		stanzaRepository.deleteById(id);
+	}
+
 }

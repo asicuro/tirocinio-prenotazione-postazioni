@@ -11,4 +11,6 @@ public interface StanzaService {
 	public void saveStanza(StanzaDto stanza);
 
 	public List<StanzaDto> getStanze();
+
+	public void removeStanza(Long id);
 }
