@@ -1,5 +1,7 @@
 package it.linksmt.prenotazione.postazioni.rest.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,23 +19,23 @@ import it.linksmt.prenotazione.postazioni.rest.constants.PrenotazionePostzioniCo
 @RestController
 @RequestMapping(PrenotazionePostzioniConst.USER_PATH)
 public class UtenteController {
-	
+
 	@Autowired
 	private UtenteService utenteService;
-		
+
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UtenteDto> getUtente(@PathVariable("id") Long id) {
 		return ResponseEntity.ok(utenteService.findUtenteById(id));
 	}
-	
-	@GetMapping(value = "/test", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	public ResponseEntity<String> test() {
-		return ResponseEntity.ok("HELLO WORLD");
-	}
-	
-	@PostMapping(value = "/save")
+
+	@PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void saveUtente(@RequestBody UtenteDto utenteDto) {
 		utenteService.saveUtente(utenteDto);
+	}
+
+	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<UtenteDto>> getUtenti() {
+		return ResponseEntity.ok(utenteService.getUtenti());
 	}
 
 }

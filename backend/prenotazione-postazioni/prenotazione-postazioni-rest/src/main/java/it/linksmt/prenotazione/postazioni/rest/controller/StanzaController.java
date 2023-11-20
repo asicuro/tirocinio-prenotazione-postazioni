@@ -1,5 +1,7 @@
 package it.linksmt.prenotazione.postazioni.rest.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +22,19 @@ public class StanzaController {
 
 	@Autowired
 	StanzaService stanzaService;
-	
+
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<StanzaDto> getStanza(@PathVariable("id") Long id) {
 		return ResponseEntity.ok(stanzaService.findStanzaById(id));
 	}
-	
-	@PostMapping(value = "/save")
+
+	@PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void saveStanza(@RequestBody StanzaDto stanzaDto) {
 		stanzaService.saveStanza(stanzaDto);
+	}
+
+	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<StanzaDto>> getStanze() {
+		return ResponseEntity.ok(stanzaService.getStanze());
 	}
 }
