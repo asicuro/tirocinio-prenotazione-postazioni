@@ -17,7 +17,7 @@ public class PostazioneDto {
 	    
 	    private Float height;
 	    
-	    private StanzaDto stanza;
+	    private Long stanzaId;
 
 		private Float x;
 	    
@@ -79,12 +79,12 @@ public class PostazioneDto {
 			this.height = height;
 		}
 
-		public StanzaDto getStanza() {
-			return stanza;
+		public Long getStanzaId() {
+			return stanzaId;
 		}
 
-		public void setStanza(StanzaDto stanza) {
-			this.stanza = stanza;
+		public void setStanzaId(Long stanzaId) {
+			this.stanzaId = stanzaId;
 		}
 
 		public Float getX() {

@@ -6,12 +6,12 @@ import org.mapstruct.Mapping;
 import it.linksmt.prenotazione.postazioni.core.dto.StanzaDto;
 import it.linksmt.prenotazione.postazioni.core.model.Stanza;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {PostazioneConverter.class})
 public interface StanzaConverter {
 
-//	@Mapping(target = "ufficioId", source = "ufficio.id")
+	@Mapping(target = "ufficioId", source = "ufficio.id")
 	StanzaDto toDto(Stanza stanza);
 	
-//	@Mapping(target = "ufficio.id", source = "ufficioId")
+	@Mapping(target = "ufficio.id", source = "ufficioId")
 	Stanza toEntity(StanzaDto stanzaDto);
 }
