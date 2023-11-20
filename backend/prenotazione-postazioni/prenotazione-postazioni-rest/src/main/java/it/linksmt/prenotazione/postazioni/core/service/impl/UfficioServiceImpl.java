@@ -21,7 +21,7 @@ public class UfficioServiceImpl implements UfficioService{
 	UfficioConverter ufficioConverter;
 	
 	@Override
-	public UfficioDto findUfficiobyId(Long id) {
+	public UfficioDto findUfficioById(Long id) {
 		if (id == null || id<0) {
 			return null;
 		}
