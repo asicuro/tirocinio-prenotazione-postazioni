@@ -1,7 +1,11 @@
 package it.linksmt.prenotazione.postazioni.rest.controller;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,18 +17,29 @@ import it.linksmt.prenotazione.postazioni.core.service.api.PrenotazioneService;
 import it.linksmt.prenotazione.postazioni.rest.constants.PrenotazionePostzioniConst;
 
 @RestController
-@RequestMapping (PrenotazionePostzioniConst.PRENOTAZIONE_PATH)
+@RequestMapping(PrenotazionePostzioniConst.PRENOTAZIONE_PATH)
 public class PrenotazioneController {
 
 	@Autowired
 	PrenotazioneService prenotazioneService;
-	
-	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE )
-	public ResponseEntity<PrenotazioneDto> getPrenotazioneDtoEntity(@PathVariable(value="id")Long id){
-		return ResponseEntity.ok(prenotazioneService.findPrenotazioneById(id));		
+
+	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<PrenotazioneDto> getPrenotazioneDtoEntity(@PathVariable(value = "id") Long id) {
+		return ResponseEntity.ok(prenotazioneService.findPrenotazioneById(id));
 	}
-	@PostMapping(value ="/save")
+
+	@PostMapping(value = "/save")
 	public void savePrenotazione(@RequestBody PrenotazioneDto prenotazioneDto) {
 		prenotazioneService.savePrenotazione(prenotazioneDto);
+	}
+
+	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<PrenotazioneDto>> GetPrenotazione() {
+		return ResponseEntity.ok(prenotazioneService.getPrenotazione());
+	}
+
+	@DeleteMapping(value = "/{id}")
+	public void removePrenotazione(@PathVariable(value = "id") Long id) {
+		prenotazioneService.removePrenotazione(id);
 	}
 }

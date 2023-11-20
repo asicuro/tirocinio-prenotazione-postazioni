@@ -7,101 +7,101 @@ public class PostazioneDto {
 	private Long id;
 	
 	private Long createUserId;
-	    private Date createDate;
 	    
-	    private Long editUserId;
+	private Date createDate;
+	    
+	private Long editUserId;
 	   
-	    private Date editDate;    
+	private Date editDate;    
 	    
-	    private Float width;
+	private Float width;
 	    
-	    private Float height;
+	private Float height;
 	    
-	    private Long stanzaId;
+	private Long stanzaId;
 
-		private Float x;
+	private Float x;
 	    
-	    private Float y;
+	private Float y;
 
-		public Long getId() {
+	public Long getId() {
 			return id;
 		}
 
-		public void setId(Long id) {
+	public void setId(Long id) {
 			this.id = id;
 		}
 
-		public Long getCreateUserId() {
+	public Long getCreateUserId() {
 			return createUserId;
 		}
 
-		public void setCreateUserId(Long createUserId) {
+	public void setCreateUserId(Long createUserId) {
 			this.createUserId = createUserId;
 		}
 
-		public Date getCreateDate() {
+	public Date getCreateDate() {
 			return createDate;
 		}
 
-		public void setCreateDate(Date createDate) {
+	public void setCreateDate(Date createDate) {
 			this.createDate = createDate;
 		}
 
-		public Long getEditUserId() {
+	public Long getEditUserId() {
 			return editUserId;
 		}
 
-		public void setEditUserId(Long editUserId) {
+	public void setEditUserId(Long editUserId) {
 			this.editUserId = editUserId;
 		}
 
-		public Date getEditDate() {
+	public Date getEditDate() {
 			return editDate;
 		}
 
-		public void setEditDate(Date editDate) {
+	public void setEditDate(Date editDate) {
 			this.editDate = editDate;
 		}
 
-		public Float getWidth() {
+	public Float getWidth() {
 			return width;
 		}
 
-		public void setWidth(Float width) {
+	public void setWidth(Float width) {
 			this.width = width;
 		}
 
-		public Float getHeight() {
+	public Float getHeight() {
 			return height;
 		}
 
-		public void setHeight(Float height) {
+	public void setHeight(Float height) {
 			this.height = height;
 		}
 
-		public Long getStanzaId() {
+	public Long getStanzaId() {
 			return stanzaId;
 		}
 
-		public void setStanzaId(Long stanzaId) {
+	public void setStanzaId(Long stanzaId) {
 			this.stanzaId = stanzaId;
 		}
 
-		public Float getX() {
+	public Float getX() {
 			return x;
 		}
 
-		public void setX(Float x) {
+	public void setX(Float x) {
 			this.x = x;
 		}
 
-		public Float getY() {
+	public Float getY() {
 			return y;
 		}
 
-		public void setY(Float y) {
+	public void setY(Float y) {
 			this.y = y;
 		}
-
-	    
+	
 }
