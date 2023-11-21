@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import it.linksmt.prenotazione.postazioni.core.converter.UtenteConverter;
 import it.linksmt.prenotazione.postazioni.core.dto.UtenteDto;
+import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.model.Utente;
 import it.linksmt.prenotazione.postazioni.core.repository.UtenteRepository;
 import it.linksmt.prenotazione.postazioni.core.service.api.UtenteService;
@@ -25,23 +26,29 @@ public class UtenteServiceImpl implements UtenteService {
 	@Override
 	public UtenteDto findUtenteById(Long id) {
 
-		if (id == null || id < 0) {
+		if (id == null || id < 0)
 			return null;
-		}
 
 		Optional<Utente> utenteOptional = utenteRepository.findById(id);
-		if (utenteOptional.isEmpty()) {
+
+		if (utenteOptional.isEmpty())
 			return null;
-		}
+
 		return utenteConverter.toDto(utenteOptional.get());
 
 	}
 
 	@Override
-	public void saveUtente(UtenteDto utente) {
-		if (utenteRepository.existsById(utente.getId()))
-			return;
-		utenteRepository.save(utenteConverter.toEntity(utente));
+	public UtenteDto saveUtente(UtenteDto utenteDto) throws InvalidValueException {
+
+		if (utenteDto.getUsername() == null)
+			throw new InvalidValueException("username", utenteDto.getId());
+		if (utenteDto.getPassword() == null)
+			throw new InvalidValueException("password", utenteDto.getPassword());
+		if (utenteDto.getRuolo() == null)
+			throw new InvalidValueException("ruolo", utenteDto.getRuolo());
+
+		return utenteConverter.toDto(utenteRepository.save(utenteConverter.toEntity(utenteDto)));
 
 	}
 
@@ -57,12 +64,34 @@ public class UtenteServiceImpl implements UtenteService {
 	}
 
 	@Override
-	public void removeUtente(Long id) {
+	public boolean removeUtente(Long id) throws InvalidValueException {
 
-		if (id == null || id < 0 || !utenteRepository.existsById(id))
-			return;
+		if (id == null || id < 0)
+			throw new InvalidValueException("id", id);
+		if (!utenteRepository.existsById(id))
+			throw new InvalidValueException("utente", id);
 
 		utenteRepository.deleteById(id);
+
+		return !utenteRepository.existsById(id);
+
+	}
+
+	@Override
+	public UtenteDto updateUtente(UtenteDto utenteDto) throws InvalidValueException {
+
+		if (utenteDto.getId() == null || utenteDto.getId() < 0)
+			throw new InvalidValueException("id", utenteDto.getId());
+		if (utenteRepository.existsById(utenteDto.getId()))
+			throw new InvalidValueException("utente", utenteDto.getId());
+		if (utenteDto.getUsername() == null)
+			throw new InvalidValueException("username", utenteDto.getUsername());
+		if (utenteDto.getPassword() == null)
+			throw new InvalidValueException("password", utenteDto.getPassword());
+		if (utenteDto.getRuolo() == null)
+			throw new InvalidValueException("ruolo", utenteDto.getRuolo());
+
+		return utenteConverter.toDto(utenteRepository.save(utenteConverter.toEntity(utenteDto)));
 
 	}
 

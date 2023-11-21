@@ -101,5 +101,6 @@ public class StanzaDto {
 	public void setPostazioni(List<PostazioneDto> postazioni) {
 		this.postazioni = postazioni;
 	}
+	
 		
 }
