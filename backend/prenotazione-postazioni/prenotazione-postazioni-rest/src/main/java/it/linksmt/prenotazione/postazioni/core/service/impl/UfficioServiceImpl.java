@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import it.linksmt.prenotazione.postazioni.core.converter.UfficioConverter;
 import it.linksmt.prenotazione.postazioni.core.dto.UfficioDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
+import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
 import it.linksmt.prenotazione.postazioni.core.model.Ufficio;
 import it.linksmt.prenotazione.postazioni.core.repository.UfficioRepository;
 import it.linksmt.prenotazione.postazioni.core.service.api.UfficioService;
@@ -24,13 +25,13 @@ public class UfficioServiceImpl implements UfficioService {
 	UfficioConverter ufficioConverter;
 
 	@Override
-	public UfficioDto findUfficioById(Long id) throws InvalidValueException {
-		if (id == null || id < 0) {
-			throw new InvalidValueException("id",id);
-		}
+	public UfficioDto findUfficioById(Long id) throws InvalidValueException, MissingValueException {
+		if (id == null || id < 0) {throw new InvalidValueException("id",id);}
+		
 		Optional<Ufficio> ufficioOptional = ufficioRepository.findById(id);
+		
 		if (ufficioOptional.isEmpty()) {
-			throw new InvalidValueException("ufficioOptional", ufficioOptional);
+			throw new MissingValueException("ufficio", id);
 		}
 		return ufficioConverter.toDto(ufficioOptional.get());
 	}
@@ -66,12 +67,16 @@ public class UfficioServiceImpl implements UfficioService {
 
 
 	@Override
-	public boolean removeUfficioById(Long id) throws InvalidValueException {
+	public boolean removeUfficioById(Long id) throws InvalidValueException, MissingValueException {
 		if (id == null || id < 0) {
-			throw new InvalidValueException("id",id);
+			throw new InvalidValueException("id",id);}
+		
+		if (!ufficioRepository.existsById(id)) {
+			throw new MissingValueException("id", id);
 		}
 		ufficioRepository.deleteById(id);
 		return !ufficioRepository.existsById(id);
+		
 	}
 
 	@Override

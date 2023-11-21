@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.linksmt.prenotazione.postazioni.core.dto.UfficioDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
+import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
 import it.linksmt.prenotazione.postazioni.core.service.api.UfficioService;
 import it.linksmt.prenotazione.postazioni.rest.constants.PrenotazionePostzioniConst;
 
@@ -27,7 +28,7 @@ public class UfficioController {
 	private UfficioService ufficioService;
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UfficioDto> getUfficio(@PathVariable("id") Long id) throws InvalidValueException {
+	public ResponseEntity<UfficioDto> getUfficio(@PathVariable("id") Long id) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(ufficioService.findUfficioById(id));
 	}
 
@@ -37,7 +38,7 @@ public class UfficioController {
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public boolean deleteUfficio(@PathVariable("id") Long id) throws InvalidValueException {
+	public boolean deleteUfficio(@PathVariable("id") Long id) throws InvalidValueException, MissingValueException {
 		return ufficioService.removeUfficioById(id);
 	}
 
