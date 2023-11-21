@@ -12,7 +12,7 @@ public interface StanzaService {
 
 	public StanzaDto saveStanza(StanzaDto stanza, Long createUserId) throws InvalidValueException;
 
-	public StanzaDto updateStanza(StanzaDto stanza, Long updateUserId) throws InvalidValueException, MissingValueException;
+	public StanzaDto updateStanza(StanzaDto stanza, Long editUserId) throws InvalidValueException, MissingValueException;
 
 	public List<StanzaDto> getStanze();
 

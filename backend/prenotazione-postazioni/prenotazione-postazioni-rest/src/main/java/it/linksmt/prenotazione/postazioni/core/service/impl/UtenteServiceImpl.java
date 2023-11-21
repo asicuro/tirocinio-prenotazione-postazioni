@@ -89,7 +89,7 @@ public class UtenteServiceImpl implements UtenteService {
 		if (utenteDto.getId() == null || utenteDto.getId() < 0)
 			throw new InvalidValueException("id", utenteDto.getId());
 
-		if (utenteRepository.existsById(utenteDto.getId()))
+		if (!utenteRepository.existsById(utenteDto.getId()))
 			throw new MissingValueException(NOME_ENTITA, utenteDto.getId());
 
 		if (utenteDto.getUsername() == null)

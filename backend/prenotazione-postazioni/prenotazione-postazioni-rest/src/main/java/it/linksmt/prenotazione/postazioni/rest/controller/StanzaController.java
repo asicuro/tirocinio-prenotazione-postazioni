@@ -52,7 +52,7 @@ public class StanzaController {
 
 	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<StanzaDto> updateStanza(@RequestBody StanzaDto stanzaDto,
-			@RequestParam("updateUserId") Long updateUserId) throws InvalidValueException, MissingValueException {
-		return ResponseEntity.ok(stanzaService.updateStanza(stanzaDto, updateUserId));
+			@RequestParam("editUserId") Long editUserId) throws InvalidValueException, MissingValueException {
+		return ResponseEntity.ok(stanzaService.updateStanza(stanzaDto, editUserId));
 	}
 }

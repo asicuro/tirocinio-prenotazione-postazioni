@@ -93,12 +93,15 @@ public class StanzaServiceImpl implements StanzaService {
 	}
 
 	@Override
-	public StanzaDto updateStanza(StanzaDto stanzaDto, Long updateUserId) throws InvalidValueException, MissingValueException {
+	public StanzaDto updateStanza(StanzaDto stanzaDto, Long editUserId)
+			throws InvalidValueException, MissingValueException {
+
+		Optional<Stanza> stanza = stanzaRepository.findById(stanzaDto.getId());
 
 		if (stanzaDto.getId() == null || stanzaDto.getId() < 0)
 			throw new InvalidValueException("id", stanzaDto.getId());
 
-		if (stanzaRepository.existsById(stanzaDto.getId()))
+		if (stanza.isEmpty())
 			throw new MissingValueException(NOME_ENTITA, stanzaDto.getId());
 
 		if (stanzaDto.getNome() == null)
@@ -118,9 +121,11 @@ public class StanzaServiceImpl implements StanzaService {
 
 		if (stanzaDto.getUfficioId() == null)
 			throw new InvalidValueException("ufficioId", stanzaDto.getUfficioId());
-		
-		stanzaDto.setCreateDate(new Date());
-		stanzaDto.setCreateUserId(updateUserId);
+
+		stanzaDto.setCreateDate(stanza.get().getCreateDate());
+		stanzaDto.setCreateUserId(stanza.get().getCreateUserId());
+		stanzaDto.setEditDate(new Date());
+		stanzaDto.setEditUserId(editUserId);
 
 		return stanzaConverter.toDto(stanzaRepository.save(stanzaConverter.toEntity(stanzaDto)));
 
