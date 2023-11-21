@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.linksmt.prenotazione.postazioni.core.dto.StanzaDto;
@@ -34,9 +33,9 @@ public class StanzaController {
 		return ResponseEntity.ok(stanzaService.findStanzaById(id));
 	}
 
-	@PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/save/{createUserId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<StanzaDto> saveStanza(@RequestBody StanzaDto stanzaDto,
-			@RequestParam("createUserId") Long createUserId) throws InvalidValueException {
+			@PathVariable("createUserId") Long createUserId) throws InvalidValueException {
 		return ResponseEntity.ok(stanzaService.saveStanza(stanzaDto, createUserId));
 	}
 
@@ -50,9 +49,9 @@ public class StanzaController {
 		return stanzaService.removeStanza(id);
 	}
 
-	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/update/{editUserId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<StanzaDto> updateStanza(@RequestBody StanzaDto stanzaDto,
-			@RequestParam("editUserId") Long editUserId) throws InvalidValueException, MissingValueException {
+			@PathVariable("editUserId") Long editUserId) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(stanzaService.updateStanza(stanzaDto, editUserId));
 	}
 }
