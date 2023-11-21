@@ -16,5 +16,5 @@ public interface UfficioService {
 
 	public List<UfficioDto> getUffici();
 
-	public UfficioDto updateUfficio(UfficioDto ufficioDto)throws InvalidValueException;
+	public UfficioDto updateUfficio(UfficioDto ufficioDto)throws InvalidValueException, MissingValueException;
 }
