@@ -7,9 +7,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import it.linksmt.prenotazione.postazioni.core.Exception.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.converter.UfficioConverter;
 import it.linksmt.prenotazione.postazioni.core.dto.UfficioDto;
+import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.model.Ufficio;
 import it.linksmt.prenotazione.postazioni.core.repository.UfficioRepository;
 import it.linksmt.prenotazione.postazioni.core.service.api.UfficioService;
@@ -24,44 +24,54 @@ public class UfficioServiceImpl implements UfficioService {
 	UfficioConverter ufficioConverter;
 
 	@Override
-	public UfficioDto findUfficioById(Long id) {
+	public UfficioDto findUfficioById(Long id) throws InvalidValueException {
 		if (id == null || id < 0) {
-			return null;
+			throw new InvalidValueException("id",id);
 		}
 		Optional<Ufficio> ufficioOptional = ufficioRepository.findById(id);
 		if (ufficioOptional.isEmpty()) {
-			return null;
+			throw new InvalidValueException("ufficioOptional", ufficioOptional);
 		}
 		return ufficioConverter.toDto(ufficioOptional.get());
 	}
 
 	@Override
-	public UfficioDto saveUfficio(UfficioDto ufficioDto) {
+	public UfficioDto saveUfficio(UfficioDto ufficioDto) throws InvalidValueException {
 		if (ufficioDto.getId() == null || ufficioDto.getId() < 0) {
-			throw new InvalidValueException("Id", ufficioDto.getId());
+			throw new InvalidValueException("id", ufficioDto.getId());
 		}
-			if (ufficioRepository.existsById(ufficioDto.getId())) {
-				return; //MissingValueException
-			}
-		ufficioRepository.save(ufficioConverter.toEntity(ufficioDto));
+		if (ufficioDto.getIndirizzo() == null) {
+			throw new InvalidValueException("indirizzo",ufficioDto.getIndirizzo());
+		}
+		if (ufficioDto.getNomeUfficio()== null) {
+			throw new InvalidValueException("nomeUfficio",ufficioDto.getNomeUfficio());
+		}
+		if (ufficioRepository.existsById(ufficioDto.getId())) {
+			throw new InvalidValueException("nomeUfficio",ufficioDto.getNomeUfficio());
+				
+		}
+		return ufficioConverter.toDto(ufficioRepository.save(ufficioConverter.toEntity(ufficioDto)));
 	}
 
 	@Override
 	public UfficioDto updateUfficio(UfficioDto ufficioDto) throws InvalidValueException{
-		if (ufficioDto.getId() == null || ufficioDto.getId() < 0) {
-			throw new InvalidValueException("Id", ufficioDto.getId());
+		if (ufficioDto.getIndirizzo() == null) {
+			throw new InvalidValueException("indirizzo",ufficioDto.getIndirizzo());
 		}
-		ufficioRepository.save(ufficioConverter.toEntity(ufficioDto));
-		return ufficioDto;
+		if (ufficioDto.getNomeUfficio()== null) {
+			throw new InvalidValueException("nomeUfficio",ufficioDto.getNomeUfficio());
+		}
+		return ufficioConverter.toDto(ufficioRepository.save(ufficioConverter.toEntity(ufficioDto)));
 		}
 
 
 	@Override
-	public void removeUfficioById(Long id) {
+	public boolean removeUfficioById(Long id) throws InvalidValueException {
 		if (id == null || id < 0) {
-			return;
+			throw new InvalidValueException("id",id);
 		}
 		ufficioRepository.deleteById(id);
+		return !ufficioRepository.existsById(id);
 	}
 
 	@Override

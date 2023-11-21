@@ -1,4 +1,4 @@
-package it.linksmt.prenotazione.postazioni.core.Exception;
+package it.linksmt.prenotazione.postazioni.core.exceptions;
 
 public class InvalidValueException extends Exception{
 	

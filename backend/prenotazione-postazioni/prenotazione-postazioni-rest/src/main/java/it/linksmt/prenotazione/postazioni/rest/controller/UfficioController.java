@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.linksmt.prenotazione.postazioni.core.Exception.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.dto.UfficioDto;
+import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.service.api.UfficioService;
 import it.linksmt.prenotazione.postazioni.rest.constants.PrenotazionePostzioniConst;
 
@@ -27,18 +27,18 @@ public class UfficioController {
 	private UfficioService ufficioService;
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UfficioDto> getUfficio(@PathVariable("id") Long id) {
+	public ResponseEntity<UfficioDto> getUfficio(@PathVariable("id") Long id) throws InvalidValueException {
 		return ResponseEntity.ok(ufficioService.findUfficioById(id));
 	}
 
 	@PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void createUfficio(@RequestBody UfficioDto ufficioDto) {
-		ufficioService.saveUfficio(ufficioDto);
+	public ResponseEntity<UfficioDto> createUfficio(@RequestBody UfficioDto ufficioDto) throws InvalidValueException {
+		return ResponseEntity.ok(ufficioService.saveUfficio(ufficioDto));
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public void deleteUfficio(@PathVariable("id") Long id) {
-		ufficioService.removeUfficioById(id);
+	public boolean deleteUfficio(@PathVariable("id") Long id) throws InvalidValueException {
+		return ufficioService.removeUfficioById(id);
 	}
 
 	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -48,7 +48,7 @@ public class UfficioController {
 	}
 
 	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void saveUfficio(@RequestBody UfficioDto ufficioDto) throws InvalidValueException {
-		ufficioService.updateUfficio(ufficioDto);
+	public ResponseEntity<UfficioDto> saveUfficio(@RequestBody UfficioDto ufficioDto) throws InvalidValueException {
+		return ResponseEntity.ok(ufficioService.updateUfficio(ufficioDto));
 	}
 }
