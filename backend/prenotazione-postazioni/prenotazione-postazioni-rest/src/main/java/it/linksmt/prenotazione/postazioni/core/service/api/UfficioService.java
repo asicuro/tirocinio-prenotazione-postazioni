@@ -10,11 +10,13 @@ public interface UfficioService {
 
 	public UfficioDto findUfficioById(Long id) throws InvalidValueException, MissingValueException;
 
-	public UfficioDto saveUfficio(UfficioDto ufficioDto) throws InvalidValueException;
+	public UfficioDto saveUfficio(UfficioDto ufficioDto, Long requestId) throws InvalidValueException;
 
 	public boolean removeUfficioById(Long id) throws InvalidValueException, MissingValueException;
 
 	public List<UfficioDto> getUffici();
 
-	public UfficioDto updateUfficio(UfficioDto ufficioDto)throws InvalidValueException, MissingValueException;
+	public UfficioDto updateUfficio(UfficioDto ufficioDto, Long requestId)throws InvalidValueException, MissingValueException;
+	
+	
 }

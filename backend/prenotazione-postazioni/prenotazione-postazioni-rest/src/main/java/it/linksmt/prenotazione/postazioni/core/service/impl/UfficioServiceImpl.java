@@ -1,6 +1,7 @@
 package it.linksmt.prenotazione.postazioni.core.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,25 +40,20 @@ public class UfficioServiceImpl implements UfficioService {
   }
 
   @Override
-  public UfficioDto saveUfficio(UfficioDto ufficioDto) throws InvalidValueException {
-    if (ufficioDto.getId() == null || ufficioDto.getId() < 0) {
-      throw new InvalidValueException("id", ufficioDto.getId());
-    }
+  public UfficioDto saveUfficio(UfficioDto ufficioDto, Long requestId) throws InvalidValueException {
     if (ufficioDto.getIndirizzo() == null) {
       throw new InvalidValueException("indirizzo", ufficioDto.getIndirizzo());
     }
     if (ufficioDto.getNomeUfficio() == null) {
       throw new InvalidValueException("nomeUfficio", ufficioDto.getNomeUfficio());
     }
-    if (ufficioRepository.existsById(ufficioDto.getId())) {
-      throw new InvalidValueException("nomeUfficio", ufficioDto.getNomeUfficio());
-
-    }
+    ufficioDto.setCreateDate(new Date());
+    ufficioDto.setCreateUserId(requestId);
     return ufficioConverter.toDto(ufficioRepository.save(ufficioConverter.toEntity(ufficioDto)));
   }
 
   @Override
-  public UfficioDto updateUfficio(UfficioDto ufficioDto) throws InvalidValueException, MissingValueException {
+  public UfficioDto updateUfficio(UfficioDto ufficioDto, Long requestId) throws InvalidValueException, MissingValueException {
 	if (ufficioDto.getId() == null || ufficioDto.getId() < 0)
 		throw new InvalidValueException("id", ufficioDto.getId());
 	
@@ -72,6 +68,11 @@ public class UfficioServiceImpl implements UfficioService {
     if(ufficioDto.getNomeUfficio() == null) {
       throw new InvalidValueException("nomeUfficio", ufficioDto.getNomeUfficio());
     }
+    
+    ufficioDto.setCreateDate(ufficiOptional.get().getCreateDate());
+    ufficioDto.setCreateUserId(ufficiOptional.get().getCreateUserId());
+    ufficioDto.setEditDate(new Date());
+    ufficioDto.setEditUserId(requestId);
     return ufficioConverter.toDto(ufficioRepository.save(ufficioConverter.toEntity(ufficioDto)));
   }
 
