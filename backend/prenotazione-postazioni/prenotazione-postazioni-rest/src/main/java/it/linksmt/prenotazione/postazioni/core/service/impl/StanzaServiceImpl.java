@@ -96,10 +96,10 @@ public class StanzaServiceImpl implements StanzaService {
 	public StanzaDto updateStanza(StanzaDto stanzaDto, Long editUserId)
 			throws InvalidValueException, MissingValueException {
 
-		Optional<Stanza> stanza = stanzaRepository.findById(stanzaDto.getId());
-
 		if (stanzaDto.getId() == null || stanzaDto.getId() < 0)
 			throw new InvalidValueException("id", stanzaDto.getId());
+
+		Optional<Stanza> stanza = stanzaRepository.findById(stanzaDto.getId());
 
 		if (stanza.isEmpty())
 			throw new MissingValueException(NOME_ENTITA, stanzaDto.getId());
