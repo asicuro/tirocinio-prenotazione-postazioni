@@ -18,6 +18,8 @@ import it.linksmt.prenotazione.postazioni.core.service.api.UtenteService;
 @Service
 public class UtenteServiceImpl implements UtenteService {
 
+	private static final String NOME_ENTITA = "Utente";
+
 	@Autowired
 	UtenteRepository utenteRepository;
 
@@ -33,7 +35,7 @@ public class UtenteServiceImpl implements UtenteService {
 		Optional<Utente> utenteOptional = utenteRepository.findById(id);
 
 		if (utenteOptional.isEmpty())
-			throw new MissingValueException("Utente", id);
+			throw new MissingValueException(NOME_ENTITA, id);
 
 		return utenteConverter.toDto(utenteOptional.get());
 
@@ -70,7 +72,7 @@ public class UtenteServiceImpl implements UtenteService {
 		if (id == null || id < 0)
 			throw new InvalidValueException("id", id);
 		if (!utenteRepository.existsById(id))
-			throw new MissingValueException("Utente", id);
+			throw new MissingValueException(NOME_ENTITA, id);
 
 		utenteRepository.deleteById(id);
 
@@ -84,7 +86,7 @@ public class UtenteServiceImpl implements UtenteService {
 		if (utenteDto.getId() == null || utenteDto.getId() < 0)
 			throw new InvalidValueException("id", utenteDto.getId());
 		if (utenteRepository.existsById(utenteDto.getId()))
-			throw new MissingValueException("Utente", utenteDto.getId());
+			throw new MissingValueException(NOME_ENTITA, utenteDto.getId());
 		if (utenteDto.getUsername() == null)
 			throw new InvalidValueException("username", utenteDto.getUsername());
 		if (utenteDto.getPassword() == null)

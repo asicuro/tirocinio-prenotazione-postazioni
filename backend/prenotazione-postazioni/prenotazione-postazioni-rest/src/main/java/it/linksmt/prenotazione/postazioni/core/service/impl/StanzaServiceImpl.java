@@ -18,6 +18,8 @@ import it.linksmt.prenotazione.postazioni.core.service.api.StanzaService;
 @Service
 public class StanzaServiceImpl implements StanzaService {
 
+	private static final String NOME_ENTITA = "Stanza";
+
 	@Autowired
 	private StanzaRepository stanzaRepository;
 
@@ -29,9 +31,11 @@ public class StanzaServiceImpl implements StanzaService {
 
 		if (id == null || id < 0)
 			throw new InvalidValueException("id", id);
+
 		Optional<Stanza> stanzaDto = stanzaRepository.findById(id);
+
 		if (stanzaDto.isEmpty())
-			throw new MissingValueException("Stanza", id);
+			throw new MissingValueException(NOME_ENTITA, id);
 
 		return stanzaConverter.toDto(stanzaDto.get());
 	}
@@ -70,7 +74,7 @@ public class StanzaServiceImpl implements StanzaService {
 		if (id == null || id < 0)
 			throw new InvalidValueException("id", id);
 		if (!stanzaRepository.existsById(id))
-			throw new MissingValueException("Stanza", id);
+			throw new MissingValueException(NOME_ENTITA, id);
 
 		stanzaRepository.deleteById(id);
 		return !stanzaRepository.existsById(id);
@@ -82,7 +86,7 @@ public class StanzaServiceImpl implements StanzaService {
 		if (stanzaDto.getId() == null || stanzaDto.getId() < 0)
 			throw new InvalidValueException("id", stanzaDto.getId());
 		if (stanzaRepository.existsById(stanzaDto.getId()))
-			throw new MissingValueException("Stanza", stanzaDto.getId());
+			throw new MissingValueException(NOME_ENTITA, stanzaDto.getId());
 		if (stanzaDto.getNome() == null)
 			throw new InvalidValueException("nome", stanzaDto.getNome());
 		if (stanzaDto.getWidth() == null)
