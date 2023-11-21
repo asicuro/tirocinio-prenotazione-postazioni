@@ -17,4 +17,6 @@ public interface UtenteService {
 	public List<UtenteDto> getUtenti();
 
 	public boolean removeUtente(Long id) throws InvalidValueException, MissingValueException;
+
+	public boolean removeAll();
 }

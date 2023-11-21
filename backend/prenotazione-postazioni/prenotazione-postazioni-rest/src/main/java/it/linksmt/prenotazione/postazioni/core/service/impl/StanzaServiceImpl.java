@@ -131,4 +131,11 @@ public class StanzaServiceImpl implements StanzaService {
 
 	}
 
+	@Override
+	public boolean removeAll() {
+
+		stanzaRepository.deleteAll();
+		return stanzaRepository.count() == 0;
+	}
+
 }

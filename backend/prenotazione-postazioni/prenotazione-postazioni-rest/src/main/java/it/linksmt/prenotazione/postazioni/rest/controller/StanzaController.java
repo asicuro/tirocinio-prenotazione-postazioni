@@ -54,4 +54,9 @@ public class StanzaController {
 			@PathVariable("editUserId") Long editUserId) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(stanzaService.updateStanza(stanzaDto, editUserId));
 	}
+
+	@DeleteMapping(value = "/all")
+	public boolean removeAll() {
+		return stanzaService.removeAll();
+	}
 }

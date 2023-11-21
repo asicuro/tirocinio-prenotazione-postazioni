@@ -54,4 +54,9 @@ public class UtenteController {
 		return ResponseEntity.ok(utenteService.updateUtente(utenteDto));
 	}
 
+	@DeleteMapping(value = "/all")
+	public boolean removeAll() {
+		return utenteService.removeAll();
+	}
+
 }

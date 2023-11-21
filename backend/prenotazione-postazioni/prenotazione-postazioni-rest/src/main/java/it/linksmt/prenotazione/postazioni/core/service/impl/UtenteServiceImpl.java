@@ -105,4 +105,11 @@ public class UtenteServiceImpl implements UtenteService {
 
 	}
 
+	@Override
+	public boolean removeAll() {
+
+		utenteRepository.deleteAll();
+		return utenteRepository.count() == 0;
+	}
+
 }
