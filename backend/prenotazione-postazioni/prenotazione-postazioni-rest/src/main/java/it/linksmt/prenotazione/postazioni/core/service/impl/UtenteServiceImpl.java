@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import it.linksmt.prenotazione.postazioni.core.converter.UtenteConverter;
 import it.linksmt.prenotazione.postazioni.core.dto.UtenteDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
+import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
 import it.linksmt.prenotazione.postazioni.core.model.Utente;
 import it.linksmt.prenotazione.postazioni.core.repository.UtenteRepository;
 import it.linksmt.prenotazione.postazioni.core.service.api.UtenteService;
@@ -24,15 +25,15 @@ public class UtenteServiceImpl implements UtenteService {
 	UtenteConverter utenteConverter;
 
 	@Override
-	public UtenteDto findUtenteById(Long id) {
+	public UtenteDto findUtenteById(Long id) throws MissingValueException, InvalidValueException {
 
 		if (id == null || id < 0)
-			return null;
+			throw new InvalidValueException("id", id);
 
 		Optional<Utente> utenteOptional = utenteRepository.findById(id);
 
 		if (utenteOptional.isEmpty())
-			return null;
+			throw new MissingValueException("Utente", id);
 
 		return utenteConverter.toDto(utenteOptional.get());
 
@@ -64,12 +65,12 @@ public class UtenteServiceImpl implements UtenteService {
 	}
 
 	@Override
-	public boolean removeUtente(Long id) throws InvalidValueException {
+	public boolean removeUtente(Long id) throws InvalidValueException, MissingValueException {
 
 		if (id == null || id < 0)
 			throw new InvalidValueException("id", id);
 		if (!utenteRepository.existsById(id))
-			throw new InvalidValueException("utente", id);
+			throw new MissingValueException("Utente", id);
 
 		utenteRepository.deleteById(id);
 
@@ -78,12 +79,12 @@ public class UtenteServiceImpl implements UtenteService {
 	}
 
 	@Override
-	public UtenteDto updateUtente(UtenteDto utenteDto) throws InvalidValueException {
+	public UtenteDto updateUtente(UtenteDto utenteDto) throws InvalidValueException, MissingValueException {
 
 		if (utenteDto.getId() == null || utenteDto.getId() < 0)
 			throw new InvalidValueException("id", utenteDto.getId());
 		if (utenteRepository.existsById(utenteDto.getId()))
-			throw new InvalidValueException("utente", utenteDto.getId());
+			throw new MissingValueException("Utente", utenteDto.getId());
 		if (utenteDto.getUsername() == null)
 			throw new InvalidValueException("username", utenteDto.getUsername());
 		if (utenteDto.getPassword() == null)

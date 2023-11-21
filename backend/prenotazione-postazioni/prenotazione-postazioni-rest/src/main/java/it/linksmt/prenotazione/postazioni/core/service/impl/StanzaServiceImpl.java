@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import it.linksmt.prenotazione.postazioni.core.converter.StanzaConverter;
 import it.linksmt.prenotazione.postazioni.core.dto.StanzaDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
+import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
 import it.linksmt.prenotazione.postazioni.core.model.Stanza;
 import it.linksmt.prenotazione.postazioni.core.repository.StanzaRepository;
 import it.linksmt.prenotazione.postazioni.core.service.api.StanzaService;
@@ -24,13 +25,13 @@ public class StanzaServiceImpl implements StanzaService {
 	private StanzaConverter stanzaConverter;
 
 	@Override
-	public StanzaDto findStanzaById(Long id) {
+	public StanzaDto findStanzaById(Long id) throws InvalidValueException, MissingValueException {
 
 		if (id == null || id < 0)
-			return null;
+			throw new InvalidValueException("id", id);
 		Optional<Stanza> stanzaDto = stanzaRepository.findById(id);
 		if (stanzaDto.isEmpty())
-			return null;
+			throw new MissingValueException("Stanza", id);
 
 		return stanzaConverter.toDto(stanzaDto.get());
 	}
@@ -49,7 +50,7 @@ public class StanzaServiceImpl implements StanzaService {
 		if (stanza.getY() == null)
 			throw new InvalidValueException("y", stanza.getY());
 		if (stanza.getUfficioId() == null)
-			throw new InvalidValueException("fficioId", stanza.getUfficioId());
+			throw new InvalidValueException("ufficioId", stanza.getUfficioId());
 
 		return stanzaConverter.toDto(stanzaRepository.save(stanzaConverter.toEntity(stanza)));
 	}
@@ -64,24 +65,24 @@ public class StanzaServiceImpl implements StanzaService {
 	}
 
 	@Override
-	public boolean removeStanza(Long id) throws InvalidValueException {
+	public boolean removeStanza(Long id) throws InvalidValueException, MissingValueException {
 
 		if (id == null || id < 0)
 			throw new InvalidValueException("id", id);
 		if (!stanzaRepository.existsById(id))
-			throw new InvalidValueException("stanza", id);
+			throw new MissingValueException("Stanza", id);
 
 		stanzaRepository.deleteById(id);
 		return !stanzaRepository.existsById(id);
 	}
 
 	@Override
-	public StanzaDto updateStanza(StanzaDto stanzaDto) throws InvalidValueException {
+	public StanzaDto updateStanza(StanzaDto stanzaDto) throws InvalidValueException, MissingValueException {
 
 		if (stanzaDto.getId() == null || stanzaDto.getId() < 0)
 			throw new InvalidValueException("id", stanzaDto.getId());
 		if (stanzaRepository.existsById(stanzaDto.getId()))
-			throw new InvalidValueException("stanza", stanzaDto.getId());
+			throw new MissingValueException("Stanza", stanzaDto.getId());
 		if (stanzaDto.getNome() == null)
 			throw new InvalidValueException("nome", stanzaDto.getNome());
 		if (stanzaDto.getWidth() == null)

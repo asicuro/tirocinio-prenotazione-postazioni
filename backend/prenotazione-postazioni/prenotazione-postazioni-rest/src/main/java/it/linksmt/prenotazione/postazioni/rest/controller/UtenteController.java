@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.linksmt.prenotazione.postazioni.core.dto.UtenteDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
+import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
 import it.linksmt.prenotazione.postazioni.core.service.api.UtenteService;
 import it.linksmt.prenotazione.postazioni.rest.constants.PrenotazionePostzioniConst;
 
@@ -27,7 +28,8 @@ public class UtenteController {
 	private UtenteService utenteService;
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UtenteDto> getUtente(@PathVariable("id") Long id) {
+	public ResponseEntity<UtenteDto> getUtente(@PathVariable("id") Long id)
+			throws MissingValueException, InvalidValueException {
 		return ResponseEntity.ok(utenteService.findUtenteById(id));
 	}
 
@@ -42,12 +44,13 @@ public class UtenteController {
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public boolean removeUtente(@PathVariable("id") Long id) throws InvalidValueException {
+	public boolean removeUtente(@PathVariable("id") Long id) throws InvalidValueException, MissingValueException {
 		return utenteService.removeUtente(id);
 	}
 
 	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UtenteDto> updateUtente(@RequestBody UtenteDto utenteDto) throws InvalidValueException {
+	public ResponseEntity<UtenteDto> updateUtente(@RequestBody UtenteDto utenteDto)
+			throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(utenteService.updateUtente(utenteDto));
 	}
 
