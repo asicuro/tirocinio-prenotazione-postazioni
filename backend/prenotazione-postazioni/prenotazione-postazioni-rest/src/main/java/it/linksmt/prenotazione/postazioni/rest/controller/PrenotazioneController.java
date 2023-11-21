@@ -9,10 +9,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import it.linksmt.prenotazione.postazioni.core.dto.PrenotazioneDto;
+import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
+import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
 import it.linksmt.prenotazione.postazioni.core.service.api.PrenotazioneService;
 import it.linksmt.prenotazione.postazioni.rest.constants.PrenotazionePostzioniConst;
 
@@ -24,12 +28,14 @@ public class PrenotazioneController {
 	PrenotazioneService prenotazioneService;
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PrenotazioneDto> getPrenotazioneDtoEntity(@PathVariable(value = "id") Long id) {
+	public ResponseEntity<PrenotazioneDto> getPrenotazioneDtoEntity(@PathVariable(value = "id") Long id)
+			throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(prenotazioneService.findPrenotazioneById(id));
 	}
 
 	@PostMapping(value = "/save")
-	public void savePrenotazione(@RequestBody PrenotazioneDto prenotazioneDto) {
+	public void savePrenotazione(@RequestBody PrenotazioneDto prenotazioneDto)
+			throws InvalidValueException, MissingValueException {
 		prenotazioneService.savePrenotazione(prenotazioneDto);
 	}
 
@@ -39,7 +45,14 @@ public class PrenotazioneController {
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public void removePrenotazione(@PathVariable(value = "id") Long id) {
+	public void removePrenotazione(@PathVariable(value = "id") Long id)
+			throws InvalidValueException, MissingValueException {
 		prenotazioneService.removePrenotazione(id);
+	}
+
+	@PutMapping(value = "/{id}")
+	public void updatePrenotazione(@RequestBody PrenotazioneDto prenotazioneDto)
+			throws InvalidValueException, MissingValueException {
+		prenotazioneService.updatePrenotazione(prenotazioneDto);
 	}
 }

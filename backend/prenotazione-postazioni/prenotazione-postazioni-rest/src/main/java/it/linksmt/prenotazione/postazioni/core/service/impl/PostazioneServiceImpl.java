@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import it.linksmt.prenotazione.postazioni.core.converter.PostazioneConverter;
 import it.linksmt.prenotazione.postazioni.core.dto.PostazioneDto;
+import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
+import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
 import it.linksmt.prenotazione.postazioni.core.model.Postazione;
 import it.linksmt.prenotazione.postazioni.core.repository.PostazioneRepository;
 import it.linksmt.prenotazione.postazioni.core.service.api.PostazioneService;
@@ -22,27 +24,42 @@ public class PostazioneServiceImpl implements PostazioneService {
 	@Autowired
 	PostazioneConverter postazioneConverter;
 
-	public PostazioneDto findPostazioneById(Long id) {
+	public PostazioneDto findPostazioneById(Long id) throws InvalidValueException, MissingValueException {
 
 		if (id == null || id < 0) {
-			return null;
+			throw new InvalidValueException("id", id);
 		}
 
 		Optional<Postazione> postazioneOptional = postazioneRepository.findById(id);
+
 		if (postazioneOptional.isEmpty()) {
-			return null;
+
+			throw new MissingValueException("Postazione", id);
+
 		}
 		return postazioneConverter.toDto(postazioneOptional.get());
 	}
 
 	@Override
-	public void savePostazione(PostazioneDto postazioneDto) {
-
-		if (postazioneRepository.existsById(postazioneDto.getId())) {
-			return;
+	public PostazioneDto savePostazione(PostazioneDto postazioneDto) throws InvalidValueException {
+		if (postazioneDto.getWidth() == null) {
+			throw new InvalidValueException("width", postazioneDto.getWidth());
 		}
-		postazioneRepository.save(postazioneConverter.toEntity(postazioneDto));
+		if (postazioneDto.getHeight() == null) {
+			throw new InvalidValueException("height", postazioneDto.getHeight());
+		}
+		if (postazioneDto.getStanzaId() == null) {
+			throw new InvalidValueException("stanzaId", postazioneDto.getStanzaId());
+		}
+		if (postazioneDto.getX() == null) {
+			throw new InvalidValueException("x", postazioneDto.getX());
+		}
+		if (postazioneDto.getY() == null) {
+			throw new InvalidValueException("y", postazioneDto.getY());
+		}
 
+		Postazione posta = postazioneRepository.save(postazioneConverter.toEntity(postazioneDto));
+		return postazioneConverter.toDto(posta);
 	}
 
 	@Override
@@ -57,11 +74,40 @@ public class PostazioneServiceImpl implements PostazioneService {
 	}
 
 	@Override
-	public void removePostazione(Long id) {
+	public boolean removePostazione(Long id) throws InvalidValueException, MissingValueException {
 		if (id == null || id < 0) {
-			return;
+			throw new InvalidValueException("id", id);
+		}
+		if (!postazioneRepository.existsById(id)) {
+			throw new MissingValueException("Postazione", id);
 		}
 		postazioneRepository.deleteById(id);
+		return !postazioneRepository.existsById(id);
 	}
 
+	@Override
+	public PostazioneDto updatePostazione(PostazioneDto postazioneDto)
+			throws InvalidValueException, MissingValueException {
+
+		if (!postazioneRepository.existsById(postazioneDto.getId())) {
+			throw new MissingValueException("Postazione", postazioneDto.getId());
+		}
+		if (postazioneDto.getWidth() == null) {
+			throw new InvalidValueException("width", postazioneDto.getWidth());
+		}
+		if (postazioneDto.getHeight() == null) {
+			throw new InvalidValueException("height", postazioneDto.getHeight());
+		}
+		if (postazioneDto.getStanzaId() == null) {
+			throw new InvalidValueException("stanzaId", postazioneDto.getStanzaId());
+		}
+		if (postazioneDto.getX() == null) {
+			throw new InvalidValueException("x", postazioneDto.getX());
+		}
+		if (postazioneDto.getY() == null) {
+			throw new InvalidValueException("y", postazioneDto.getY());
+		}
+		Postazione posta = postazioneRepository.save(postazioneConverter.toEntity(postazioneDto));
+		return postazioneConverter.toDto(posta);
+	}
 }
