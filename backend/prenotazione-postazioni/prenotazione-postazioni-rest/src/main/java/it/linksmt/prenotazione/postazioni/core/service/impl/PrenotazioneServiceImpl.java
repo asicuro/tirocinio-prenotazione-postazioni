@@ -1,6 +1,7 @@
 package it.linksmt.prenotazione.postazioni.core.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,9 +47,7 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 		if (prenotazioneDto.getPostazioneId() == null) {
 			throw new InvalidValueException("postazione", prenotazioneDto.getPostazioneId());
 		}
-		if (prenotazioneDto.getDataCreazione() == null) {
-			throw new InvalidValueException("data", prenotazioneDto.getDataCreazione());
-		}
+		prenotazioneDto.setDataCreazione(new Date());
 		Prenotazione p = prenotazioneRepository.save(prenotazioneConverter.toEntity(prenotazioneDto));
 		return prenotazioneConverter.toDto(p);
 	}
@@ -88,9 +87,6 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 		}
 		if (prenotazioneDto.getPostazioneId() == null) {
 			throw new InvalidValueException("postazione", prenotazioneDto.getPostazioneId());
-		}
-		if (prenotazioneDto.getDataCreazione() == null) {
-			throw new InvalidValueException("data", prenotazioneDto.getDataCreazione());
 		}
 		Prenotazione p = prenotazioneRepository.save(prenotazioneConverter.toEntity(prenotazioneDto));
 		return prenotazioneConverter.toDto(p);
