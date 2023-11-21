@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import it.linksmt.prenotazione.postazioni.core.Exception.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.converter.UfficioConverter;
 import it.linksmt.prenotazione.postazioni.core.dto.UfficioDto;
 import it.linksmt.prenotazione.postazioni.core.model.Ufficio;
@@ -35,12 +36,25 @@ public class UfficioServiceImpl implements UfficioService {
 	}
 
 	@Override
-	public void saveUfficio(UfficioDto ufficioDto) {
-		if (ufficioRepository.existsById(ufficioDto.getId())) {
-			return;
+	public UfficioDto saveUfficio(UfficioDto ufficioDto) {
+		if (ufficioDto.getId() == null || ufficioDto.getId() < 0) {
+			throw new InvalidValueException("Id", ufficioDto.getId());
 		}
+			if (ufficioRepository.existsById(ufficioDto.getId())) {
+				return; //MissingValueException
+			}
 		ufficioRepository.save(ufficioConverter.toEntity(ufficioDto));
 	}
+
+	@Override
+	public UfficioDto updateUfficio(UfficioDto ufficioDto) throws InvalidValueException{
+		if (ufficioDto.getId() == null || ufficioDto.getId() < 0) {
+			throw new InvalidValueException("Id", ufficioDto.getId());
+		}
+		ufficioRepository.save(ufficioConverter.toEntity(ufficioDto));
+		return ufficioDto;
+		}
+
 
 	@Override
 	public void removeUfficioById(Long id) {

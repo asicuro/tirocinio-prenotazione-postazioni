@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.linksmt.prenotazione.postazioni.core.Exception.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.dto.UfficioDto;
 import it.linksmt.prenotazione.postazioni.core.service.api.UfficioService;
 import it.linksmt.prenotazione.postazioni.rest.constants.PrenotazionePostzioniConst;
@@ -43,5 +45,10 @@ public class UfficioController {
 	public ResponseEntity<List<UfficioDto>> getAllUfficio() {
 		return ResponseEntity.ok(ufficioService.getUffici());
 
+	}
+
+	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void saveUfficio(@RequestBody UfficioDto ufficioDto) throws InvalidValueException {
+		ufficioService.updateUfficio(ufficioDto);
 	}
 }
