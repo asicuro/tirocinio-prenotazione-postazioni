@@ -33,26 +33,26 @@ public class PrenotazioneController {
 		return ResponseEntity.ok(prenotazioneService.findPrenotazioneById(id));
 	}
 
-	@PostMapping(value = "/save")
-	public void savePrenotazione(@RequestBody PrenotazioneDto prenotazioneDto)
-			throws InvalidValueException, MissingValueException {
-		prenotazioneService.savePrenotazione(prenotazioneDto);
+	@PostMapping(value = "/save/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<PrenotazioneDto> savePrenotazione(@RequestBody PrenotazioneDto prenotazioneDto,
+			@PathVariable(value = "id") Long id) throws InvalidValueException, MissingValueException {
+		return ResponseEntity.ok(prenotazioneService.savePrenotazione(prenotazioneDto, id));
 	}
 
 	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<PrenotazioneDto>> GetPrenotazione() {
+	public ResponseEntity<List<PrenotazioneDto>> getPrenotazioni() {
 		return ResponseEntity.ok(prenotazioneService.getPrenotazione());
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public void removePrenotazione(@PathVariable(value = "id") Long id)
+	public boolean removePrenotazione(@PathVariable(value = "id") Long id)
 			throws InvalidValueException, MissingValueException {
-		prenotazioneService.removePrenotazione(id);
+		return prenotazioneService.removePrenotazione(id);
 	}
 
-	@PutMapping(value = "/{id}")
-	public void updatePrenotazione(@RequestBody PrenotazioneDto prenotazioneDto)
-			throws InvalidValueException, MissingValueException {
-		prenotazioneService.updatePrenotazione(prenotazioneDto);
+	@PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<PrenotazioneDto> updatePrenotazione(@RequestBody PrenotazioneDto prenotazioneDto,
+			@PathVariable("id") Long id) throws InvalidValueException, MissingValueException {
+		return ResponseEntity.ok(prenotazioneService.updatePrenotazione(prenotazioneDto, id));
 	}
 }

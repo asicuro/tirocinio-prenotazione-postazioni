@@ -28,13 +28,16 @@ public class PostazioneController {
 	PostazioneService postazioneService;
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PostazioneDto> getPostazioneDto(@PathVariable(value = "id") Long id) throws InvalidValueException, MissingValueException {
+	public ResponseEntity<PostazioneDto> getPostazioneDto(@PathVariable(value = "id") Long id)
+			throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(postazioneService.findPostazioneById(id));
 	}
 
-	@PostMapping(value = "/save")
-	public void savePostazione(@RequestBody PostazioneDto postazioneDto) throws InvalidValueException, MissingValueException {
-		postazioneService.savePostazione(postazioneDto);
+	@PostMapping(value = "/save/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<PostazioneDto> savePostazione(@RequestBody PostazioneDto postazioneDto, Long id)
+			throws InvalidValueException, MissingValueException {
+		postazioneService.savePostazione(postazioneDto, id);
+		return ResponseEntity.ok(postazioneService.savePostazione(postazioneDto, id));
 	}
 
 	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -43,13 +46,15 @@ public class PostazioneController {
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public void removePostazione(@PathVariable(value = "id") Long id) throws InvalidValueException, MissingValueException {
-		postazioneService.removePostazione(id);
+	public boolean removePostazione(@PathVariable(value = "id") Long id)
+			throws InvalidValueException, MissingValueException {
+		return postazioneService.removePostazione(id);
 	}
 
-	@PutMapping(value = "/{id}")
-	public void updatePostazione(@RequestBody PostazioneDto postazioneDto) throws InvalidValueException, MissingValueException {
-		postazioneService.updatePostazione(postazioneDto);
+	@PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<PostazioneDto> updatePostazione(@RequestBody PostazioneDto postazioneDto,
+			@PathVariable("id") Long id) throws InvalidValueException, MissingValueException {
+		return ResponseEntity.ok(postazioneService.updatePostazione(postazioneDto, id));
 	}
 
 }

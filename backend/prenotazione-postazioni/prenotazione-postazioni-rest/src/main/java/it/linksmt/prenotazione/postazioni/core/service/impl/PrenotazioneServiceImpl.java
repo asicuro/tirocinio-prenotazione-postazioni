@@ -39,7 +39,7 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 	}
 
 	@Override
-	public PrenotazioneDto savePrenotazione(PrenotazioneDto prenotazioneDto) throws InvalidValueException {
+	public PrenotazioneDto savePrenotazione(PrenotazioneDto prenotazioneDto, Long id) throws InvalidValueException {
 
 		if (prenotazioneDto.getUtenteId() == null) {
 			throw new InvalidValueException("utente", prenotazioneDto.getUtenteId());
@@ -47,7 +47,10 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 		if (prenotazioneDto.getPostazioneId() == null) {
 			throw new InvalidValueException("postazione", prenotazioneDto.getPostazioneId());
 		}
+
 		prenotazioneDto.setDataCreazione(new Date());
+		prenotazioneDto.setCreateUserId(id);
+		prenotazioneDto.setCreateDate(new Date());
 		Prenotazione p = prenotazioneRepository.save(prenotazioneConverter.toEntity(prenotazioneDto));
 		return prenotazioneConverter.toDto(p);
 	}
@@ -76,10 +79,17 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 	}
 
 	@Override
-	public PrenotazioneDto updatePrenotazione(PrenotazioneDto prenotazioneDto)
+	public PrenotazioneDto updatePrenotazione(PrenotazioneDto prenotazioneDto, Long id)
 			throws InvalidValueException, MissingValueException {
+
 		if (!prenotazioneRepository.existsById(prenotazioneDto.getId())) {
 			throw new MissingValueException("Prenotazione", prenotazioneDto.getId());
+		}
+
+		Optional<Prenotazione> prenotaOptional = prenotazioneRepository.findById(id);
+
+		if (prenotaOptional.isEmpty()) {
+			throw new MissingValueException("Prenotazione", id);
 		}
 
 		if (prenotazioneDto.getUtenteId() == null) {
@@ -88,6 +98,14 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 		if (prenotazioneDto.getPostazioneId() == null) {
 			throw new InvalidValueException("postazione", prenotazioneDto.getPostazioneId());
 		}
+		// setcreatedata e setcreateUserId devono rimanere uguali a quelli che stanno
+		// gia sul db
+
+		prenotazioneDto.setCreateDate(prenotaOptional.get().getCreateDate());
+		prenotazioneDto.setCreateUserId(prenotaOptional.get().getCreateUserId());
+		prenotazioneDto.setEditDate(new Date());
+		prenotazioneDto.setEditUserId(id);
+
 		Prenotazione p = prenotazioneRepository.save(prenotazioneConverter.toEntity(prenotazioneDto));
 		return prenotazioneConverter.toDto(p);
 	}

@@ -10,12 +10,14 @@ public interface PostazioneService {
 
 	public PostazioneDto findPostazioneById(Long id) throws InvalidValueException, MissingValueException;
 
-	public PostazioneDto savePostazione(PostazioneDto postazioneDto) throws InvalidValueException, MissingValueException;
+	public PostazioneDto savePostazione(PostazioneDto postazioneDto, Long id)
+			throws InvalidValueException, MissingValueException;
 
 	public List<PostazioneDto> getPostazioni();
 
 	public boolean removePostazione(Long id) throws InvalidValueException, MissingValueException;
 
-	public PostazioneDto updatePostazione(PostazioneDto postazioneDto) throws InvalidValueException, MissingValueException;
+	public PostazioneDto updatePostazione(PostazioneDto postazioneDto, Long id)
+			throws InvalidValueException, MissingValueException;
 
 }

@@ -1,6 +1,7 @@
 package it.linksmt.prenotazione.postazioni.core.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +42,7 @@ public class PostazioneServiceImpl implements PostazioneService {
 	}
 
 	@Override
-	public PostazioneDto savePostazione(PostazioneDto postazioneDto) throws InvalidValueException {
+	public PostazioneDto savePostazione(PostazioneDto postazioneDto, Long id) throws InvalidValueException {
 		if (postazioneDto.getWidth() == null) {
 			throw new InvalidValueException("width", postazioneDto.getWidth());
 		}
@@ -57,7 +58,8 @@ public class PostazioneServiceImpl implements PostazioneService {
 		if (postazioneDto.getY() == null) {
 			throw new InvalidValueException("y", postazioneDto.getY());
 		}
-
+		postazioneDto.setCreateDate(new Date());
+		postazioneDto.setCreateUserId(id);
 		Postazione posta = postazioneRepository.save(postazioneConverter.toEntity(postazioneDto));
 		return postazioneConverter.toDto(posta);
 	}
@@ -86,12 +88,19 @@ public class PostazioneServiceImpl implements PostazioneService {
 	}
 
 	@Override
-	public PostazioneDto updatePostazione(PostazioneDto postazioneDto)
+	public PostazioneDto updatePostazione(PostazioneDto postazioneDto, Long id)
 			throws InvalidValueException, MissingValueException {
 
 		if (!postazioneRepository.existsById(postazioneDto.getId())) {
 			throw new MissingValueException("Postazione", postazioneDto.getId());
 		}
+
+		Optional<Postazione> postaOptional = postazioneRepository.findById(id);
+
+		if (postaOptional.isEmpty()) {
+			throw new MissingValueException("Postazione", id);
+		}
+
 		if (postazioneDto.getWidth() == null) {
 			throw new InvalidValueException("width", postazioneDto.getWidth());
 		}
@@ -107,6 +116,11 @@ public class PostazioneServiceImpl implements PostazioneService {
 		if (postazioneDto.getY() == null) {
 			throw new InvalidValueException("y", postazioneDto.getY());
 		}
+
+		postazioneDto.setCreateDate(postaOptional.get().getCreateDate());
+		postazioneDto.setCreateUserId(postaOptional.get().getCreateUserId());
+		postazioneDto.setEditDate(new Date());
+		postazioneDto.setEditUserId(id);
 		Postazione posta = postazioneRepository.save(postazioneConverter.toEntity(postazioneDto));
 		return postazioneConverter.toDto(posta);
 	}

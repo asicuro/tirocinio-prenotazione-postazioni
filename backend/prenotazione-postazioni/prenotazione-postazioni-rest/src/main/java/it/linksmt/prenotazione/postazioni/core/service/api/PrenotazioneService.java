@@ -10,11 +10,13 @@ public interface PrenotazioneService {
 
 	public PrenotazioneDto findPrenotazioneById(Long id) throws InvalidValueException, MissingValueException;
 
-	public PrenotazioneDto savePrenotazione(PrenotazioneDto prenotazioneDto) throws InvalidValueException, MissingValueException;
+	public PrenotazioneDto savePrenotazione(PrenotazioneDto prenotazioneDto, Long id)
+			throws InvalidValueException, MissingValueException;
 
 	public List<PrenotazioneDto> getPrenotazione();
 
 	public boolean removePrenotazione(Long id) throws InvalidValueException, MissingValueException;
 
-	public PrenotazioneDto updatePrenotazione(PrenotazioneDto prenotazioneDto) throws InvalidValueException, MissingValueException;
+	public PrenotazioneDto updatePrenotazione(PrenotazioneDto prenotazioneDto, Long id)
+			throws InvalidValueException, MissingValueException;
 }
