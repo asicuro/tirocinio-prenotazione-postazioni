@@ -2,6 +2,7 @@ package it.linksmt.prenotazione.postazioni.core.exceptions;
 
 public class InvalidValueException extends Exception{
 	
+	private static final long serialVersionUID = 1L;
 	private String valueName;
 	private Object value;
 	
