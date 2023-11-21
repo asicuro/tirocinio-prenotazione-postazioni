@@ -98,9 +98,6 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 		if (prenotazioneDto.getPostazioneId() == null) {
 			throw new InvalidValueException("postazione", prenotazioneDto.getPostazioneId());
 		}
-		// setcreatedata e setcreateUserId devono rimanere uguali a quelli che stanno
-		// gia sul db
-
 		prenotazioneDto.setCreateDate(prenotaOptional.get().getCreateDate());
 		prenotazioneDto.setCreateUserId(prenotaOptional.get().getCreateUserId());
 		prenotazioneDto.setEditDate(new Date());
