@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.linksmt.prenotazione.postazioni.core.dto.StanzaDto;
@@ -34,8 +35,9 @@ public class StanzaController {
 	}
 
 	@PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<StanzaDto> saveStanza(@RequestBody StanzaDto stanzaDto) throws InvalidValueException {
-		return ResponseEntity.ok(stanzaService.saveStanza(stanzaDto));
+	public ResponseEntity<StanzaDto> saveStanza(@RequestBody StanzaDto stanzaDto,
+			@RequestParam("createUserId") Long createUserId) throws InvalidValueException {
+		return ResponseEntity.ok(stanzaService.saveStanza(stanzaDto, createUserId));
 	}
 
 	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -49,8 +51,8 @@ public class StanzaController {
 	}
 
 	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<StanzaDto> updateStanza(@RequestBody StanzaDto stanzaDto)
-			throws InvalidValueException, MissingValueException {
-		return ResponseEntity.ok(stanzaService.updateStanza(stanzaDto));
+	public ResponseEntity<StanzaDto> updateStanza(@RequestBody StanzaDto stanzaDto,
+			@RequestParam("updateUserId") Long updateUserId) throws InvalidValueException, MissingValueException {
+		return ResponseEntity.ok(stanzaService.updateStanza(stanzaDto, updateUserId));
 	}
 }

@@ -46,8 +46,10 @@ public class UtenteServiceImpl implements UtenteService {
 
 		if (utenteDto.getUsername() == null)
 			throw new InvalidValueException("username", utenteDto.getId());
+
 		if (utenteDto.getPassword() == null)
 			throw new InvalidValueException("password", utenteDto.getPassword());
+
 		if (utenteDto.getRuolo() == null)
 			throw new InvalidValueException("ruolo", utenteDto.getRuolo());
 
@@ -71,6 +73,7 @@ public class UtenteServiceImpl implements UtenteService {
 
 		if (id == null || id < 0)
 			throw new InvalidValueException("id", id);
+
 		if (!utenteRepository.existsById(id))
 			throw new MissingValueException(NOME_ENTITA, id);
 
@@ -85,12 +88,16 @@ public class UtenteServiceImpl implements UtenteService {
 
 		if (utenteDto.getId() == null || utenteDto.getId() < 0)
 			throw new InvalidValueException("id", utenteDto.getId());
+
 		if (utenteRepository.existsById(utenteDto.getId()))
 			throw new MissingValueException(NOME_ENTITA, utenteDto.getId());
+
 		if (utenteDto.getUsername() == null)
 			throw new InvalidValueException("username", utenteDto.getUsername());
+
 		if (utenteDto.getPassword() == null)
 			throw new InvalidValueException("password", utenteDto.getPassword());
+
 		if (utenteDto.getRuolo() == null)
 			throw new InvalidValueException("ruolo", utenteDto.getRuolo());
 

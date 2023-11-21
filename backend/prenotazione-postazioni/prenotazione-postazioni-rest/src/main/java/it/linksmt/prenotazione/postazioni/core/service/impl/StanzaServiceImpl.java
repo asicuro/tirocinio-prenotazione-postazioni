@@ -1,6 +1,7 @@
 package it.linksmt.prenotazione.postazioni.core.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,27 +42,37 @@ public class StanzaServiceImpl implements StanzaService {
 	}
 
 	@Override
-	public StanzaDto saveStanza(StanzaDto stanza) throws InvalidValueException {
+	public StanzaDto saveStanza(StanzaDto stanza, Long createUserId) throws InvalidValueException {
 
 		if (stanza.getNome() == null)
 			throw new InvalidValueException("nome", stanza.getNome());
+
 		if (stanza.getWidth() == null)
 			throw new InvalidValueException("width", stanza.getWidth());
+
 		if (stanza.getHeight() == null)
 			throw new InvalidValueException("height", stanza.getHeight());
+
 		if (stanza.getX() == null)
 			throw new InvalidValueException("x", stanza.getX());
+
 		if (stanza.getY() == null)
 			throw new InvalidValueException("y", stanza.getY());
+
 		if (stanza.getUfficioId() == null)
 			throw new InvalidValueException("ufficioId", stanza.getUfficioId());
+
+		stanza.setCreateDate(new Date());
+		stanza.setCreateUserId(createUserId);
 
 		return stanzaConverter.toDto(stanzaRepository.save(stanzaConverter.toEntity(stanza)));
 	}
 
 	@Override
 	public List<StanzaDto> getStanze() {
+
 		List<StanzaDto> stanze = new ArrayList<>();
+
 		for (Stanza stanza : stanzaRepository.findAll()) {
 			stanze.add(stanzaConverter.toDto(stanza));
 		}
@@ -73,6 +84,7 @@ public class StanzaServiceImpl implements StanzaService {
 
 		if (id == null || id < 0)
 			throw new InvalidValueException("id", id);
+
 		if (!stanzaRepository.existsById(id))
 			throw new MissingValueException(NOME_ENTITA, id);
 
@@ -81,24 +93,34 @@ public class StanzaServiceImpl implements StanzaService {
 	}
 
 	@Override
-	public StanzaDto updateStanza(StanzaDto stanzaDto) throws InvalidValueException, MissingValueException {
+	public StanzaDto updateStanza(StanzaDto stanzaDto, Long updateUserId) throws InvalidValueException, MissingValueException {
 
 		if (stanzaDto.getId() == null || stanzaDto.getId() < 0)
 			throw new InvalidValueException("id", stanzaDto.getId());
+
 		if (stanzaRepository.existsById(stanzaDto.getId()))
 			throw new MissingValueException(NOME_ENTITA, stanzaDto.getId());
+
 		if (stanzaDto.getNome() == null)
 			throw new InvalidValueException("nome", stanzaDto.getNome());
+
 		if (stanzaDto.getWidth() == null)
 			throw new InvalidValueException("width", stanzaDto.getWidth());
+
 		if (stanzaDto.getHeight() == null)
 			throw new InvalidValueException("height", stanzaDto.getHeight());
+
 		if (stanzaDto.getX() == null)
 			throw new InvalidValueException("x", stanzaDto.getX());
+
 		if (stanzaDto.getY() == null)
 			throw new InvalidValueException("y", stanzaDto.getY());
+
 		if (stanzaDto.getUfficioId() == null)
 			throw new InvalidValueException("ufficioId", stanzaDto.getUfficioId());
+		
+		stanzaDto.setCreateDate(new Date());
+		stanzaDto.setCreateUserId(updateUserId);
 
 		return stanzaConverter.toDto(stanzaRepository.save(stanzaConverter.toEntity(stanzaDto)));
 
