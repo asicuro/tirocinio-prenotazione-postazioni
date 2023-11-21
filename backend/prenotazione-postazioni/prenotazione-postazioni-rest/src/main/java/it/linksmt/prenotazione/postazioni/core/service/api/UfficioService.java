@@ -2,16 +2,16 @@ package it.linksmt.prenotazione.postazioni.core.service.api;
 
 import java.util.List;
 
-import it.linksmt.prenotazione.postazioni.core.Exception.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.dto.UfficioDto;
+import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 
 public interface UfficioService {
 
-	public UfficioDto findUfficioById(Long id);
+	public UfficioDto findUfficioById(Long id) throws InvalidValueException;
 
-	public UfficioDto saveUfficio(UfficioDto ufficioDto);
+	public UfficioDto saveUfficio(UfficioDto ufficioDto) throws InvalidValueException;
 
-	public void removeUfficioById(Long id);
+	public boolean removeUfficioById(Long id) throws InvalidValueException;
 
 	public List<UfficioDto> getUffici();
 
