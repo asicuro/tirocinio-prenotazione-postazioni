@@ -66,10 +66,10 @@ public class UfficioServiceImpl implements UfficioService {
 	if(ufficiOptional.isEmpty())
 	  throw new MissingValueException("Ufficio", ufficioDto.getId());	
 	
-    if (ufficioDto.getIndirizzo() == null) {
+    if(ufficioDto.getIndirizzo() == null) {
       throw new InvalidValueException("indirizzo", ufficioDto.getIndirizzo());
     }
-    if (ufficioDto.getNomeUfficio() == null) {
+    if(ufficioDto.getNomeUfficio() == null) {
       throw new InvalidValueException("nomeUfficio", ufficioDto.getNomeUfficio());
     }
     return ufficioConverter.toDto(ufficioRepository.save(ufficioConverter.toEntity(ufficioDto)));

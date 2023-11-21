@@ -49,7 +49,7 @@ public class UfficioController {
 	}
 
 	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UfficioDto> saveUfficio(@RequestBody UfficioDto ufficioDto) throws InvalidValueException {
+	public ResponseEntity<UfficioDto> saveUfficio(@RequestBody UfficioDto ufficioDto) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(ufficioService.updateUfficio(ufficioDto));
 	}
 }
