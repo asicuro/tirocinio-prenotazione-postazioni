@@ -19,4 +19,6 @@ public interface PrenotazioneService {
 
 	public PrenotazioneDto updatePrenotazione(PrenotazioneDto prenotazioneDto, Long id)
 			throws InvalidValueException, MissingValueException;
+
+	boolean removeAll();
 }

@@ -121,4 +121,10 @@ public class PostazioneServiceImpl implements PostazioneService {
 		Postazione posta = postazioneRepository.save(postazioneConverter.toEntity(postazioneDto));
 		return postazioneConverter.toDto(posta);
 	}
+
+	@Override
+	public boolean removeAll() {
+		postazioneRepository.deleteAll();
+		return postazioneRepository.count() == 0;
+	}
 }

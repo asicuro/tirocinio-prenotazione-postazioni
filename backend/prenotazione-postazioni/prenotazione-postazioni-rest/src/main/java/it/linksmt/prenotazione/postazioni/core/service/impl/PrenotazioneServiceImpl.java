@@ -48,7 +48,6 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 			throw new InvalidValueException("postazione", prenotazioneDto.getPostazioneId());
 		}
 
-		prenotazioneDto.setDataCreazione(new Date());
 		prenotazioneDto.setCreateUserId(id);
 		prenotazioneDto.setCreateDate(new Date());
 		Prenotazione p = prenotazioneRepository.save(prenotazioneConverter.toEntity(prenotazioneDto));
@@ -101,6 +100,12 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 
 		Prenotazione p = prenotazioneRepository.save(prenotazioneConverter.toEntity(prenotazioneDto));
 		return prenotazioneConverter.toDto(p);
+	}
+
+	@Override
+	public boolean removeAll() {
+		prenotazioneRepository.deleteAll();
+		return prenotazioneRepository.count() == 0;
 	}
 
 }

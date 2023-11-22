@@ -20,4 +20,6 @@ public interface PostazioneService {
 	public PostazioneDto updatePostazione(PostazioneDto postazioneDto, Long id)
 			throws InvalidValueException, MissingValueException;
 
+	public boolean removeAll();
+
 }

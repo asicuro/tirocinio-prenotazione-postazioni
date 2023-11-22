@@ -55,4 +55,9 @@ public class PrenotazioneController {
 			@PathVariable(value = "id") Long id) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(prenotazioneService.updatePrenotazione(prenotazioneDto, id));
 	}
+
+	@DeleteMapping(value = "/all")
+	public boolean removeAll() {
+		return prenotazioneService.removeAll();
+	}
 }

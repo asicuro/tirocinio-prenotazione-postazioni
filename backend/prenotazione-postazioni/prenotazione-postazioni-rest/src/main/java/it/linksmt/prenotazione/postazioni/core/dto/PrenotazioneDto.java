@@ -3,22 +3,20 @@ package it.linksmt.prenotazione.postazioni.core.dto;
 import java.util.Date;
 
 public class PrenotazioneDto {
-	
+
 	private Long id;
-	
+
 	private Long createUserId;
-	
+
 	private Date createDate;
-	
+
 	private Long editUserId;
-	
+
 	private Long utenteId;
-	
-	private	Long postazioneId;
+
+	private Long postazioneId;
 
 	private Date editDate;
-	
-	private Date dataCreazione;
 
 	public Long getId() {
 		return id;
@@ -75,14 +73,5 @@ public class PrenotazioneDto {
 	public void setEditDate(Date editDate) {
 		this.editDate = editDate;
 	}
-
-	public Date getDataCreazione() {
-		return dataCreazione;
-	}
-
-	public void setDataCreazione(Date dataCreazione) {
-		this.dataCreazione = dataCreazione;
-	}
-
 
 }

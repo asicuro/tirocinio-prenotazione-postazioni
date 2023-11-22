@@ -56,4 +56,9 @@ public class PostazioneController {
 		return ResponseEntity.ok(postazioneService.updatePostazione(postazioneDto, id));
 	}
 
+	@DeleteMapping(value = "/all")
+	public boolean removeAll() {
+		return postazioneService.removeAll();
+	}
+
 }
