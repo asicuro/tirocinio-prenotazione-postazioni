@@ -5,7 +5,7 @@ public class InvalidValueException extends Exception {
 	private static final long serialVersionUID = 1L;
 	private final String valueName;
 	private final Object value;
-	private final String tipologiaErrore = "Valore inserito non valido";
+	private final static String tipologiaErrore = "Valore inserito non valido";
 
 	public InvalidValueException(String valueName, Object value) {
 		this.value = value;
