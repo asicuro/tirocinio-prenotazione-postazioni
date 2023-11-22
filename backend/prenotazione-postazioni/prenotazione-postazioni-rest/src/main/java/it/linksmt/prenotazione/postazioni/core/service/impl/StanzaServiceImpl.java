@@ -122,10 +122,11 @@ public class StanzaServiceImpl implements StanzaService {
 		if (stanzaDto.getUfficioId() == null)
 			throw new InvalidValueException("ufficioId", stanzaDto.getUfficioId());
 
-		stanzaDto.setCreateDate(stanza.get().getCreateDate());
-		stanzaDto.setCreateUserId(stanza.get().getCreateUserId());
-		stanzaDto.setEditDate(new Date());
-		stanzaDto.setEditUserId(editUserId);
+		stanzaDto
+			.setCreateDate(stanza.get().getCreateDate())
+			.setCreateUserId(stanza.get().getCreateUserId())
+			.setEditDate(new Date())
+			.setEditUserId(editUserId);
 
 		return stanzaConverter.toDto(stanzaRepository.save(stanzaConverter.toEntity(stanzaDto)));
 
