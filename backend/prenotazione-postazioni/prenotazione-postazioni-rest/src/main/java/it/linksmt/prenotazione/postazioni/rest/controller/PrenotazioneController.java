@@ -52,7 +52,7 @@ public class PrenotazioneController {
 
 	@PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PrenotazioneDto> updatePrenotazione(@RequestBody PrenotazioneDto prenotazioneDto,
-			@PathVariable("id") Long id) throws InvalidValueException, MissingValueException {
+			@PathVariable(value = "id") Long id) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(prenotazioneService.updatePrenotazione(prenotazioneDto, id));
 	}
 }
