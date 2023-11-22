@@ -20,7 +20,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	protected ResponseEntity<ErrorResponse> invalidValue(InvalidValueException exception) {
 		ErrorResponse errorResponse = new ErrorResponse();
-		errorResponse.setTimestamp(new Date()).setStatus(500).setMessage(exception.getMessage());
+		errorResponse.setTimestamp(new Date()).setStatus(HttpStatus.BAD_REQUEST.toString())
+				.setMessage(exception.getMessage()).setError(exception.getTipologiaErrore());
 
 		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
 	}
@@ -29,7 +30,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	protected ResponseEntity<ErrorResponse> missingValue(MissingValueException exception) {
 		ErrorResponse errorResponse = new ErrorResponse();
-		errorResponse.setTimestamp(new Date()).setStatus(500).setMessage(exception.getMessage());
+		errorResponse.setTimestamp(new Date()).setStatus(HttpStatus.NOT_FOUND.toString())
+				.setMessage(exception.getMessage()).setError(exception.getTipologiaErrore());
 
 		return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
 	}

@@ -3,10 +3,10 @@ package it.linksmt.prenotazione.postazioni.rest.output;
 import java.util.Date;
 
 public class ErrorResponse {
-	private String message;
 	private String error;
+	private String message;
 	private Date timestamp;
-	private Integer status;
+	private String status;
 
 	public String getMessage() {
 		return message;
@@ -35,11 +35,11 @@ public class ErrorResponse {
 		return this;
 	}
 
-	public Integer getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public ErrorResponse setStatus(Integer status) {
+	public ErrorResponse setStatus(String status) {
 		this.status = status;
 		return this;
 	}
