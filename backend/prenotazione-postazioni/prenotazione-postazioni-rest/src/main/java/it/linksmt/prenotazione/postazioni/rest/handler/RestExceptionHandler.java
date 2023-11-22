@@ -33,16 +33,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	@ExceptionHandler(NestedEntityException.class)
-	@ResponseStatus(HttpStatus.NOT_MODIFIED)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	protected ResponseEntity<ErrorResponse> nestedEntity(NestedEntityException exception) {
 
-		return valorizzaErrorResponse(HttpStatus.NOT_MODIFIED, exception);
+		return valorizzaErrorResponse(HttpStatus.BAD_REQUEST, exception);
 	}
 
 	private ResponseEntity<ErrorResponse> valorizzaErrorResponse(HttpStatus status, CustomException exception) {
 		ErrorResponse errorResponse = new ErrorResponse();
-		errorResponse.setTimestamp(new Date()).setStatus(status.toString()).setMessage(exception.getMessage())
-				.setError(exception.getTipologiaErrore());
+		errorResponse.setTimestamp(new Date()).setStatus(status.toString()).setMessage(exception.getMessage()).setError(exception.getTipologiaErrore());
 		return new ResponseEntity<>(errorResponse, status);
 	}
 
