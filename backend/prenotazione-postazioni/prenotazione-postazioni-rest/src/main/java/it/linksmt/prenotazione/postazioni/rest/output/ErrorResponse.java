@@ -8,14 +8,6 @@ public class ErrorResponse {
 	private Date timestamp;
 	private Integer status;
 	
-	public ErrorResponse(String message, String error, Date timestamp, Integer status) {
-		super();
-        this.message = message;
-        this.error = error;
-        this.timestamp = timestamp;
-        this.status = status;
-	}
-	
 	public String getMessage() {
         return message;
     }
