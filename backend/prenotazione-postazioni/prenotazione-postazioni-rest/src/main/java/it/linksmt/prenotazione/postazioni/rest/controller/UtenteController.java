@@ -28,8 +28,7 @@ public class UtenteController {
 	private UtenteService utenteService;
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UtenteDto> getUtente(@PathVariable("id") Long id)
-			throws MissingValueException, InvalidValueException {
+	public ResponseEntity<UtenteDto> getUtente(@PathVariable("id") Long id) throws MissingValueException, InvalidValueException {
 		return ResponseEntity.ok(utenteService.findUtenteById(id));
 	}
 
@@ -49,8 +48,7 @@ public class UtenteController {
 	}
 
 	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UtenteDto> updateUtente(@RequestBody UtenteDto utenteDto)
-			throws InvalidValueException, MissingValueException {
+	public ResponseEntity<UtenteDto> updateUtente(@RequestBody UtenteDto utenteDto) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(utenteService.updateUtente(utenteDto));
 	}
 

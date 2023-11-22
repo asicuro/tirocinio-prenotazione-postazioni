@@ -24,6 +24,8 @@ spring:
  
 server:
   port: 9890
+  error:
+    include-message: ALWAYS
  
 springdoc:
   api-docs:

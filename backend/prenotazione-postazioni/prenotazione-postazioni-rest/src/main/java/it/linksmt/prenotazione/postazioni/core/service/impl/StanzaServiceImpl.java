@@ -12,6 +12,7 @@ import it.linksmt.prenotazione.postazioni.core.converter.StanzaConverter;
 import it.linksmt.prenotazione.postazioni.core.dto.StanzaDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
+import it.linksmt.prenotazione.postazioni.core.exceptions.NestedEntityException;
 import it.linksmt.prenotazione.postazioni.core.model.Stanza;
 import it.linksmt.prenotazione.postazioni.core.repository.StanzaRepository;
 import it.linksmt.prenotazione.postazioni.core.service.api.StanzaService;
@@ -80,21 +81,24 @@ public class StanzaServiceImpl implements StanzaService {
 	}
 
 	@Override
-	public boolean removeStanza(Long id) throws InvalidValueException, MissingValueException {
+	public boolean removeStanza(Long id) throws InvalidValueException, MissingValueException, NestedEntityException {
 
 		if (id == null || id < 0)
 			throw new InvalidValueException("id", id);
 
-		if (!stanzaRepository.existsById(id))
+		Optional<Stanza> stanzaOptional = stanzaRepository.findById(id);
+
+		if (stanzaOptional.isEmpty())
 			throw new MissingValueException(NOME_ENTITA, id);
+		else if (!stanzaOptional.get().getPostazioni().isEmpty())
+			throw new NestedEntityException(NOME_ENTITA, id);
 
 		stanzaRepository.deleteById(id);
 		return !stanzaRepository.existsById(id);
 	}
 
 	@Override
-	public StanzaDto updateStanza(StanzaDto stanzaDto, Long editUserId)
-			throws InvalidValueException, MissingValueException {
+	public StanzaDto updateStanza(StanzaDto stanzaDto, Long editUserId) throws InvalidValueException, MissingValueException {
 
 		if (stanzaDto.getId() == null || stanzaDto.getId() < 0)
 			throw new InvalidValueException("id", stanzaDto.getId());
@@ -122,11 +126,7 @@ public class StanzaServiceImpl implements StanzaService {
 		if (stanzaDto.getUfficioId() == null)
 			throw new InvalidValueException("ufficioId", stanzaDto.getUfficioId());
 
-		stanzaDto
-			.setCreateDate(stanza.get().getCreateDate())
-			.setCreateUserId(stanza.get().getCreateUserId())
-			.setEditDate(new Date())
-			.setEditUserId(editUserId);
+		stanzaDto.setCreateDate(stanza.get().getCreateDate()).setCreateUserId(stanza.get().getCreateUserId()).setEditDate(new Date()).setEditUserId(editUserId);
 
 		return stanzaConverter.toDto(stanzaRepository.save(stanzaConverter.toEntity(stanzaDto)));
 
@@ -136,6 +136,7 @@ public class StanzaServiceImpl implements StanzaService {
 	public boolean removeAll() {
 
 		stanzaRepository.deleteAll();
+
 		return stanzaRepository.count() == 0;
 	}
 

@@ -1,11 +1,13 @@
 package it.linksmt.prenotazione.postazioni.core.exceptions;
 
-public class InvalidValueException extends Exception {
+import it.linksmt.prenotazione.postazioni.core.exceptions.interfaces.CustomException;
+
+public class InvalidValueException extends Exception implements CustomException {
 
 	private static final long serialVersionUID = 1L;
 	private final String valueName;
 	private final Object value;
-	private final static String tipologiaErrore = "Valore inserito non valido";
+	private static final String TIPOLOGIA_ERRORE = "Valore inserito non valido";
 
 	public InvalidValueException(String valueName, Object value) {
 		this.value = value;
@@ -19,6 +21,6 @@ public class InvalidValueException extends Exception {
 	}
 
 	public String getTipologiaErrore() {
-		return tipologiaErrore;
+		return TIPOLOGIA_ERRORE;
 	}
 }

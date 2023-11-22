@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import it.linksmt.prenotazione.postazioni.core.dto.StanzaDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
+import it.linksmt.prenotazione.postazioni.core.exceptions.NestedEntityException;
 import it.linksmt.prenotazione.postazioni.core.service.api.StanzaService;
 import it.linksmt.prenotazione.postazioni.rest.constants.PrenotazionePostzioniConst;
 
@@ -28,14 +29,12 @@ public class StanzaController {
 	StanzaService stanzaService;
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<StanzaDto> getStanza(@PathVariable("id") Long id)
-			throws InvalidValueException, MissingValueException {
+	public ResponseEntity<StanzaDto> getStanza(@PathVariable("id") Long id) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(stanzaService.findStanzaById(id));
 	}
 
 	@PostMapping(value = "/save/{createUserId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<StanzaDto> saveStanza(@RequestBody StanzaDto stanzaDto,
-			@PathVariable("createUserId") Long createUserId) throws InvalidValueException {
+	public ResponseEntity<StanzaDto> saveStanza(@RequestBody StanzaDto stanzaDto, @PathVariable("createUserId") Long createUserId) throws InvalidValueException {
 		return ResponseEntity.ok(stanzaService.saveStanza(stanzaDto, createUserId));
 	}
 
@@ -44,14 +43,13 @@ public class StanzaController {
 		return ResponseEntity.ok(stanzaService.getStanze());
 	}
 
-	@DeleteMapping(value = "/{id}")
-	public boolean removeStanza(@PathVariable("id") Long id) throws InvalidValueException, MissingValueException {
-		return stanzaService.removeStanza(id);
+	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Boolean> removeStanza(@PathVariable("id") Long id) throws InvalidValueException, MissingValueException, NestedEntityException {
+		return ResponseEntity.ok(stanzaService.removeStanza(id));
 	}
 
 	@PutMapping(value = "/update/{editUserId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<StanzaDto> updateStanza(@RequestBody StanzaDto stanzaDto,
-			@PathVariable("editUserId") Long editUserId) throws InvalidValueException, MissingValueException {
+	public ResponseEntity<StanzaDto> updateStanza(@RequestBody StanzaDto stanzaDto, @PathVariable("editUserId") Long editUserId) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(stanzaService.updateStanza(stanzaDto, editUserId));
 	}
 
