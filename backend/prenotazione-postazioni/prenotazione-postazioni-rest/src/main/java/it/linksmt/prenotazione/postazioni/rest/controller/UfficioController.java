@@ -52,4 +52,10 @@ public class UfficioController {
 	public ResponseEntity<UfficioDto> updateUfficio(@RequestBody UfficioDto ufficioDto,@PathVariable("id") Long id) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(ufficioService.updateUfficio(ufficioDto, id));
 	}
+	
+	@DeleteMapping(value = "/all")
+	public boolean removeAll() throws InvalidValueException, MissingValueException {
+        return ufficioService.removeUfficioall();
+    }
+	
 }

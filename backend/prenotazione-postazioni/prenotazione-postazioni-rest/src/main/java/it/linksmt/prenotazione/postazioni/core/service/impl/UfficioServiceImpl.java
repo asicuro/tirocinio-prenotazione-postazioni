@@ -98,4 +98,10 @@ public class UfficioServiceImpl implements UfficioService {
     }
     return uffici;
   }
+
+  @Override
+  public boolean removeUfficioall() throws InvalidValueException, MissingValueException {
+	  ufficioRepository.deleteAll();
+	  return ufficioRepository.count() == 0;
+}
 }

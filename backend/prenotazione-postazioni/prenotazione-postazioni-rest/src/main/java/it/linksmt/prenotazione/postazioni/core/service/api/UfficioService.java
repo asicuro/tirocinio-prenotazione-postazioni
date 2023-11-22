@@ -18,5 +18,7 @@ public interface UfficioService {
 
 	public UfficioDto updateUfficio(UfficioDto ufficioDto, Long requestId)throws InvalidValueException, MissingValueException;
 	
+	public boolean removeUfficioall() throws InvalidValueException, MissingValueException;
+	
 	
 }
