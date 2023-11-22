@@ -33,23 +33,23 @@ public class UfficioController {
 	}
 
 	@PostMapping(path = "/save/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UfficioDto> createUfficio(@RequestBody UfficioDto ufficioDto,@PathVariable("id") Long id) throws InvalidValueException {
+	public ResponseEntity<UfficioDto> saveUfficio(@RequestBody UfficioDto ufficioDto,@PathVariable("id") Long id) throws InvalidValueException {
 		return ResponseEntity.ok(ufficioService.saveUfficio(ufficioDto, id));
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public boolean deleteUfficio(@PathVariable("id") Long id) throws InvalidValueException, MissingValueException {
+	public boolean removeUfficio(@PathVariable("id") Long id) throws InvalidValueException, MissingValueException {
 		return ufficioService.removeUfficioById(id);
 	}
 
 	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<UfficioDto>> getAllUfficio() {
+	public ResponseEntity<List<UfficioDto>> getUffici() {
 		return ResponseEntity.ok(ufficioService.getUffici());
 
 	}
 
 	@PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UfficioDto> saveUfficio(@RequestBody UfficioDto ufficioDto,@PathVariable("id") Long id) throws InvalidValueException, MissingValueException {
+	public ResponseEntity<UfficioDto> updateUfficio(@RequestBody UfficioDto ufficioDto,@PathVariable("id") Long id) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(ufficioService.updateUfficio(ufficioDto, id));
 	}
 }
