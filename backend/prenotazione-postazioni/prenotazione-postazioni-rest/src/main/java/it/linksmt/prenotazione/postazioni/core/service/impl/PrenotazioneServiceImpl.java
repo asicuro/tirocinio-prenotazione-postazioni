@@ -82,14 +82,10 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 	public PrenotazioneDto updatePrenotazione(PrenotazioneDto prenotazioneDto, Long id)
 			throws InvalidValueException, MissingValueException {
 
-		if (!prenotazioneRepository.existsById(prenotazioneDto.getId())) {
-			throw new MissingValueException("Prenotazione", prenotazioneDto.getId());
-		}
-
-		Optional<Prenotazione> prenotaOptional = prenotazioneRepository.findById(id);
+		Optional<Prenotazione> prenotaOptional = prenotazioneRepository.findById(prenotazioneDto.getId());
 
 		if (prenotaOptional.isEmpty()) {
-			throw new MissingValueException("Prenotazione", id);
+			throw new MissingValueException("Prenotazione", prenotazioneDto.getId());
 		}
 
 		if (prenotazioneDto.getUtenteId() == null) {

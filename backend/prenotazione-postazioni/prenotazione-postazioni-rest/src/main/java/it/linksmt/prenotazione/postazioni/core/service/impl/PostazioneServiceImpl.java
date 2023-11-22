@@ -91,14 +91,10 @@ public class PostazioneServiceImpl implements PostazioneService {
 	public PostazioneDto updatePostazione(PostazioneDto postazioneDto, Long id)
 			throws InvalidValueException, MissingValueException {
 
-		if (!postazioneRepository.existsById(postazioneDto.getId())) {
-			throw new MissingValueException("Postazione", postazioneDto.getId());
-		}
-
-		Optional<Postazione> postaOptional = postazioneRepository.findById(id);
+		Optional<Postazione> postaOptional = postazioneRepository.findById(postazioneDto.getId());
 
 		if (postaOptional.isEmpty()) {
-			throw new MissingValueException("Postazione", id);
+			throw new MissingValueException("Postazione", postazioneDto.getId());
 		}
 
 		if (postazioneDto.getWidth() == null) {
@@ -121,6 +117,7 @@ public class PostazioneServiceImpl implements PostazioneService {
 		postazioneDto.setCreateUserId(postaOptional.get().getCreateUserId());
 		postazioneDto.setEditDate(new Date());
 		postazioneDto.setEditUserId(id);
+
 		Postazione posta = postazioneRepository.save(postazioneConverter.toEntity(postazioneDto));
 		return postazioneConverter.toDto(posta);
 	}

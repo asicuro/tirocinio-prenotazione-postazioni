@@ -34,14 +34,13 @@ public class PostazioneController {
 	}
 
 	@PostMapping(value = "/save/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PostazioneDto> savePostazione(@RequestBody PostazioneDto postazioneDto, Long id)
-			throws InvalidValueException, MissingValueException {
-		postazioneService.savePostazione(postazioneDto, id);
+	public ResponseEntity<PostazioneDto> savePostazione(@RequestBody PostazioneDto postazioneDto,
+			@PathVariable(value = "id") Long id) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(postazioneService.savePostazione(postazioneDto, id));
 	}
 
 	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<PostazioneDto>> GetPostazioni() {
+	public ResponseEntity<List<PostazioneDto>> getPostazioni() {
 		return ResponseEntity.ok(postazioneService.getPostazioni());
 	}
 
@@ -53,7 +52,7 @@ public class PostazioneController {
 
 	@PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PostazioneDto> updatePostazione(@RequestBody PostazioneDto postazioneDto,
-			@PathVariable("id") Long id) throws InvalidValueException, MissingValueException {
+			@PathVariable(value = "id") Long id) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(postazioneService.updatePostazione(postazioneDto, id));
 	}
 
