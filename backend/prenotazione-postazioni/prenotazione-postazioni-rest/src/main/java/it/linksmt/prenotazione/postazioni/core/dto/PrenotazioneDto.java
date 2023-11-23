@@ -18,6 +18,8 @@ public class PrenotazioneDto {
 
 	private Date editDate;
 
+	private Date dataPrenotazione;
+
 	public Long getId() {
 		return id;
 	}
@@ -72,6 +74,14 @@ public class PrenotazioneDto {
 
 	public void setEditDate(Date editDate) {
 		this.editDate = editDate;
+	}
+
+	public Date getDataPrenotazione() {
+		return dataPrenotazione;
+	}
+
+	public void setDataPrenotazione(Date dataPrenotazione) {
+		this.dataPrenotazione = dataPrenotazione;
 	}
 
 }

@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "prenotazione")
@@ -40,6 +42,10 @@ public class Prenotazione {
 	@ManyToOne
 	@JoinColumn(name = "postazione_id")
 	private Postazione postazione;
+
+	@Column(name = "data_prenotazione")
+	@Temporal(TemporalType.DATE)
+	private Date dataPrenotazione;
 
 	public Long getId() {
 		return id;
@@ -95,6 +101,14 @@ public class Prenotazione {
 
 	public void setPostazione(Postazione postazione) {
 		this.postazione = postazione;
+	}
+
+	public Date getDataPrenotazione() {
+		return dataPrenotazione;
+	}
+
+	public void setDataPrenotazione(Date dataPrenotazione) {
+		this.dataPrenotazione = dataPrenotazione;
 	}
 
 }
