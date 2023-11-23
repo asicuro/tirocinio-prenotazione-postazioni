@@ -112,4 +112,15 @@ public class UtenteServiceImpl implements UtenteService {
 		return utenteRepository.count() == 0;
 	}
 
+	@Override
+	public boolean isPresent(String username, String password) throws InvalidValueException {
+
+		if (username == null)
+			throw new InvalidValueException("username", username);
+		if (password == null)
+			throw new InvalidValueException("password", password);
+
+		return !utenteRepository.findByUsernameAndPassword(username, password).isEmpty();
+	}
+
 }

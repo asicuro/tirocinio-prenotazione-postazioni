@@ -19,4 +19,6 @@ public interface UtenteService {
 	public boolean removeUtente(Long id) throws InvalidValueException, MissingValueException;
 
 	public boolean removeAll();
+
+	public boolean isPresent(String username, String password) throws InvalidValueException;
 }
