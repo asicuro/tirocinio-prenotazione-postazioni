@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import it.linksmt.prenotazione.postazioni.core.dto.UfficioDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
+import it.linksmt.prenotazione.postazioni.core.exceptions.NestedEntityException;
 import it.linksmt.prenotazione.postazioni.core.service.api.UfficioService;
 import it.linksmt.prenotazione.postazioni.rest.constants.PrenotazionePostzioniConst;
 
@@ -38,7 +39,7 @@ public class UfficioController {
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public boolean removeUfficio(@PathVariable("id") Long id) throws InvalidValueException, MissingValueException {
+	public boolean removeUfficio(@PathVariable("id") Long id) throws InvalidValueException, MissingValueException, NestedEntityException {
 		return ufficioService.removeUfficioById(id);
 	}
 

@@ -12,6 +12,7 @@ import it.linksmt.prenotazione.postazioni.core.converter.UfficioConverter;
 import it.linksmt.prenotazione.postazioni.core.dto.UfficioDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
+import it.linksmt.prenotazione.postazioni.core.exceptions.NestedEntityException;
 import it.linksmt.prenotazione.postazioni.core.model.Ufficio;
 import it.linksmt.prenotazione.postazioni.core.repository.UfficioRepository;
 import it.linksmt.prenotazione.postazioni.core.service.api.UfficioService;
@@ -77,13 +78,19 @@ public class UfficioServiceImpl implements UfficioService {
   }
 
   @Override
-  public boolean removeUfficioById(Long id) throws InvalidValueException, MissingValueException {
+  public boolean removeUfficioById(Long id) throws InvalidValueException, MissingValueException, NestedEntityException {
     if (id == null || id < 0) {
       throw new InvalidValueException("id", id);
     }
-
-    if (!ufficioRepository.existsById(id)) {
-      throw new MissingValueException("ufficio", id);
+    
+    Optional<Ufficio> ufficio = ufficioRepository.findById(id);
+    
+    if(ufficio.isEmpty()) {
+      throw new MissingValueException("Ufficio", id);
+    }
+    
+    if (!(ufficio.get().getStanze().isEmpty() )) {
+    	throw new NestedEntityException("Ufficio", id);
     }
     ufficioRepository.deleteById(id);
     return !ufficioRepository.existsById(id);
