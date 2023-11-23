@@ -59,7 +59,7 @@ public class StanzaController {
 	}
 
 	@GetMapping(value = "/all/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<StanzaDto>> getStanzeByUfficioId(@PathVariable("id") Long id) throws InvalidValueException {
+	public ResponseEntity<List<StanzaDto>> getStanzeByUfficioId(@PathVariable("id") Long id) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(stanzaService.getStanzeByUfficioId(id));
 	}
 }

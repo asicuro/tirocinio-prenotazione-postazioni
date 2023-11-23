@@ -13,7 +13,9 @@ import it.linksmt.prenotazione.postazioni.core.dto.PostazioneDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
 import it.linksmt.prenotazione.postazioni.core.model.Postazione;
+import it.linksmt.prenotazione.postazioni.core.model.Stanza;
 import it.linksmt.prenotazione.postazioni.core.repository.PostazioneRepository;
+import it.linksmt.prenotazione.postazioni.core.repository.StanzaRepository;
 import it.linksmt.prenotazione.postazioni.core.service.api.PostazioneService;
 
 @Service
@@ -24,6 +26,9 @@ public class PostazioneServiceImpl implements PostazioneService {
 
 	@Autowired
 	PostazioneConverter postazioneConverter;
+
+	@Autowired
+	StanzaRepository stanzaRepository;
 
 	public PostazioneDto findPostazioneById(Long id) throws InvalidValueException, MissingValueException {
 
@@ -128,7 +133,7 @@ public class PostazioneServiceImpl implements PostazioneService {
 	}
 
 	@Override
-	public List<PostazioneDto> getPostazioniByStanzaId(Long stanzaId) throws InvalidValueException {
+	public List<PostazioneDto> getPostazioniByStanzaId(Long stanzaId) throws InvalidValueException, MissingValueException {
 
 		if (stanzaId == null || stanzaId < 0) {
 			throw new InvalidValueException("stanzaId", stanzaId);
@@ -136,7 +141,13 @@ public class PostazioneServiceImpl implements PostazioneService {
 
 		List<PostazioneDto> postazioni = new ArrayList<>();
 
-		for (Postazione postazione : postazioneRepository.getPostazioniByStanzaId(stanzaId)) {
+		Optional<Stanza> stanzaOptional = stanzaRepository.findById(stanzaId);
+
+		if (stanzaOptional.isEmpty()) {
+			throw new MissingValueException("Stanza", stanzaId);
+		}
+
+		for (Postazione postazione : postazioneRepository.findByStanza(stanzaOptional.get())) {
 
 			postazioni.add(postazioneConverter.toDto(postazione));
 		}

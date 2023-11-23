@@ -14,7 +14,9 @@ import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.NestedEntityException;
 import it.linksmt.prenotazione.postazioni.core.model.Stanza;
+import it.linksmt.prenotazione.postazioni.core.model.Ufficio;
 import it.linksmt.prenotazione.postazioni.core.repository.StanzaRepository;
+import it.linksmt.prenotazione.postazioni.core.repository.UfficioRepository;
 import it.linksmt.prenotazione.postazioni.core.service.api.StanzaService;
 
 @Service
@@ -27,6 +29,9 @@ public class StanzaServiceImpl implements StanzaService {
 
 	@Autowired
 	private StanzaConverter stanzaConverter;
+
+	@Autowired
+	private UfficioRepository ufficioRepository;
 
 	@Override
 	public StanzaDto findStanzaById(Long id) throws InvalidValueException, MissingValueException {
@@ -141,14 +146,18 @@ public class StanzaServiceImpl implements StanzaService {
 	}
 
 	@Override
-	public List<StanzaDto> getStanzeByUfficioId(Long id) throws InvalidValueException {
+	public List<StanzaDto> getStanzeByUfficioId(Long idUfficio) throws InvalidValueException, MissingValueException {
 
-		if (id == null || id < 0)
-			throw new InvalidValueException("id", id);
+		if (idUfficio == null || idUfficio < 0)
+			throw new InvalidValueException("id", idUfficio);
 
 		List<StanzaDto> stanze = new ArrayList<>();
 
-		for (Stanza stanza : stanzaRepository.getStanzeByUfficioId(id)) {
+		Optional<Ufficio> ufficioOptional = ufficioRepository.findById(idUfficio);
+		if (ufficioOptional.isEmpty())
+			throw new MissingValueException("Ufficio", idUfficio);
+
+		for (Stanza stanza : stanzaRepository.findByUfficio(ufficioOptional.get())) {
 			stanze.add(stanzaConverter.toDto(stanza));
 		}
 

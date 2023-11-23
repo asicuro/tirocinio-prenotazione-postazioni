@@ -21,5 +21,5 @@ public interface StanzaService {
 
 	public boolean removeAll();
 
-	public List<StanzaDto> getStanzeByUfficioId(Long id) throws InvalidValueException;
+	public List<StanzaDto> getStanzeByUfficioId(Long id) throws InvalidValueException, MissingValueException;
 }
