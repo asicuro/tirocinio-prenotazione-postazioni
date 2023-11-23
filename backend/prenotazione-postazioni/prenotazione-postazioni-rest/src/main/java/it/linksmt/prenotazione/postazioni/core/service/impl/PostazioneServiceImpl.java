@@ -88,8 +88,7 @@ public class PostazioneServiceImpl implements PostazioneService {
 	}
 
 	@Override
-	public PostazioneDto updatePostazione(PostazioneDto postazioneDto, Long id)
-			throws InvalidValueException, MissingValueException {
+	public PostazioneDto updatePostazione(PostazioneDto postazioneDto, Long id) throws InvalidValueException, MissingValueException {
 
 		Optional<Postazione> postaOptional = postazioneRepository.findById(postazioneDto.getId());
 
@@ -126,5 +125,22 @@ public class PostazioneServiceImpl implements PostazioneService {
 	public boolean removeAll() {
 		postazioneRepository.deleteAll();
 		return postazioneRepository.count() == 0;
+	}
+
+	@Override
+	public List<PostazioneDto> getPostazioniByStanzaId(Long stanzaId) throws InvalidValueException {
+
+		if (stanzaId == null || stanzaId < 0) {
+			throw new InvalidValueException("stanzaId", stanzaId);
+		}
+
+		List<PostazioneDto> postazioni = new ArrayList<>();
+
+		for (Postazione postazione : postazioneRepository.getPostazioniByStanzaId(stanzaId)) {
+
+			postazioni.add(postazioneConverter.toDto(postazione));
+		}
+
+		return postazioni;
 	}
 }
