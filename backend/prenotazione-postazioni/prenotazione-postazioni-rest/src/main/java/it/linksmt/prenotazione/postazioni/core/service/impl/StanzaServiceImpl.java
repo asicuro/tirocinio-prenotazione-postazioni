@@ -140,4 +140,19 @@ public class StanzaServiceImpl implements StanzaService {
 		return stanzaRepository.count() == 0;
 	}
 
+	@Override
+	public List<StanzaDto> getStanzeByUfficioId(Long id) throws InvalidValueException {
+
+		if (id == null || id < 0)
+			throw new InvalidValueException("id", id);
+
+		List<StanzaDto> stanze = new ArrayList<>();
+
+		for (Stanza stanza : stanzaRepository.getStanzeByUfficioId(id)) {
+			stanze.add(stanzaConverter.toDto(stanza));
+		}
+
+		return stanze;
+	}
+
 }

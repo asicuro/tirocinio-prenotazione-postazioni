@@ -57,4 +57,9 @@ public class StanzaController {
 	public boolean removeAll() {
 		return stanzaService.removeAll();
 	}
+
+	@GetMapping(value = "/all/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<StanzaDto> getStanzeByUfficioId(@PathVariable("id") Long id) throws InvalidValueException {
+		return stanzaService.getStanzeByUfficioId(id);
+	}
 }

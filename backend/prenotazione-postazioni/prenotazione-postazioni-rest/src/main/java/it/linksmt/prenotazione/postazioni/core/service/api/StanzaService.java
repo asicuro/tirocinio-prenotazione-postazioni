@@ -20,4 +20,6 @@ public interface StanzaService {
 	public boolean removeStanza(Long id) throws InvalidValueException, MissingValueException, NestedEntityException;
 
 	public boolean removeAll();
+
+	public List<StanzaDto> getStanzeByUfficioId(Long id) throws InvalidValueException;
 }
