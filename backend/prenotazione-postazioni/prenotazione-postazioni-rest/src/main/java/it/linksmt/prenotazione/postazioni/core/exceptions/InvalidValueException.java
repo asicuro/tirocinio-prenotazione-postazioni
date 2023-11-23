@@ -2,7 +2,7 @@ package it.linksmt.prenotazione.postazioni.core.exceptions;
 
 import it.linksmt.prenotazione.postazioni.core.exceptions.interfaces.CustomException;
 
-public class InvalidValueException extends Exception implements CustomException {
+public class InvalidValueException extends CustomException {
 
 	private static final long serialVersionUID = 1L;
 	private final String valueName;
@@ -16,10 +16,10 @@ public class InvalidValueException extends Exception implements CustomException 
 
 	@Override
 	public String getMessage() {
-		return "Attenzione: il campo " + this.valueName + " contiene il valore non valido "
-				+ (value == null ? "NULL" : value.toString());
+		return "Attenzione: il campo " + this.valueName + " contiene il valore non valido " + (value == null ? "NULL" : value.toString());
 	}
 
+	@Override
 	public String getTipologiaErrore() {
 		return TIPOLOGIA_ERRORE;
 	}

@@ -1,8 +1,15 @@
 package it.linksmt.prenotazione.postazioni.core.exceptions.interfaces;
 
-public interface CustomException {
+public class CustomException extends Exception {
 
-	public String getMessage();
+	private static final long serialVersionUID = 1L;
 
-	public String getTipologiaErrore();
+	@Override
+	public String getMessage() {
+		return null;
+	}
+
+	public String getTipologiaErrore() {
+		return null;
+	}
 }
