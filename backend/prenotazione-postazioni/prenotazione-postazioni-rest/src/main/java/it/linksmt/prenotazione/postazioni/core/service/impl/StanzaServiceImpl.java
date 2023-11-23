@@ -140,4 +140,24 @@ public class StanzaServiceImpl implements StanzaService {
 		return stanzaRepository.count() == 0;
 	}
 
+	@Override
+	public StanzaDto findByNome(String nome) throws InvalidValueException {
+
+		if (nome == null)
+			throw new InvalidValueException("nome", nome);
+		return stanzaConverter.toDto(stanzaRepository.findByNomeIgnoreCase(nome));
+	}
+
+	@Override
+	public List<StanzaDto> findByCreateDateAfter(Date data) throws InvalidValueException {
+
+		if (data == null)
+			throw new InvalidValueException("data", data);
+		List<StanzaDto> stanze = new ArrayList<>();
+		for (Stanza stanza : stanzaRepository.findByCreateDateAfter(data)) {
+			stanze.add(stanzaConverter.toDto(stanza));
+		}
+		return stanze;
+	}
+
 }

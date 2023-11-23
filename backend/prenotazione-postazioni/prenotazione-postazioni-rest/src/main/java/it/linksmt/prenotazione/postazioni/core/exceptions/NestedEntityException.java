@@ -2,7 +2,7 @@ package it.linksmt.prenotazione.postazioni.core.exceptions;
 
 import it.linksmt.prenotazione.postazioni.core.exceptions.interfaces.CustomException;
 
-public class NestedEntityException extends Exception implements CustomException {
+public class NestedEntityException extends CustomException {
 
 	private static final long serialVersionUID = 1L;
 	private final String entityName;
@@ -16,10 +16,10 @@ public class NestedEntityException extends Exception implements CustomException 
 
 	@Override
 	public String getMessage() {
-		return "Attenzione: l'entita' " + this.entityName + " con id = " + this.id
-				+ " ha relazioni attive con una o piu' entita'";
+		return "Attenzione: l'entita' " + this.entityName + " con id = " + this.id + " ha relazioni attive con una o piu' entita'";
 	}
 
+	@Override
 	public String getTipologiaErrore() {
 		return TIPOLOGIA_ERRORE;
 	}

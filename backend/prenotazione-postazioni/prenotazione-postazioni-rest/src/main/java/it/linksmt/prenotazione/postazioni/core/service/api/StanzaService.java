@@ -1,5 +1,6 @@
 package it.linksmt.prenotazione.postazioni.core.service.api;
 
+import java.util.Date;
 import java.util.List;
 
 import it.linksmt.prenotazione.postazioni.core.dto.StanzaDto;
@@ -13,12 +14,15 @@ public interface StanzaService {
 
 	public StanzaDto saveStanza(StanzaDto stanza, Long createUserId) throws InvalidValueException;
 
-	public StanzaDto updateStanza(StanzaDto stanza, Long editUserId)
-			throws InvalidValueException, MissingValueException;
+	public StanzaDto updateStanza(StanzaDto stanza, Long editUserId) throws InvalidValueException, MissingValueException;
 
 	public List<StanzaDto> getStanze();
 
 	public boolean removeStanza(Long id) throws InvalidValueException, MissingValueException, NestedEntityException;
 
 	public boolean removeAll();
+
+	public StanzaDto findByNome(String nome) throws InvalidValueException;
+
+	public List<StanzaDto> findByCreateDateAfter(Date data) throws InvalidValueException;
 }

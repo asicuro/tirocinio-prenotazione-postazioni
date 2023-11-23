@@ -2,7 +2,7 @@ package it.linksmt.prenotazione.postazioni.core.exceptions;
 
 import it.linksmt.prenotazione.postazioni.core.exceptions.interfaces.CustomException;
 
-public class MissingValueException extends Exception implements CustomException {
+public class MissingValueException extends CustomException {
 
 	private static final long serialVersionUID = 1L;
 	private final String entityName;
@@ -19,6 +19,7 @@ public class MissingValueException extends Exception implements CustomException 
 		return "Attenzione: l'entita' " + this.entityName + " con id = " + this.id + " non e' presente";
 	}
 
+	@Override
 	public String getTipologiaErrore() {
 		return TIPOLOGIA_ERRORE;
 	}
