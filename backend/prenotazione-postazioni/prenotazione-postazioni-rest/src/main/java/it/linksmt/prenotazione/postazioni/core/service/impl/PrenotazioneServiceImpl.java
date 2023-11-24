@@ -7,12 +7,17 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import it.linksmt.prenotazione.postazioni.core.converter.PrenotazioneConverter;
 import it.linksmt.prenotazione.postazioni.core.dto.PrenotazioneDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
+import it.linksmt.prenotazione.postazioni.core.model.Postazione;
 import it.linksmt.prenotazione.postazioni.core.model.Prenotazione;
+import it.linksmt.prenotazione.postazioni.core.model.Utente;
+import it.linksmt.prenotazione.postazioni.core.repository.PostazioneRepository;
 import it.linksmt.prenotazione.postazioni.core.repository.PrenotazioneRepository;
+import it.linksmt.prenotazione.postazioni.core.repository.UtenteRepository;
 import it.linksmt.prenotazione.postazioni.core.service.api.PrenotazioneService;
 
 @Service
@@ -23,7 +28,14 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 
 	@Autowired
 	PrenotazioneConverter prenotazioneConverter;
-
+	
+	@Autowired
+	PostazioneRepository postazioneRepository;
+	
+	@Autowired
+	UtenteRepository utenteRepository;
+	
+	
 	public PrenotazioneDto findPrenotazioneById(Long id) throws InvalidValueException, MissingValueException {
 
 		if (id == null || id < 0) {
@@ -107,5 +119,46 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 		prenotazioneRepository.deleteAll();
 		return prenotazioneRepository.count() == 0;
 	}
-
-}
+	
+	
+	@Override
+	public boolean controlloDisponibilita(Date data, Long id) throws MissingValueException, InvalidValueException {
+		
+		Optional<Postazione> postazione = postazioneRepository.findById(id);
+		
+		if (id == null || id < 0) {
+			throw new InvalidValueException("id", id);
+		}
+		
+		if (postazione.isEmpty()) {
+            throw new MissingValueException("postazione", id);
+		}
+		for (Prenotazione p : prenotazioneRepository.findByPostazione(postazione.get())){
+			if (p.getDataPrenotazione().equals(data)) {
+                return false;
+            }
+		
+		}
+		return true;
+	}
+	@Override
+	public boolean controlloUserPrenotazione(Date data, Long id) throws MissingValueException, InvalidValueException {
+		
+		Optional<Utente> utente = utenteRepository.findById(id);
+		
+		if (id == null || id < 0) {
+			throw new InvalidValueException("id", id);
+		}
+		
+		if (utente.isEmpty()) {
+            throw new MissingValueException("utente", id);
+		}
+		for (Prenotazione p : prenotazioneRepository.findByUtente(utente.get())){
+			if (p.getDataPrenotazione().equals(data)) {
+                return false;
+            }
+		
+		}
+		return true;
+	}
+}	

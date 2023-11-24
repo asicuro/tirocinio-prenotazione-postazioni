@@ -1,5 +1,6 @@
 package it.linksmt.prenotazione.postazioni.rest.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,4 +61,17 @@ public class PrenotazioneController {
 	public boolean removeAll() {
 		return prenotazioneService.removeAll();
 	}
+	
+	@GetMapping(value = "/disponibilita", produces = MediaType.APPLICATION_JSON_VALUE)
+	public boolean  getDisponibilita(@RequestBody Date data, @RequestBody Long Id) throws MissingValueException, InvalidValueException {
+		return prenotazioneService.controlloDisponibilita(data, Id);
+		
+	}
+	
+	@GetMapping(value = "/UserPrenotazione", produces = MediaType.APPLICATION_JSON_VALUE)
+	public boolean  getUserPrenotazioni(@RequestBody Date data, @RequestBody Long Id) throws MissingValueException, InvalidValueException {
+		return prenotazioneService.controlloUserPrenotazione(data, Id);
+		
+	}
+	
 }
