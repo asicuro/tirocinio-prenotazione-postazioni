@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import it.linksmt.prenotazione.postazioni.core.dto.PrenotazioneDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
@@ -62,17 +61,25 @@ public class PrenotazioneController {
 	public boolean removeAll() {
 		return prenotazioneService.removeAll();
 	}
-	
+
 	@GetMapping(value = "/disponibilita/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public boolean  getDisponibilita(@RequestParam Date data, @PathVariable Long id) throws MissingValueException, InvalidValueException {
+	public boolean getDisponibilita(@RequestParam Date data, @PathVariable Long id)
+			throws MissingValueException, InvalidValueException {
 		return prenotazioneService.controlloDisponibilita(data, id);
-		
+
 	}
-	
-	@GetMapping(value = "/UserPrenotazione/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public boolean  getUserPrenotazioni(@RequestParam Date data, @PathVariable Long id) throws MissingValueException, InvalidValueException {
+
+	@GetMapping(value = "/userprenotazione/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public boolean getUserPrenotazioni(@RequestParam Date data, @PathVariable Long id)
+			throws MissingValueException, InvalidValueException {
 		return prenotazioneService.controlloUserPrenotazione(data, id);
-		
+
 	}
-	
+
+	@GetMapping(value = "/prenotazioneutente/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<PrenotazioneDto>> prenotazioneUtente(@PathVariable(value = "id") Long id)
+			throws InvalidValueException {
+		return ResponseEntity.ok(prenotazioneService.findPrenotazioniByUserId(id));
+	}
+
 }

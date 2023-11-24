@@ -28,14 +28,13 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 
 	@Autowired
 	PrenotazioneConverter prenotazioneConverter;
-	
+
 	@Autowired
 	PostazioneRepository postazioneRepository;
-	
+
 	@Autowired
 	UtenteRepository utenteRepository;
-	
-	
+
 	public PrenotazioneDto findPrenotazioneById(Long id) throws InvalidValueException, MissingValueException {
 
 		if (id == null || id < 0) {
@@ -82,10 +81,16 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 		if (id == null || id < 0) {
 			throw new InvalidValueException("id", id);
 		}
-		if (!prenotazioneRepository.existsById(id)) {
-			throw new MissingValueException("Prenotazione", id);
+		List<Prenotazione> prenotazioneList = prenotazioneRepository.findByDataPrenotazioneGreaterThan(new Date());
+
+		Optional<Prenotazione> prenotazioneTrovataOptional = prenotazioneList.stream().filter(p -> p.getId().equals(id))
+				.findFirst();
+
+		if (prenotazioneTrovataOptional.isEmpty()) {
+			throw new MissingValueException("prenotazione", id);
 		}
-		prenotazioneRepository.deleteById(id);
+
+		prenotazioneRepository.delete(prenotazioneTrovataOptional.get());
 		return !prenotazioneRepository.existsById(id);
 	}
 
@@ -119,46 +124,63 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 		prenotazioneRepository.deleteAll();
 		return prenotazioneRepository.count() == 0;
 	}
-	
-	
+
 	@Override
 	public boolean controlloDisponibilita(Date data, Long id) throws MissingValueException, InvalidValueException {
-		
+
 		Optional<Postazione> postazione = postazioneRepository.findById(id);
-		
+
 		if (id == null || id < 0) {
 			throw new InvalidValueException("id", id);
 		}
-		
+
 		if (postazione.isEmpty()) {
-            throw new MissingValueException("postazione", id);
+			throw new MissingValueException("postazione", id);
 		}
-		for (Prenotazione p : prenotazioneRepository.findByPostazione(postazione.get())){
+		for (Prenotazione p : prenotazioneRepository.findByPostazione(postazione.get())) {
 			if (p.getDataPrenotazione().equals(data)) {
-                return false;
-            }
-		
+				return false;
+			}
+
 		}
 		return true;
 	}
+
 	@Override
 	public boolean controlloUserPrenotazione(Date data, Long id) throws MissingValueException, InvalidValueException {
-		
+
 		Optional<Utente> utente = utenteRepository.findById(id);
-		
+
 		if (id == null || id < 0) {
 			throw new InvalidValueException("id", id);
 		}
-		
+
 		if (utente.isEmpty()) {
-            throw new MissingValueException("utente", id);
+			throw new MissingValueException("utente", id);
 		}
-		for (Prenotazione p : prenotazioneRepository.findByUtente(utente.get())){
+		for (Prenotazione p : prenotazioneRepository.findByUtente(utente.get())) {
 			if (p.getDataPrenotazione().equals(data)) {
-                return false;
-            }
-		
+				return false;
+			}
 		}
 		return true;
 	}
-}	
+
+	@Override
+	public List<PrenotazioneDto> findPrenotazioniByUserId(Long id) throws InvalidValueException {
+
+		List<PrenotazioneDto> prenotazioniUtente = new ArrayList<>();
+
+		if (id == null || id < 0) {
+			throw new InvalidValueException("id", id);
+		}
+
+		for (Prenotazione prenotazione : prenotazioneRepository.findAll()) {
+
+			if (prenotazione.getUtente().getId() == id) {
+				prenotazioniUtente.add(prenotazioneConverter.toDto(prenotazione));
+			}
+		}
+		return prenotazioniUtente;
+	}
+}
