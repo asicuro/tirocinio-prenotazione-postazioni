@@ -1,9 +1,9 @@
 package it.linksmt.prenotazione.postazioni.core.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,12 +77,10 @@ public class StanzaServiceImpl implements StanzaService {
 	@Override
 	public List<StanzaDto> getStanze() {
 
-		List<StanzaDto> stanze = new ArrayList<>();
-
-		for (Stanza stanza : stanzaRepository.findAll()) {
-			stanze.add(stanzaConverter.toDto(stanza));
-		}
-		return stanze;
+		List<Stanza> stanze = (List<Stanza>) stanzaRepository.findAll();
+		return stanze.stream()
+				.map(stanzaConverter::toDto)
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -95,7 +93,9 @@ public class StanzaServiceImpl implements StanzaService {
 
 		if (stanzaOptional.isEmpty())
 			throw new MissingValueException(NOME_ENTITA, id);
-		else if (!stanzaOptional.get().getPostazioni().isEmpty())
+		else if (!stanzaOptional.get()
+				.getPostazioni()
+				.isEmpty())
 			throw new NestedEntityException(NOME_ENTITA, id);
 
 		stanzaRepository.deleteById(id);
@@ -103,7 +103,8 @@ public class StanzaServiceImpl implements StanzaService {
 	}
 
 	@Override
-	public StanzaDto updateStanza(StanzaDto stanzaDto, Long editUserId) throws InvalidValueException, MissingValueException {
+	public StanzaDto updateStanza(StanzaDto stanzaDto, Long editUserId)
+			throws InvalidValueException, MissingValueException {
 
 		if (stanzaDto.getId() == null || stanzaDto.getId() < 0)
 			throw new InvalidValueException("id", stanzaDto.getId());
@@ -131,7 +132,12 @@ public class StanzaServiceImpl implements StanzaService {
 		if (stanzaDto.getUfficioId() == null)
 			throw new InvalidValueException("ufficioId", stanzaDto.getUfficioId());
 
-		stanzaDto.setCreateDate(stanza.get().getCreateDate()).setCreateUserId(stanza.get().getCreateUserId()).setEditDate(new Date()).setEditUserId(editUserId);
+		stanzaDto.setCreateDate(stanza.get()
+				.getCreateDate())
+				.setCreateUserId(stanza.get()
+						.getCreateUserId())
+				.setEditDate(new Date())
+				.setEditUserId(editUserId);
 
 		return stanzaConverter.toDto(stanzaRepository.save(stanzaConverter.toEntity(stanzaDto)));
 
@@ -151,17 +157,15 @@ public class StanzaServiceImpl implements StanzaService {
 		if (idUfficio == null || idUfficio < 0)
 			throw new InvalidValueException("id", idUfficio);
 
-		List<StanzaDto> stanze = new ArrayList<>();
-
 		Optional<Ufficio> ufficioOptional = ufficioRepository.findById(idUfficio);
 		if (ufficioOptional.isEmpty())
 			throw new MissingValueException("Ufficio", idUfficio);
 
-		for (Stanza stanza : stanzaRepository.findByUfficio(ufficioOptional.get())) {
-			stanze.add(stanzaConverter.toDto(stanza));
-		}
+		List<Stanza> stanze = stanzaRepository.findByUfficio(ufficioOptional.get());
 
-		return stanze;
+		return stanze.stream()
+				.map(stanzaConverter::toDto)
+				.collect(Collectors.toList());
 	}
 
 }

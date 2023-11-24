@@ -1,8 +1,8 @@
 package it.linksmt.prenotazione.postazioni.core.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,12 +60,10 @@ public class UtenteServiceImpl implements UtenteService {
 	@Override
 	public List<UtenteDto> getUtenti() {
 
-		List<UtenteDto> utenti = new ArrayList<>();
-
-		for (Utente utente : utenteRepository.findAll()) {
-			utenti.add(utenteConverter.toDto(utente));
-		}
-		return utenti;
+		List<Utente> utenti = (List<Utente>) utenteRepository.findAll();
+		return utenti.stream()
+				.map(utenteConverter::toDto)
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -120,7 +118,8 @@ public class UtenteServiceImpl implements UtenteService {
 		if (password == null)
 			throw new InvalidValueException("password", password);
 
-		return !utenteRepository.findByUsernameAndPassword(username, password).isEmpty();
+		return !utenteRepository.findByUsernameAndPassword(username, password)
+				.isEmpty();
 	}
 
 }
