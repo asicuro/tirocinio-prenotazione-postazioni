@@ -27,8 +27,7 @@ public class UtenteServiceImpl implements UtenteService {
   @Override
   public UtenteDto findUtenteById(Long id) throws MissingValueException, InvalidValueException {
 
-    if (id == null || id < 0)
-      throw new InvalidValueException("id", id);
+    checkId(id);
 
     Optional<Utente> utenteOptional = utenteRepository.findById(id);
 
@@ -42,14 +41,7 @@ public class UtenteServiceImpl implements UtenteService {
   @Override
   public UtenteDto saveUtente(UtenteDto utenteDto) throws InvalidValueException {
 
-    if (utenteDto.getUsername() == null)
-      throw new InvalidValueException("username", utenteDto.getId());
-
-    if (utenteDto.getPassword() == null)
-      throw new InvalidValueException("password", utenteDto.getPassword());
-
-    if (utenteDto.getRuolo() == null)
-      throw new InvalidValueException("ruolo", utenteDto.getRuolo());
+    validateDto(utenteDto);
 
     return utenteConverter.toDto(utenteRepository.save(utenteConverter.toEntity(utenteDto)));
 
@@ -67,8 +59,7 @@ public class UtenteServiceImpl implements UtenteService {
   @Override
   public boolean removeUtente(Long id) throws InvalidValueException, MissingValueException {
 
-    if (id == null || id < 0)
-      throw new InvalidValueException("id", id);
+    checkId(id);
 
     if (!utenteRepository.existsById(id))
       throw new MissingValueException(NOME_ENTITA, id);
@@ -89,14 +80,7 @@ public class UtenteServiceImpl implements UtenteService {
     if (!utenteRepository.existsById(utenteDto.getId()))
       throw new MissingValueException(NOME_ENTITA, utenteDto.getId());
 
-    if (utenteDto.getUsername() == null)
-      throw new InvalidValueException("username", utenteDto.getUsername());
-
-    if (utenteDto.getPassword() == null)
-      throw new InvalidValueException("password", utenteDto.getPassword());
-
-    if (utenteDto.getRuolo() == null)
-      throw new InvalidValueException("ruolo", utenteDto.getRuolo());
+    validateDto(utenteDto);
 
     return utenteConverter.toDto(utenteRepository.save(utenteConverter.toEntity(utenteDto)));
 
@@ -119,6 +103,22 @@ public class UtenteServiceImpl implements UtenteService {
 
     return !utenteRepository.findByUsernameAndPassword(username, password)
                             .isEmpty();
+  }
+
+  private void validateDto(UtenteDto utenteDto) throws InvalidValueException {
+    if (utenteDto.getUsername() == null)
+      throw new InvalidValueException("username", utenteDto.getId());
+
+    if (utenteDto.getPassword() == null)
+      throw new InvalidValueException("password", utenteDto.getPassword());
+
+    if (utenteDto.getRuolo() == null)
+      throw new InvalidValueException("ruolo", utenteDto.getRuolo());
+  }
+
+  private void checkId(Long id) throws InvalidValueException {
+    if (id == null || id < 0)
+      throw new InvalidValueException("id", id);
   }
 
 }

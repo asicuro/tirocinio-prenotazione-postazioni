@@ -34,8 +34,7 @@ public class StanzaServiceImpl implements StanzaService {
   @Override
   public StanzaDto findStanzaById(Long id) throws InvalidValueException, MissingValueException {
 
-    if (id == null || id < 0)
-      throw new InvalidValueException("id", id);
+    checkId(id);
 
     Optional<Stanza> stanzaDto = stanzaRepository.findById(id);
 
@@ -48,23 +47,7 @@ public class StanzaServiceImpl implements StanzaService {
   @Override
   public StanzaDto saveStanza(StanzaDto stanza, Long createUserId) throws InvalidValueException {
 
-    if (stanza.getNome() == null)
-      throw new InvalidValueException("nome", stanza.getNome());
-
-    if (stanza.getWidth() == null)
-      throw new InvalidValueException("width", stanza.getWidth());
-
-    if (stanza.getHeight() == null)
-      throw new InvalidValueException("height", stanza.getHeight());
-
-    if (stanza.getX() == null)
-      throw new InvalidValueException("x", stanza.getX());
-
-    if (stanza.getY() == null)
-      throw new InvalidValueException("y", stanza.getY());
-
-    if (stanza.getUfficioId() == null)
-      throw new InvalidValueException("ufficioId", stanza.getUfficioId());
+    validateDto(stanza);
 
     stanza.setCreateDate(new Date());
     stanza.setCreateUserId(createUserId);
@@ -85,8 +68,7 @@ public class StanzaServiceImpl implements StanzaService {
   public boolean removeStanza(Long id)
       throws InvalidValueException, MissingValueException, NestedEntityException {
 
-    if (id == null || id < 0)
-      throw new InvalidValueException("id", id);
+    checkId(id);
 
     Optional<Stanza> stanzaOptional = stanzaRepository.findById(id);
 
@@ -113,23 +95,7 @@ public class StanzaServiceImpl implements StanzaService {
     if (stanza.isEmpty())
       throw new MissingValueException(NOME_ENTITA, stanzaDto.getId());
 
-    if (stanzaDto.getNome() == null)
-      throw new InvalidValueException("nome", stanzaDto.getNome());
-
-    if (stanzaDto.getWidth() == null)
-      throw new InvalidValueException("width", stanzaDto.getWidth());
-
-    if (stanzaDto.getHeight() == null)
-      throw new InvalidValueException("height", stanzaDto.getHeight());
-
-    if (stanzaDto.getX() == null)
-      throw new InvalidValueException("x", stanzaDto.getX());
-
-    if (stanzaDto.getY() == null)
-      throw new InvalidValueException("y", stanzaDto.getY());
-
-    if (stanzaDto.getUfficioId() == null)
-      throw new InvalidValueException("ufficioId", stanzaDto.getUfficioId());
+    validateDto(stanzaDto);
 
     stanzaDto.setCreateDate(stanza.get()
                                   .getCreateDate())
@@ -154,8 +120,7 @@ public class StanzaServiceImpl implements StanzaService {
   public List<StanzaDto> getStanzeByUfficioId(Long idUfficio)
       throws InvalidValueException, MissingValueException {
 
-    if (idUfficio == null || idUfficio < 0)
-      throw new InvalidValueException("id", idUfficio);
+    checkId(idUfficio);
 
     Optional<Ufficio> ufficioOptional = ufficioRepository.findById(idUfficio);
     if (ufficioOptional.isEmpty())
@@ -166,6 +131,31 @@ public class StanzaServiceImpl implements StanzaService {
     return stanze.parallelStream()
                  .map(stanzaConverter::toDto)
                  .collect(Collectors.toList());
+  }
+  
+  private void validateDto(StanzaDto stanza) throws InvalidValueException {
+    if (stanza.getNome() == null)
+      throw new InvalidValueException("nome", stanza.getNome());
+
+    if (stanza.getWidth() == null)
+      throw new InvalidValueException("width", stanza.getWidth());
+
+    if (stanza.getHeight() == null)
+      throw new InvalidValueException("height", stanza.getHeight());
+
+    if (stanza.getX() == null)
+      throw new InvalidValueException("x", stanza.getX());
+
+    if (stanza.getY() == null)
+      throw new InvalidValueException("y", stanza.getY());
+
+    if (stanza.getUfficioId() == null)
+      throw new InvalidValueException("ufficioId", stanza.getUfficioId());
+  }
+
+  private void checkId(Long id) throws InvalidValueException {
+    if (id == null || id < 0)
+      throw new InvalidValueException("id", id);
   }
 
 }
