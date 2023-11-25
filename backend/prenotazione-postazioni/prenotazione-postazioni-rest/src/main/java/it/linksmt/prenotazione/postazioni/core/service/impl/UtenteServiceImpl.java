@@ -61,7 +61,7 @@ public class UtenteServiceImpl implements UtenteService {
 	public List<UtenteDto> getUtenti() {
 
 		List<Utente> utenti = (List<Utente>) utenteRepository.findAll();
-		return utenti.stream()
+		return utenti.parallelStream()
 				.map(utenteConverter::toDto)
 				.collect(Collectors.toList());
 	}

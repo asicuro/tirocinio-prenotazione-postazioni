@@ -78,7 +78,7 @@ public class StanzaServiceImpl implements StanzaService {
 	public List<StanzaDto> getStanze() {
 
 		List<Stanza> stanze = (List<Stanza>) stanzaRepository.findAll();
-		return stanze.stream()
+		return stanze.parallelStream()
 				.map(stanzaConverter::toDto)
 				.collect(Collectors.toList());
 	}
@@ -163,7 +163,7 @@ public class StanzaServiceImpl implements StanzaService {
 
 		List<Stanza> stanze = stanzaRepository.findByUfficio(ufficioOptional.get());
 
-		return stanze.stream()
+		return stanze.parallelStream()
 				.map(stanzaConverter::toDto)
 				.collect(Collectors.toList());
 	}
