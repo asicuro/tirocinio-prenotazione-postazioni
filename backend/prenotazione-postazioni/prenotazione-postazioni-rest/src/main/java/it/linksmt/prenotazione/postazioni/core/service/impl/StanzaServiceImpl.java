@@ -36,23 +36,18 @@ public class StanzaServiceImpl implements StanzaService {
 
     checkId(id);
 
-    Optional<Stanza> stanzaDto = stanzaRepository.findById(id);
-
-    if (stanzaDto.isEmpty())
-      throw new MissingValueException(NOME_ENTITA, id);
-
-    return stanzaConverter.toDto(stanzaDto.get());
+    return stanzaConverter.toDto(takeStanza(id));
   }
 
   @Override
-  public StanzaDto saveStanza(StanzaDto stanza, Long createUserId) throws InvalidValueException {
+  public StanzaDto saveStanza(StanzaDto stanzaDto, Long createUserId) throws InvalidValueException {
 
-    validateDto(stanza);
+    validateDto(stanzaDto);
 
-    stanza.setCreateDate(new Date());
-    stanza.setCreateUserId(createUserId);
+    stanzaDto.setCreateDate(new Date());
+    stanzaDto.setCreateUserId(createUserId);
 
-    return stanzaConverter.toDto(stanzaRepository.save(stanzaConverter.toEntity(stanza)));
+    return stanzaConverter.toDto(stanzaRepository.save(stanzaConverter.toEntity(stanzaDto)));
   }
 
   @Override
@@ -70,13 +65,9 @@ public class StanzaServiceImpl implements StanzaService {
 
     checkId(id);
 
-    Optional<Stanza> stanzaOptional = stanzaRepository.findById(id);
-
-    if (stanzaOptional.isEmpty())
-      throw new MissingValueException(NOME_ENTITA, id);
-    else if (!stanzaOptional.get()
-                            .getPostazioni()
-                            .isEmpty())
+    Stanza stanza = takeStanza(id);
+    if (!stanza.getPostazioni()
+               .isEmpty())
       throw new NestedEntityException(NOME_ENTITA, id);
 
     stanzaRepository.deleteById(id);
@@ -90,17 +81,12 @@ public class StanzaServiceImpl implements StanzaService {
     if (stanzaDto.getId() == null || stanzaDto.getId() < 0)
       throw new InvalidValueException("id", stanzaDto.getId());
 
-    Optional<Stanza> stanza = stanzaRepository.findById(stanzaDto.getId());
-
-    if (stanza.isEmpty())
-      throw new MissingValueException(NOME_ENTITA, stanzaDto.getId());
+    Stanza stanza = takeStanza(stanzaDto.getId());
 
     validateDto(stanzaDto);
 
-    stanzaDto.setCreateDate(stanza.get()
-                                  .getCreateDate())
-             .setCreateUserId(stanza.get()
-                                    .getCreateUserId())
+    stanzaDto.setCreateDate(stanza.getCreateDate())
+             .setCreateUserId(stanza.getCreateUserId())
              .setEditDate(new Date())
              .setEditUserId(editUserId);
 
@@ -122,17 +108,14 @@ public class StanzaServiceImpl implements StanzaService {
 
     checkId(idUfficio);
 
-    Optional<Ufficio> ufficioOptional = ufficioRepository.findById(idUfficio);
-    if (ufficioOptional.isEmpty())
-      throw new MissingValueException("Ufficio", idUfficio);
-
-    List<Stanza> stanze = stanzaRepository.findByUfficio(ufficioOptional.get());
+    List<Stanza> stanze = stanzaRepository.findByUfficio(takeUfficio(idUfficio));
 
     return stanze.parallelStream()
                  .map(stanzaConverter::toDto)
                  .collect(Collectors.toList());
   }
-  
+
+  /** Controlla se i campi del DTO non sono nulli */
   private void validateDto(StanzaDto stanza) throws InvalidValueException {
     if (stanza.getNome() == null)
       throw new InvalidValueException("nome", stanza.getNome());
@@ -153,9 +136,27 @@ public class StanzaServiceImpl implements StanzaService {
       throw new InvalidValueException("ufficioId", stanza.getUfficioId());
   }
 
+  /** Controlla se l'id passato è nullo o minore di 0 */
   private void checkId(Long id) throws InvalidValueException {
     if (id == null || id < 0)
       throw new InvalidValueException("id", id);
+  }
+
+  /** Controlla se la stanza con l'id passato esiste e la ritorna */
+  private Stanza takeStanza(Long id) throws MissingValueException {
+    Optional<Stanza> stanzaOptional = stanzaRepository.findById(id);
+
+    if (stanzaOptional.isEmpty())
+      throw new MissingValueException(NOME_ENTITA, id);
+    return stanzaOptional.get();
+  }
+
+  /** Controlla se l'ufficio con l'id passato esiste e lo ritorna */
+  private Ufficio takeUfficio(Long idUfficio) throws MissingValueException {
+    Optional<Ufficio> ufficioOptional = ufficioRepository.findById(idUfficio);
+    if (ufficioOptional.isEmpty())
+      throw new MissingValueException("Ufficio", idUfficio);
+    return ufficioOptional.get();
   }
 
 }

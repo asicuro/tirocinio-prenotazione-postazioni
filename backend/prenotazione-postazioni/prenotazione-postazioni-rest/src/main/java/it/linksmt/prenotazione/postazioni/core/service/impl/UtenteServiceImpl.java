@@ -29,12 +29,7 @@ public class UtenteServiceImpl implements UtenteService {
 
     checkId(id);
 
-    Optional<Utente> utenteOptional = utenteRepository.findById(id);
-
-    if (utenteOptional.isEmpty())
-      throw new MissingValueException(NOME_ENTITA, id);
-
-    return utenteConverter.toDto(utenteOptional.get());
+    return utenteConverter.toDto(takeUser(id));
 
   }
 
@@ -93,6 +88,7 @@ public class UtenteServiceImpl implements UtenteService {
     return utenteRepository.count() == 0;
   }
 
+  /** Controlla se l'Utente è presente nel DB */
   @Override
   public boolean isPresent(String username, String password) throws InvalidValueException {
 
@@ -105,6 +101,7 @@ public class UtenteServiceImpl implements UtenteService {
                             .isEmpty();
   }
 
+  /** Controlla se i campi del DTO non sono nulli */
   private void validateDto(UtenteDto utenteDto) throws InvalidValueException {
     if (utenteDto.getUsername() == null)
       throw new InvalidValueException("username", utenteDto.getId());
@@ -116,9 +113,19 @@ public class UtenteServiceImpl implements UtenteService {
       throw new InvalidValueException("ruolo", utenteDto.getRuolo());
   }
 
+  /** Controlla se l'id passato è nullo o minore di 0 */
   private void checkId(Long id) throws InvalidValueException {
     if (id == null || id < 0)
       throw new InvalidValueException("id", id);
+  }
+
+  /** Controlla se l'utente con l'id passato esiste e lo ritorna */
+  private Utente takeUser(Long id) throws MissingValueException {
+    Optional<Utente> utenteOptional = utenteRepository.findById(id);
+
+    if (utenteOptional.isEmpty())
+      throw new MissingValueException(NOME_ENTITA, id);
+    return utenteOptional.get();
   }
 
 }
