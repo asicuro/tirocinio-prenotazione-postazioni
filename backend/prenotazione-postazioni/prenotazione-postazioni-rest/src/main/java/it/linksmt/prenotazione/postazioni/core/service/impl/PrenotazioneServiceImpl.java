@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import it.linksmt.prenotazione.postazioni.core.converter.PostazioneConverter;
 import it.linksmt.prenotazione.postazioni.core.converter.PrenotazioneConverter;
 import it.linksmt.prenotazione.postazioni.core.dto.PrenotazioneDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
@@ -34,6 +35,9 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 
 	@Autowired
 	UtenteRepository utenteRepository;
+
+	@Autowired
+	PostazioneConverter postazioneConverter;
 
 	public PrenotazioneDto findPrenotazioneById(Long id) throws InvalidValueException, MissingValueException {
 
@@ -167,9 +171,13 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 	}
 
 	@Override
-	public List<PrenotazioneDto> findPrenotazioniByUserId(Long id) throws InvalidValueException {
+	public List<PrenotazioneDto> findPrenotazioniByUserId(Long id) throws InvalidValueException, MissingValueException {
 
 		List<PrenotazioneDto> prenotazioniUtente = new ArrayList<>();
+
+		if (prenotazioneRepository.findAll() == null) {
+			throw new MissingValueException("Prenotazioni", id);
+		}
 
 		if (id == null || id < 0) {
 			throw new InvalidValueException("id", id);

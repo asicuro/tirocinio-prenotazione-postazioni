@@ -27,6 +27,6 @@ public interface PrenotazioneService {
 
 	boolean controlloUserPrenotazione(Date data, Long id) throws InvalidValueException, MissingValueException;
 
-	public List<PrenotazioneDto> findPrenotazioniByUserId(Long id) throws InvalidValueException;
+	public List<PrenotazioneDto> findPrenotazioniByUserId(Long id) throws InvalidValueException, MissingValueException;
 
 }

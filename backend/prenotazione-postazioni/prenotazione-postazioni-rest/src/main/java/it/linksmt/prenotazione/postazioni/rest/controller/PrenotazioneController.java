@@ -78,7 +78,7 @@ public class PrenotazioneController {
 
 	@GetMapping(value = "/prenotazioneutente/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<PrenotazioneDto>> prenotazioneUtente(@PathVariable(value = "id") Long id)
-			throws InvalidValueException {
+			throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(prenotazioneService.findPrenotazioniByUserId(id));
 	}
 
