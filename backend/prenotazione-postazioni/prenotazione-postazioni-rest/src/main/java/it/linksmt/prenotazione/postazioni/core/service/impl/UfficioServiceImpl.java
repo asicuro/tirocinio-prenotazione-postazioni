@@ -27,7 +27,8 @@ public class UfficioServiceImpl implements UfficioService {
   UfficioConverter ufficioConverter;
 
   @Override
-  public UfficioDto findUfficioById(Long id) throws InvalidValueException, MissingValueException {
+  public UfficioDto findUfficioById(Long id) throws InvalidValueException,
+  MissingValueException {
     if (id == null || id < 0) {
       throw new InvalidValueException("id", id);
     }
@@ -54,22 +55,21 @@ public class UfficioServiceImpl implements UfficioService {
   }
 
   @Override
-  public UfficioDto updateUfficio(UfficioDto ufficioDto, Long requestId) throws InvalidValueException, MissingValueException {
-	if (ufficioDto.getId() == null || ufficioDto.getId() < 0)
-		throw new InvalidValueException("id", ufficioDto.getId());
-	
-	Optional<Ufficio> ufficiOptional = ufficioRepository.findById(ufficioDto.getId());
-	
-	if(ufficiOptional.isEmpty())
-	  throw new MissingValueException("Ufficio", ufficioDto.getId());	
-	
-    if(ufficioDto.getIndirizzo() == null) {
+  public UfficioDto updateUfficio(UfficioDto ufficioDto, Long requestId) throws InvalidValueException,
+  MissingValueException {
+    if (ufficioDto.getId() == null || ufficioDto.getId() < 0) throw new InvalidValueException("id", ufficioDto.getId());
+
+    Optional < Ufficio > ufficiOptional = ufficioRepository.findById(ufficioDto.getId());
+
+    if (ufficiOptional.isEmpty()) throw new MissingValueException("Ufficio", ufficioDto.getId());
+
+    if (ufficioDto.getIndirizzo() == null) {
       throw new InvalidValueException("indirizzo", ufficioDto.getIndirizzo());
     }
-    if(ufficioDto.getNomeUfficio() == null) {
+    if (ufficioDto.getNomeUfficio() == null) {
       throw new InvalidValueException("nomeUfficio", ufficioDto.getNomeUfficio());
     }
-    
+
     ufficioDto.setCreateDate(ufficiOptional.get().getCreateDate());
     ufficioDto.setCreateUserId(ufficiOptional.get().getCreateUserId());
     ufficioDto.setEditDate(new Date());
@@ -78,28 +78,30 @@ public class UfficioServiceImpl implements UfficioService {
   }
 
   @Override
-  public boolean removeUfficioById(Long id) throws InvalidValueException, MissingValueException, NestedEntityException {
+  public boolean removeUfficioById(Long id) throws InvalidValueException,
+  MissingValueException,
+  NestedEntityException {
     if (id == null || id < 0) {
       throw new InvalidValueException("id", id);
     }
-    
-    Optional<Ufficio> ufficio = ufficioRepository.findById(id);
-    
-    if(ufficio.isEmpty()) {
+
+    Optional < Ufficio > ufficio = ufficioRepository.findById(id);
+
+    if (ufficio.isEmpty()) {
       throw new MissingValueException("Ufficio", id);
     }
-    
-    if (!(ufficio.get().getStanze().isEmpty() )) {
-    	throw new NestedEntityException("Ufficio", id);
+
+    if (! (ufficio.get().getStanze().isEmpty())) {
+      throw new NestedEntityException("Ufficio", id);
     }
     ufficioRepository.deleteById(id);
-    return !ufficioRepository.existsById(id);
+    return ! ufficioRepository.existsById(id);
 
   }
 
   @Override
   public List < UfficioDto > getUffici() {
-    List < UfficioDto > uffici = new ArrayList < > ();
+    List < UfficioDto > uffici = new ArrayList < >();
     for (Ufficio ufficio: ufficioRepository.findAll()) {
       uffici.add(ufficioConverter.toDto(ufficio));
     }
@@ -107,8 +109,10 @@ public class UfficioServiceImpl implements UfficioService {
   }
 
   @Override
-  public boolean removeUfficioall() throws InvalidValueException, MissingValueException {
-	  ufficioRepository.deleteAll();
-	  return ufficioRepository.count() == 0;
-}
+  public boolean removeUfficioall() throws InvalidValueException,
+  MissingValueException {
+    ufficioRepository.deleteAll();
+    return ufficioRepository.count() == 0;
+  }
+  
 }
