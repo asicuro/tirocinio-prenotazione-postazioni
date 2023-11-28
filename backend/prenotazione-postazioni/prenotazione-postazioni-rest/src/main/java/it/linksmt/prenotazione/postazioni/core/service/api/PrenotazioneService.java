@@ -14,7 +14,7 @@ public interface PrenotazioneService {
 	public PrenotazioneDto savePrenotazione(PrenotazioneDto prenotazioneDto, Long id)
 			throws InvalidValueException, MissingValueException;
 
-	public List<PrenotazioneDto> getPrenotazione();
+	public List<PrenotazioneDto> getPrenotazioni();
 
 	public boolean removePrenotazione(Long id) throws InvalidValueException, MissingValueException;
 
