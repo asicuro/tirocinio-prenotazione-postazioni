@@ -70,7 +70,7 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 	}
 
 	@Override
-	public List<PrenotazioneDto> getPrenotazione() {
+	public List<PrenotazioneDto> getPrenotazioni() {
 
 		List<PrenotazioneDto> prenotazioni = new ArrayList<>();
 

@@ -42,7 +42,7 @@ public class PrenotazioneController {
 
 	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<PrenotazioneDto>> getPrenotazioni() {
-		return ResponseEntity.ok(prenotazioneService.getPrenotazione());
+		return ResponseEntity.ok(prenotazioneService.getPrenotazioni());
 	}
 
 	@DeleteMapping(value = "/{id}")
