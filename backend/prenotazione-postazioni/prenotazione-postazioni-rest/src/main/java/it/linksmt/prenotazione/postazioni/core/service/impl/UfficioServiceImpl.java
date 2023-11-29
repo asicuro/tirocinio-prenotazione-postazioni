@@ -142,18 +142,18 @@ public class UfficioServiceImpl implements UfficioService {
   public List <UfficioDto> filter(UfficioFilter filtro) throws MissingValueException{
   CriteriaBuilder cb = entityManager.getCriteriaBuilder();
   CriteriaQuery<Prenotazione> criteriaQuery = cb.createQuery(Prenotazione.class);
-  Root<Prenotazione> Root = criteriaQuery.from(Prenotazione.class);
+  Root<Prenotazione> root = criteriaQuery.from(Prenotazione.class);
   List <Predicate> predicates = new ArrayList<>();
   
   if (filtro.getNomeUfficio() != null) {
-	  Predicate findByNome = cb.like(Root.get("postazione")
+	  Predicate findByNome = cb.like(root.get("postazione")
 			  								.get("stanza")
 			  								.get("ufficio").get("nomeUfficio"),
 			  								"%" + filtro.getNomeUfficio() + "%");
 	  predicates.add(findByNome);
   	}
   if (filtro.getIndirizzo() != null) {
-	  Predicate findByIndirizzo = cb.like(Root.get("postazione")
+	  Predicate findByIndirizzo = cb.like(root.get("postazione")
 				.get("stanza")
 				.get("ufficio").get("indirizzo"),"%" + filtro.getIndirizzo() + "%");
 	  predicates.add(findByIndirizzo);
@@ -162,7 +162,7 @@ public class UfficioServiceImpl implements UfficioService {
       	Long userId = filtro.getUserId();
       	Optional<Utente> utentes = utenteRepository.findById(userId);
       	if (utentes.isEmpty()) {throw new MissingValueException("Utente", userId);}
-      	Predicate findIfUtenteHasPrenotazioni  = cb.equal(Root.get("utente"),utentes.get());
+      	Predicate findIfUtenteHasPrenotazioni  = cb.equal(root.get("utente"),utentes.get());
       	predicates.add(findIfUtenteHasPrenotazioni );
   }
 
