@@ -1,6 +1,7 @@
 package it.linksmt.prenotazione.postazioni.core.service.impl;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -191,6 +192,7 @@ public class UtenteServiceImpl implements UtenteService {
                 .map(Prenotazione::getUtente)
                 .distinct()
                 .map(utenteConverter::toDto)
+                .sorted(Comparator.comparingLong(UtenteDto::getId))
                 .collect(Collectors.toList());
   }
 
