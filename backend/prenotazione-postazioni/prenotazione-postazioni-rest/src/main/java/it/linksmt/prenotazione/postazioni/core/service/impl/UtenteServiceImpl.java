@@ -115,6 +115,7 @@ public class UtenteServiceImpl implements UtenteService {
     return utenteRepository.count() == 0;
   }
 
+  @Override
   public List<UtenteDto> filter(UtenteFilter filter) throws MissingValueException {
 
     CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
