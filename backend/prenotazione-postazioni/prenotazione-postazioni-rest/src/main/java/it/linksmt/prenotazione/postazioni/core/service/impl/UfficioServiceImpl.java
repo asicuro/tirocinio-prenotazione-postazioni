@@ -22,8 +22,14 @@ import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.NestedEntityException;
 import it.linksmt.prenotazione.postazioni.core.filters.UfficioFilter;
+import it.linksmt.prenotazione.postazioni.core.model.Postazione;
+import it.linksmt.prenotazione.postazioni.core.model.Prenotazione;
+import it.linksmt.prenotazione.postazioni.core.model.Stanza;
 import it.linksmt.prenotazione.postazioni.core.model.Ufficio;
+import it.linksmt.prenotazione.postazioni.core.model.Utente;
+import it.linksmt.prenotazione.postazioni.core.repository.PrenotazioneRepository;
 import it.linksmt.prenotazione.postazioni.core.repository.UfficioRepository;
+import it.linksmt.prenotazione.postazioni.core.repository.UtenteRepository;
 import it.linksmt.prenotazione.postazioni.core.service.api.UfficioService;
 
 @Service
@@ -34,6 +40,12 @@ public class UfficioServiceImpl implements UfficioService {
 
   @Autowired
   UfficioConverter ufficioConverter;
+  
+  @Autowired
+  UtenteRepository utenteRepository;
+  
+  @Autowired
+  PrenotazioneRepository prenotazioneRepository;
   
   @Autowired
   EntityManager entityManager;
@@ -127,24 +139,41 @@ public class UfficioServiceImpl implements UfficioService {
     return ufficioRepository.count() == 0;
   }
   
-  public List <UfficioDto> filter(UfficioFilter filtro){
+  public List <UfficioDto> filter(UfficioFilter filtro) throws MissingValueException{
   CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-  CriteriaQuery<Ufficio> criteriaQuery = cb.createQuery(Ufficio.class);
-  Root<Ufficio> roots = criteriaQuery.from(Ufficio.class);
+  CriteriaQuery<Prenotazione> criteriaQuery = cb.createQuery(Prenotazione.class);
+  Root<Prenotazione> Root = criteriaQuery.from(Prenotazione.class);
   List <Predicate> predicates = new ArrayList<>();
   
   if (filtro.getNomeUfficio() != null) {
-	  Predicate findByNome = cb.like(roots.get("nomeUfficio"), "%" + filtro.getNomeUfficio() + "%");
+	  Predicate findByNome = cb.like(Root.get("postazione")
+			  								.get("stanza")
+			  								.get("ufficio").get("nomeUfficio"),
+			  								"%" + filtro.getNomeUfficio() + "%");
 	  predicates.add(findByNome);
   	}
   if (filtro.getIndirizzo() != null) {
-	  Predicate findByIndirizzo = cb.like(roots.get("indirizzo"), "%" + filtro.getIndirizzo() + "%");
+	  Predicate findByIndirizzo = cb.like(Root.get("postazione")
+				.get("stanza")
+				.get("ufficio").get("indirizzo"),"%" + filtro.getIndirizzo() + "%");
 	  predicates.add(findByIndirizzo);
   	}
-  
+  if (filtro.getUserId() != null) {
+      	Long userId = filtro.getUserId();
+      	Optional<Utente> utentes = utenteRepository.findById(userId);
+      	if (utentes.isEmpty()) {throw new MissingValueException("Utente", userId);}
+      	Predicate findIfUtenteHasPrenotazioni  = cb.equal(Root.get("utente"),utentes.get());
+      	predicates.add(findIfUtenteHasPrenotazioni );
+  }
+
   criteriaQuery.where(cb.or(predicates.toArray(new Predicate[0])));
-  TypedQuery<Ufficio> query = entityManager.createQuery(criteriaQuery);
-  return query.getResultList().stream().map(ufficioConverter::toDto).collect(Collectors.toList());
+  TypedQuery<Prenotazione> query = entityManager.createQuery(criteriaQuery);
+  return query.getResultList().stream().map(Prenotazione::getPostazione)
+		  								.map(Postazione::getStanza)
+		  								.map(Stanza::getUfficio)
+		  								.distinct()
+		  								.map(ufficioConverter::toDto)
+		  								 .collect(Collectors.toList());
   
   }
   

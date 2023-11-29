@@ -22,5 +22,5 @@ public interface UfficioService {
 	
 	public boolean removeUfficioall() throws InvalidValueException, MissingValueException;
 	
-	public List <UfficioDto> filter(UfficioFilter filtro);
+	public List <UfficioDto> filter(UfficioFilter filtro) throws MissingValueException;
 }
