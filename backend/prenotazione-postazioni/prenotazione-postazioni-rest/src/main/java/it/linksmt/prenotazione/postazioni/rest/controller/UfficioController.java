@@ -18,6 +18,7 @@ import it.linksmt.prenotazione.postazioni.core.dto.UfficioDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.NestedEntityException;
+import it.linksmt.prenotazione.postazioni.core.filters.UfficioFilter;
 import it.linksmt.prenotazione.postazioni.core.service.api.UfficioService;
 import it.linksmt.prenotazione.postazioni.rest.constants.PrenotazionePostzioniConst;
 
@@ -33,7 +34,7 @@ public class UfficioController {
 		return ResponseEntity.ok(ufficioService.findUfficioById(id));
 	}
 
-	@PostMapping(path = "/save/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path= "/save/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UfficioDto> saveUfficio(@RequestBody UfficioDto ufficioDto,@PathVariable("id") Long id) throws InvalidValueException {
 		return ResponseEntity.ok(ufficioService.saveUfficio(ufficioDto, id));
 	}
@@ -58,5 +59,9 @@ public class UfficioController {
 	public boolean removeAll() throws InvalidValueException, MissingValueException {
         return ufficioService.removeUfficioall();
     }
+	@GetMapping(value = "/filter")
+	public ResponseEntity<List<UfficioDto>> filtraUffici(@RequestBody UfficioFilter ufficioFilter) throws InvalidValueException, MissingValueException{
+		return ResponseEntity.ok(ufficioService.filter(ufficioFilter));
+	}
 	
 }

@@ -6,6 +6,7 @@ import it.linksmt.prenotazione.postazioni.core.dto.UfficioDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.NestedEntityException;
+import it.linksmt.prenotazione.postazioni.core.filters.UfficioFilter;
 
 public interface UfficioService {
 
@@ -21,5 +22,5 @@ public interface UfficioService {
 	
 	public boolean removeUfficioall() throws InvalidValueException, MissingValueException;
 	
-	
+	public List <UfficioDto> filter(UfficioFilter filtro);
 }

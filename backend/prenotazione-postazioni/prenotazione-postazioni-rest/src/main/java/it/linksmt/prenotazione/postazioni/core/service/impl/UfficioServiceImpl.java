@@ -4,6 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +21,7 @@ import it.linksmt.prenotazione.postazioni.core.dto.UfficioDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.NestedEntityException;
+import it.linksmt.prenotazione.postazioni.core.filters.UfficioFilter;
 import it.linksmt.prenotazione.postazioni.core.model.Ufficio;
 import it.linksmt.prenotazione.postazioni.core.repository.UfficioRepository;
 import it.linksmt.prenotazione.postazioni.core.service.api.UfficioService;
@@ -25,6 +34,9 @@ public class UfficioServiceImpl implements UfficioService {
 
   @Autowired
   UfficioConverter ufficioConverter;
+  
+  @Autowired
+  EntityManager entityManager;
 
   @Override
   public UfficioDto findUfficioById(Long id) throws InvalidValueException,
@@ -114,5 +126,27 @@ public class UfficioServiceImpl implements UfficioService {
     ufficioRepository.deleteAll();
     return ufficioRepository.count() == 0;
   }
+  
+  public List <UfficioDto> filter(UfficioFilter filtro){
+  CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+  CriteriaQuery<Ufficio> criteriaQuery = cb.createQuery(Ufficio.class);
+  Root<Ufficio> roots = criteriaQuery.from(Ufficio.class);
+  List <Predicate> predicates = new ArrayList<>();
+  
+  if (filtro.getNomeUfficio() != null) {
+	  Predicate findByNome = cb.like(roots.get("nomeUfficio"), "%" + filtro.getNomeUfficio() + "%");
+	  predicates.add(findByNome);
+  	}
+  if (filtro.getIndirizzo() != null) {
+	  Predicate findByIndirizzo = cb.like(roots.get("indirizzo"), "%" + filtro.getIndirizzo() + "%");
+	  predicates.add(findByIndirizzo);
+  	}
+  
+  criteriaQuery.where(cb.or(predicates.toArray(new Predicate[0])));
+  TypedQuery<Ufficio> query = entityManager.createQuery(criteriaQuery);
+  return query.getResultList().stream().map(ufficioConverter::toDto).collect(Collectors.toList());
+  
+  }
+  
   
 }
