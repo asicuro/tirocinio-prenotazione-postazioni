@@ -166,7 +166,7 @@ public class UfficioServiceImpl implements UfficioService {
       	predicates.add(findIfUtenteHasPrenotazioni );
   }
 
-  criteriaQuery.where(cb.or(predicates.toArray(new Predicate[0])));
+  criteriaQuery.where(cb.and(predicates.toArray(new Predicate[0])));
   TypedQuery<Prenotazione> query = entityManager.createQuery(criteriaQuery);
   return query.getResultList().stream().map(Prenotazione::getPostazione)
 		  								.map(Postazione::getStanza)
