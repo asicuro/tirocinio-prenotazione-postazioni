@@ -35,22 +35,22 @@ public class UtenteServiceImpl implements UtenteService {
   private static final String NOME_ENTITA = "Utente";
 
   @Autowired
-  UtenteRepository utenteRepository;
+  private UtenteRepository utenteRepository;
 
   @Autowired
-  PostazioneRepository postazioneRepository;
+  private PostazioneRepository postazioneRepository;
 
   @Autowired
-  StanzaRepository stanzaRepository;
+  private StanzaRepository stanzaRepository;
 
   @Autowired
-  UfficioRepository ufficioRepository;
+  private UfficioRepository ufficioRepository;
 
   @Autowired
-  UtenteConverter utenteConverter;
+  private UtenteConverter utenteConverter;
 
   @Autowired
-  EntityManager entityManager;
+  private EntityManager entityManager;
 
   @Override
   public UtenteDto findUtenteById(Long id) throws MissingValueException, InvalidValueException {

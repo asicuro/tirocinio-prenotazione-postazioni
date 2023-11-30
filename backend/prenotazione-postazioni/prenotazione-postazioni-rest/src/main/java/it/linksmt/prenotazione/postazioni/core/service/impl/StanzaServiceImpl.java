@@ -1,9 +1,18 @@
 package it.linksmt.prenotazione.postazioni.core.service.impl;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import it.linksmt.prenotazione.postazioni.core.converter.StanzaConverter;
@@ -11,10 +20,15 @@ import it.linksmt.prenotazione.postazioni.core.dto.StanzaDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.NestedEntityException;
+import it.linksmt.prenotazione.postazioni.core.filters.StanzaFilter;
+import it.linksmt.prenotazione.postazioni.core.model.Postazione;
+import it.linksmt.prenotazione.postazioni.core.model.Prenotazione;
 import it.linksmt.prenotazione.postazioni.core.model.Stanza;
 import it.linksmt.prenotazione.postazioni.core.model.Ufficio;
+import it.linksmt.prenotazione.postazioni.core.model.Utente;
 import it.linksmt.prenotazione.postazioni.core.repository.StanzaRepository;
 import it.linksmt.prenotazione.postazioni.core.repository.UfficioRepository;
+import it.linksmt.prenotazione.postazioni.core.repository.UtenteRepository;
 import it.linksmt.prenotazione.postazioni.core.service.api.StanzaService;
 
 @Service
@@ -26,10 +40,16 @@ public class StanzaServiceImpl implements StanzaService {
   private StanzaRepository stanzaRepository;
 
   @Autowired
+  private UtenteRepository utenteRepository;
+
+  @Autowired
   private StanzaConverter stanzaConverter;
 
   @Autowired
   private UfficioRepository ufficioRepository;
+
+  @Autowired
+  private EntityManager entityManager;
 
   @Override
   public StanzaDto findStanzaById(Long id) throws InvalidValueException, MissingValueException {
@@ -113,6 +133,68 @@ public class StanzaServiceImpl implements StanzaService {
     return stanze.parallelStream()
                  .map(stanzaConverter::toDto)
                  .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<StanzaDto> filter(StanzaFilter filter) throws MissingValueException {
+
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Prenotazione> criteriaQuery = criteriaBuilder.createQuery(Prenotazione.class);
+    List<Predicate> predicates = new ArrayList<>();
+    Root<Prenotazione> prenotazioneRoot = criteriaQuery.from(Prenotazione.class);
+    Join<Prenotazione, Postazione> postazioneJoin = prenotazioneRoot.join("postazione");
+    Join<Postazione, Stanza> stanzaJoin = postazioneJoin.join("stanza");
+
+
+    if (filter.getName() != null) {
+
+      Predicate namePredicate =
+          criteriaBuilder.like(stanzaJoin.get("name"), "%" + filter.getName() + "%");
+      predicates.add(namePredicate);
+    }
+
+    if (filter.getWidth() != null && filter.getHeight() != null) {
+
+      Predicate dimensionPredicate = criteriaBuilder.and(
+          criteriaBuilder.equal(stanzaJoin.get("width"), filter.getWidth()),
+          criteriaBuilder.equal(stanzaJoin.get("height"), filter.getHeight())
+      );
+      predicates.add(dimensionPredicate);
+    }
+
+    if (filter.getUtenteId() != null) {
+
+      Long utenteId = filter.getUtenteId();
+      Optional<Utente> utenteOptional = utenteRepository.findById(utenteId);
+
+      if (utenteOptional.isEmpty())
+        throw new MissingValueException("Utente", utenteId);
+
+      Predicate utentePredicate =
+          criteriaBuilder.equal(prenotazioneRoot.get("utente"), utenteOptional.get());
+      predicates.add(utentePredicate);
+    }
+
+    if (filter.getCreateUserId() != null) {
+
+      Predicate createUserPredicate =
+          criteriaBuilder.equal(stanzaJoin.get("createUserId"), filter.getCreateUserId());
+      predicates.add(createUserPredicate);
+    }
+
+    criteriaQuery.where(criteriaBuilder.and(predicates.toArray(new Predicate[0])));
+
+    TypedQuery<Prenotazione> prenotazioneTypedQuery = entityManager.createQuery(criteriaQuery);
+
+    List<Prenotazione> prenotazioni = prenotazioneTypedQuery.getResultList();
+
+    return prenotazioni.stream()
+                       .map(Prenotazione::getPostazione)
+                       .map(Postazione::getStanza)
+                       .distinct()
+                       .map(stanzaConverter::toDto)
+                       .sorted(Comparator.comparingLong(StanzaDto::getId))
+                       .collect(Collectors.toList());
   }
 
   /** Controlla se i campi del DTO non sono nulli */
