@@ -10,6 +10,8 @@ public class UtenteFilter {
   private Long stanzaId;
   private Long postazioneId;
   private Long ufficioId;
+  private String username;
+  private String ruolo;
 
   public Date getDataPrenotazione() {
     return dataPrenotazione;
@@ -33,6 +35,14 @@ public class UtenteFilter {
 
   public Long getUfficioId() {
     return ufficioId;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public String getRuolo() {
+    return ruolo;
   }
 
 }
