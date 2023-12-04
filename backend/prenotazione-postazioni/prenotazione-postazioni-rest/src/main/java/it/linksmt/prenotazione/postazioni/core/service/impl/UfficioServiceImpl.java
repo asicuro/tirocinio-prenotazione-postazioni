@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -139,25 +140,30 @@ public class UfficioServiceImpl implements UfficioService {
     return ufficioRepository.count() == 0;
   }
   
+  @Override  
   public List <UfficioDto> filter(UfficioFilter filtro) throws MissingValueException{
   CriteriaBuilder cb = entityManager.getCriteriaBuilder();
   CriteriaQuery<Prenotazione> criteriaQuery = cb.createQuery(Prenotazione.class);
   Root<Prenotazione> root = criteriaQuery.from(Prenotazione.class);
   List <Predicate> predicates = new ArrayList<>();
+  Join<Prenotazione, Postazione> postazioneJoin = root.join("postazione");
+  Join<Postazione, Stanza> stanzaJoin = postazioneJoin.join("stanza");  
+  Join<Stanza, Ufficio> ufficioJoin = stanzaJoin.join("ufficio");
   
   if (filtro.getNomeUfficio() != null) {
-	  Predicate findByNome = cb.like(root.get("postazione")
-			  								.get("stanza")
-			  								.get("ufficio").get("nomeUfficio"),
+	  Predicate findByNome = cb.like(ufficioJoin.get("nomeUfficio"),
 			  								"%" + filtro.getNomeUfficio() + "%");
 	  predicates.add(findByNome);
   	}
   if (filtro.getIndirizzo() != null) {
-	  Predicate findByIndirizzo = cb.like(root.get("postazione")
-				.get("stanza")
-				.get("ufficio").get("indirizzo"),"%" + filtro.getIndirizzo() + "%");
+	  Predicate findByIndirizzo = cb.like(ufficioJoin.get("indirizzo"),"%" + filtro.getIndirizzo() + "%");
 	  predicates.add(findByIndirizzo);
   	}
+  if (filtro.getCreate_user_id() != null) {
+	  Predicate findByCreateUserId = cb.equal(ufficioJoin.get("createUserId"), filtro.getCreate_user_id());
+	  predicates.add(findByCreateUserId);
+  }
+  
   if (filtro.getUserId() != null) {
       	Long userId = filtro.getUserId();
       	Optional<Utente> utentes = utenteRepository.findById(userId);
@@ -167,13 +173,18 @@ public class UfficioServiceImpl implements UfficioService {
   }
 
   criteriaQuery.where(cb.and(predicates.toArray(new Predicate[0])));
-  TypedQuery<Prenotazione> query = entityManager.createQuery(criteriaQuery);
-  return query.getResultList().stream().map(Prenotazione::getPostazione)
-		  								.map(Postazione::getStanza)
-		  								.map(Stanza::getUfficio)
-		  								.distinct()
-		  								.map(ufficioConverter::toDto)
-		  								 .collect(Collectors.toList());
+
+  TypedQuery<Prenotazione> prenotazioneTypedQuery = entityManager.createQuery(criteriaQuery);
+
+  List<Prenotazione> prenotazioni = prenotazioneTypedQuery.getResultList();
+  
+  return prenotazioni.stream()
+		  .map(Prenotazione::getPostazione)
+			.map(Postazione::getStanza)
+			.map(Stanza::getUfficio)
+			.distinct()
+			.map(ufficioConverter::toDto)
+			 .collect(Collectors.toList());
   
   }
   

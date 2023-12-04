@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,18 +124,17 @@ public class UtenteServiceImpl implements UtenteService {
     CriteriaQuery<Prenotazione> criteriaQuery = criteriaBuilder.createQuery(Prenotazione.class);
     List<Predicate> predicates = new ArrayList<>();
     Root<Prenotazione> prenotazioneRoot = criteriaQuery.from(Prenotazione.class);
+    Join<Utente, Prenotazione> utenteJoin = prenotazioneRoot.join("utente");
 
     if (filter.getDataPrenotazione() != null) {
-      Predicate giornoPredicate = criteriaBuilder.equal(
-          prenotazioneRoot.get("dataPrenotazione"),
-          filter.getDataPrenotazione()
-      );
+      Predicate giornoPredicate =
+          criteriaBuilder.equal(utenteJoin.get("dataPrenotazione"), filter.getDataPrenotazione());
       predicates.add(giornoPredicate);
     }
 
     if (filter.getInizioPeriodo() != null && filter.getFinePeriodo() != null) {
       Predicate periodoPredicate = criteriaBuilder.between(
-          prenotazioneRoot.get("dataPrenotazione"),
+          utenteJoin.get("dataPrenotazione"),
           filter.getInizioPeriodo(),
           filter.getFinePeriodo()
       );
@@ -149,7 +149,7 @@ public class UtenteServiceImpl implements UtenteService {
         throw new MissingValueException("Postazione", postazioneId);
 
       Predicate postazionePredicate =
-          criteriaBuilder.equal(prenotazioneRoot.get("postazione"), postazioneOptional.get());
+          criteriaBuilder.equal(utenteJoin.get("postazione"), postazioneOptional.get());
       predicates.add(postazionePredicate);
     }
 
@@ -161,8 +161,8 @@ public class UtenteServiceImpl implements UtenteService {
         throw new MissingValueException("Stanza", stanzaId);
 
       Predicate stanzaPredicate = criteriaBuilder.equal(
-          prenotazioneRoot.get("postazione")
-                          .get("stanza"),
+          utenteJoin.get("postazione")
+                    .get("stanza"),
           stanzaOptional.get()
       );
       predicates.add(stanzaPredicate);
@@ -176,12 +176,26 @@ public class UtenteServiceImpl implements UtenteService {
         throw new MissingValueException("Ufficio", ufficioId);
 
       Predicate ufficioPredicate = criteriaBuilder.equal(
-          prenotazioneRoot.get("postazione")
-                          .get("stanza")
-                          .get("ufficio"),
+          utenteJoin.get("postazione")
+                    .get("stanza")
+                    .get("ufficio"),
           ufficiOptional.get()
       );
       predicates.add(ufficioPredicate);
+    }
+
+    if (filter.getUsername() != null) {
+
+      Predicate usernamePredicate =
+          criteriaBuilder.like(utenteJoin.get("username"), "%" + filter.getUsername() + "%");
+      predicates.add(usernamePredicate);
+    }
+
+    if (filter.getRuolo() != null) {
+
+      Predicate ruoloPredicate =
+          criteriaBuilder.like(utenteJoin.get("ruolo"), "%" + filter.getRuolo() + "%");
+      predicates.add(ruoloPredicate);
     }
 
     criteriaQuery.where(criteriaBuilder.and(predicates.toArray(new Predicate[0])));
