@@ -49,6 +49,7 @@ public class StanzaController {
 	}
 
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('admin')")
 	public ResponseEntity<Boolean> removeStanza(@PathVariable("id") Long id)
 			throws InvalidValueException, MissingValueException, NestedEntityException {
 		return ResponseEntity.ok(stanzaService.removeStanza(id));
@@ -56,6 +57,7 @@ public class StanzaController {
 
 	@PutMapping(value = "/update/{editUserId}", consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('admin')")
 	public ResponseEntity<StanzaDto> updateStanza(
 			@RequestBody StanzaDto stanzaDto, @PathVariable("editUserId") Long editUserId
 	) throws InvalidValueException, MissingValueException {
@@ -63,6 +65,7 @@ public class StanzaController {
 	}
 
 	@DeleteMapping(value = "/all")
+	@PreAuthorize("hasRole('admin')")
 	public boolean removeAll() {
 		return stanzaService.removeAll();
 	}
