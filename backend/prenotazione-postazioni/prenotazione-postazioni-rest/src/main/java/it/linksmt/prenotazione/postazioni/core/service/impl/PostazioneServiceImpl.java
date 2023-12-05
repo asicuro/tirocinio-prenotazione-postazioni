@@ -4,6 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +20,9 @@ import it.linksmt.prenotazione.postazioni.core.converter.PostazioneConverter;
 import it.linksmt.prenotazione.postazioni.core.dto.PostazioneDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
+import it.linksmt.prenotazione.postazioni.core.filters.PostazioneFilter;
 import it.linksmt.prenotazione.postazioni.core.model.Postazione;
+import it.linksmt.prenotazione.postazioni.core.model.Prenotazione;
 import it.linksmt.prenotazione.postazioni.core.model.Stanza;
 import it.linksmt.prenotazione.postazioni.core.repository.PostazioneRepository;
 import it.linksmt.prenotazione.postazioni.core.repository.StanzaRepository;
@@ -29,6 +39,9 @@ public class PostazioneServiceImpl implements PostazioneService {
 
 	@Autowired
 	StanzaRepository stanzaRepository;
+
+	@Autowired
+	EntityManager entityManager;
 
 	public PostazioneDto findPostazioneById(Long id) throws InvalidValueException, MissingValueException {
 
@@ -93,7 +106,8 @@ public class PostazioneServiceImpl implements PostazioneService {
 	}
 
 	@Override
-	public PostazioneDto updatePostazione(PostazioneDto postazioneDto, Long id) throws InvalidValueException, MissingValueException {
+	public PostazioneDto updatePostazione(PostazioneDto postazioneDto, Long id)
+			throws InvalidValueException, MissingValueException {
 
 		Optional<Postazione> postaOptional = postazioneRepository.findById(postazioneDto.getId());
 
@@ -133,7 +147,8 @@ public class PostazioneServiceImpl implements PostazioneService {
 	}
 
 	@Override
-	public List<PostazioneDto> getPostazioniByStanzaId(Long stanzaId) throws InvalidValueException, MissingValueException {
+	public List<PostazioneDto> getPostazioniByStanzaId(Long stanzaId)
+			throws InvalidValueException, MissingValueException {
 
 		if (stanzaId == null || stanzaId < 0) {
 			throw new InvalidValueException("stanzaId", stanzaId);
@@ -153,5 +168,43 @@ public class PostazioneServiceImpl implements PostazioneService {
 		}
 
 		return postazioni;
+	}
+
+	@Override
+	public List<PostazioneDto> filter(PostazioneFilter filtro) throws MissingValueException {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Prenotazione> prenotazioneQuery = cb.createQuery(Prenotazione.class);
+		CriteriaQuery<Postazione> postazioneQuery = cb.createQuery(Postazione.class);
+		Root<Prenotazione> prenotazioneRoot = prenotazioneQuery.from(Prenotazione.class);
+		Root<Postazione> postazioneRoot = postazioneQuery.from(Postazione.class);
+		List<Predicate> postazionePredicates = new ArrayList<>();
+
+		if (filtro.getCreateUserId() > 0 && filtro.getCreateUserId() != null) {
+			Long postazioneId = filtro.getCreateUserId();
+			Optional<Postazione> postazioneOptional = postazioneRepository.findById(postazioneId);
+
+			if (postazioneOptional.isEmpty())
+				throw new MissingValueException("Postazione", postazioneId);
+
+			Predicate postazionePredicate = cb.equal(prenotazioneRoot.get("postazione"), postazioneOptional.get());
+			postazionePredicates.add(postazionePredicate);
+		}
+
+		if (filtro.getCreateDate() != null) {
+			Predicate findByCreateDate = cb.equal(postazioneRoot.get("createDate"), filtro.getCreateDate());
+			postazionePredicates.add(findByCreateDate);
+		}
+
+		if (filtro.getWidth() < 0 && filtro.getLength() < 0) {
+
+			Predicate dimensionPredicate = cb.and(cb.equal(postazioneRoot.get("width"), filtro.getWidth()),
+					cb.equal(postazioneRoot.get("length"), filtro.getLength()));
+			postazionePredicates.add(dimensionPredicate);
+		}
+		postazioneQuery.where(cb.and(postazionePredicates.toArray(new Predicate[0])));
+		TypedQuery<Postazione> query = entityManager.createQuery(postazioneQuery);
+
+		return query.getResultList().stream().distinct().map(postazioneConverter::toDto).collect(Collectors.toList());
+
 	}
 }

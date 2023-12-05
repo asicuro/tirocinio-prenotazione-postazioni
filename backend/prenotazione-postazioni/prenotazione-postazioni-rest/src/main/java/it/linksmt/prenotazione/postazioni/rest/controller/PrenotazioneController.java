@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +42,7 @@ public class PrenotazioneController {
 	}
 
 	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('admin')")
 	public ResponseEntity<List<PrenotazioneDto>> getPrenotazioni() {
 		return ResponseEntity.ok(prenotazioneService.getPrenotazioni());
 	}
@@ -58,6 +60,7 @@ public class PrenotazioneController {
 	}
 
 	@DeleteMapping(value = "/all")
+	@PreAuthorize("hasRole('admin')")
 	public boolean removeAll() {
 		return prenotazioneService.removeAll();
 	}
