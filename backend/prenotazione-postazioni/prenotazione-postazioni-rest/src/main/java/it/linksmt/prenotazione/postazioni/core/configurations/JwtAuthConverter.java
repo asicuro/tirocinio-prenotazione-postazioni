@@ -20,8 +20,8 @@ import com.nimbusds.jwt.JWTClaimNames;
 @Component
 public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 
-	private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter =
-			new JwtGrantedAuthoritiesConverter();
+	private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter
+			= new JwtGrantedAuthoritiesConverter();
 
 	@Value("${jwt.auth.converter.principle-attribute}")
 	private String principleAttribute;
@@ -31,16 +31,13 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
 
 	@Override
 	public AbstractAuthenticationToken convert(@NonNull Jwt jwt) {
-		Collection<GrantedAuthority> authorities = Stream	.concat(
-																	jwtGrantedAuthoritiesConverter	.convert(
-																											jwt
-																									)
-																									.stream(),
-																	extractResourceRoles(
-																			jwt
-																	).stream()
-															)
-															.collect(Collectors.toSet());
+		Collection<GrantedAuthority> authorities
+				= Stream.concat(
+						jwtGrantedAuthoritiesConverter	.convert(jwt)
+														.stream(),
+						extractResourceRoles(jwt).stream()
+				)
+						.collect(Collectors.toSet());
 		return new JwtAuthenticationToken(jwt, authorities, getPrincipleClaimName(jwt));
 	}
 
@@ -52,6 +49,7 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
 		return jwt.getClaimAsString(claimName);
 	}
 
+	@SuppressWarnings("unchecked")
 	private Collection<? extends GrantedAuthority> extractResourceRoles(Jwt jwt) {
 		Map<String, Object> resourceAccess;
 		Map<String, Object> resource;

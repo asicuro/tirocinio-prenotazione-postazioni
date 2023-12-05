@@ -38,7 +38,8 @@ public class StanzaController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('admin')")
 	public ResponseEntity<StanzaDto> saveStanza(
-			@RequestBody StanzaDto stanzaDto, @PathVariable("createUserId") Long createUserId
+			@RequestBody StanzaDto stanzaDto,
+			@PathVariable("createUserId") Long createUserId
 	) throws InvalidValueException {
 		return ResponseEntity.ok(stanzaService.saveStanza(stanzaDto, createUserId));
 	}
@@ -59,7 +60,8 @@ public class StanzaController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('admin')")
 	public ResponseEntity<StanzaDto> updateStanza(
-			@RequestBody StanzaDto stanzaDto, @PathVariable("editUserId") Long editUserId
+			@RequestBody StanzaDto stanzaDto,
+			@PathVariable("editUserId") Long editUserId
 	) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(stanzaService.updateStanza(stanzaDto, editUserId));
 	}
@@ -77,6 +79,7 @@ public class StanzaController {
 	}
 
 	@GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('admin')")
 	public ResponseEntity<List<StanzaDto>> filter(@RequestBody StanzaFilter filter)
 			throws MissingValueException {
 		return ResponseEntity.ok(stanzaService.filter(filter));
