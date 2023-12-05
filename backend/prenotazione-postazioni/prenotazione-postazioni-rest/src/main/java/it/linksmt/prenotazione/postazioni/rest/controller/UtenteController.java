@@ -67,7 +67,8 @@ public class UtenteController {
 
 	@GetMapping(value = "/isPresent", produces = MediaType.APPLICATION_JSON_VALUE)
 	public boolean isPresent(
-			@RequestParam("username") String username, @RequestParam("password") String password
+			@RequestParam("username") String username,
+			@RequestParam("password") String password
 	) throws InvalidValueException {
 		return utenteService.isPresent(username, password);
 	}
