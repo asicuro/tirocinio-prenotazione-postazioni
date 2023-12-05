@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,11 +36,13 @@ public class UfficioController {
 	}
 
 	@PostMapping(path= "/save/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('admin')")
 	public ResponseEntity<UfficioDto> saveUfficio(@RequestBody UfficioDto ufficioDto,@PathVariable("id") Long id) throws InvalidValueException {
 		return ResponseEntity.ok(ufficioService.saveUfficio(ufficioDto, id));
 	}
 
 	@DeleteMapping(value = "/{id}")
+	@PreAuthorize("hasRole('admin')")
 	public boolean removeUfficio(@PathVariable("id") Long id) throws InvalidValueException, MissingValueException, NestedEntityException {
 		return ufficioService.removeUfficioById(id);
 	}
@@ -51,15 +54,18 @@ public class UfficioController {
 	}
 
 	@PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('admin')")
 	public ResponseEntity<UfficioDto> updateUfficio(@RequestBody UfficioDto ufficioDto,@PathVariable("id") Long id) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(ufficioService.updateUfficio(ufficioDto, id));
 	}
 	
 	@DeleteMapping(value = "/all")
+	@PreAuthorize("hasRole('admin')")
 	public boolean removeAll() throws InvalidValueException, MissingValueException {
         return ufficioService.removeUfficioall();
     }
 	@GetMapping(value = "/filter")
+	@PreAuthorize("hasRole('admin')")
 	public ResponseEntity<List<UfficioDto>> filtraUffici(@RequestBody UfficioFilter ufficioFilter) throws InvalidValueException, MissingValueException{
 		return ResponseEntity.ok(ufficioService.filter(ufficioFilter));
 	}
