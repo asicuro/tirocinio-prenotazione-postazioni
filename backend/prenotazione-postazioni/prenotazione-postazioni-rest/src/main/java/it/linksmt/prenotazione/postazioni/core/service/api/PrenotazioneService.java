@@ -6,6 +6,7 @@ import java.util.List;
 import it.linksmt.prenotazione.postazioni.core.dto.PrenotazioneDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
+import it.linksmt.prenotazione.postazioni.core.filters.PrenotazioneFilter;
 
 public interface PrenotazioneService {
 
@@ -28,5 +29,7 @@ public interface PrenotazioneService {
 	boolean controlloUserPrenotazione(Date data, Long id) throws InvalidValueException, MissingValueException;
 
 	public List<PrenotazioneDto> findPrenotazioniByUserId(Long id) throws InvalidValueException, MissingValueException;
+
+	public List<PrenotazioneDto> filter(PrenotazioneFilter filtro) throws MissingValueException, InvalidValueException;
 
 }

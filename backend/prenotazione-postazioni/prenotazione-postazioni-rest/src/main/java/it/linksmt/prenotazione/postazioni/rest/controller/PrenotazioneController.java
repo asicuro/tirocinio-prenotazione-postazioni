@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import it.linksmt.prenotazione.postazioni.core.dto.PrenotazioneDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
+import it.linksmt.prenotazione.postazioni.core.filters.PrenotazioneFilter;
 import it.linksmt.prenotazione.postazioni.core.service.api.PrenotazioneService;
 import it.linksmt.prenotazione.postazioni.rest.constants.PrenotazionePostzioniConst;
 
@@ -83,6 +85,12 @@ public class PrenotazioneController {
 	public ResponseEntity<List<PrenotazioneDto>> prenotazioneUtente(@PathVariable(value = "id") Long id)
 			throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(prenotazioneService.findPrenotazioniByUserId(id));
+	}
+
+	@GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<PrenotazioneDto>> filtro(@RequestBody PrenotazioneFilter filter)
+			throws MissingValueException, InvalidValueException {
+		return ResponseEntity.ok(prenotazioneService.filter(filter));
 	}
 
 }

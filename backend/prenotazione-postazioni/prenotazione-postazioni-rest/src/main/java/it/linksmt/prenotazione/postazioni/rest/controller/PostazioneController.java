@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import it.linksmt.prenotazione.postazioni.core.dto.PostazioneDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
+import it.linksmt.prenotazione.postazioni.core.filters.PostazioneFilter;
 import it.linksmt.prenotazione.postazioni.core.service.api.PostazioneService;
 import it.linksmt.prenotazione.postazioni.rest.constants.PrenotazionePostzioniConst;
 
@@ -70,6 +71,12 @@ public class PostazioneController {
 	public ResponseEntity<List<PostazioneDto>> getPostazioniByStanzaId(@PathVariable(value = "stanzaId") Long stanzaId)
 			throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(postazioneService.getPostazioniByStanzaId(stanzaId));
+	}
+
+	@GetMapping(value = "/filer", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<PostazioneDto>> filter(@RequestBody PostazioneFilter filter)
+			throws MissingValueException {
+		return ResponseEntity.ok(postazioneService.filter(filter));
 	}
 
 }

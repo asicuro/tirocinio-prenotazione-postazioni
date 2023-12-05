@@ -4,24 +4,29 @@ import java.util.Date;
 
 public class PrenotazioneFilter {
 
-  private Long postazioneId;
-  private Long stanzaId;
-  private Date inizioPeriodo;
-  private Date finePeriodo;
+	private Long utenteId;
+	private Long postazioneId;
+	private Long stanzaId;
+	private Date inizioPeriodo;
+	private Date finePeriodo;
 
-  public Long getPostazioneId() {
-    return postazioneId;
-  }
+	public Long getUtenteId() {
+		return utenteId;
+	}
 
-  public Long getStanzaId() {
-    return stanzaId;
-  }
+	public Long getPostazioneId() {
+		return postazioneId;
+	}
 
-  public Date getInizioPeriodo() {
-    return inizioPeriodo;
-  }
+	public Long getStanzaId() {
+		return stanzaId;
+	}
 
-  public Date getFinePeriodo() {
-    return finePeriodo;
-  }
+	public Date getInizioPeriodo() {
+		return inizioPeriodo;
+	}
+
+	public Date getFinePeriodo() {
+		return finePeriodo;
+	}
 }
