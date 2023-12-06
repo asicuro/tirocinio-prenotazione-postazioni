@@ -5,10 +5,15 @@ import java.util.Date;
 public class PrenotazioneFilter {
 
 	private Long utenteId;
+	private Long createUserId;
 	private Long postazioneId;
 	private Long stanzaId;
 	private Date inizioPeriodo;
 	private Date finePeriodo;
+
+	public Long getCreateUserId() {
+		return createUserId;
+	}
 
 	public Long getUtenteId() {
 		return utenteId;

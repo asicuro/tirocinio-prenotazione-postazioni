@@ -239,6 +239,11 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 			predicates.add(inizioPredicate);
 		}
 
+		if (filtro.getCreateUserId() != null) {
+			Predicate createUserPredicate = cBuilder.equal(preRoot.get("createUserId"), filtro.getCreateUserId());
+			predicates.add(createUserPredicate);
+		}
+
 		cQuery.where(cBuilder.and(predicates.toArray(new Predicate[0])));
 
 		TypedQuery<Prenotazione> prenotazioneTypedQuery = entityManager.createQuery(cQuery);

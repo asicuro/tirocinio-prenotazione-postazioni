@@ -197,14 +197,14 @@ public class PostazioneServiceImpl implements PostazioneService {
 
 		if (filtro.getWidth() < 0 && filtro.getLength() < 0) {
 
-			Predicate dimensionPredicate = cb.and(cb.equal(postazioneRoot.get("width"), filtro.getWidth()),
+			Predicate dimensioniPredicate = cb.and(cb.equal(postazioneRoot.get("width"), filtro.getWidth()),
 					cb.equal(postazioneRoot.get("length"), filtro.getLength()));
-			postazionePredicates.add(dimensionPredicate);
+			postazionePredicates.add(dimensioniPredicate);
 		}
 		postazioneQuery.where(cb.and(postazionePredicates.toArray(new Predicate[0])));
 		TypedQuery<Postazione> query = entityManager.createQuery(postazioneQuery);
 
-		return query.getResultList().stream().distinct().map(postazioneConverter::toDto).collect(Collectors.toList());
+		return query.getResultList().stream().map(postazioneConverter::toDto).collect(Collectors.toList());
 
 	}
 }
