@@ -4,7 +4,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,7 +35,6 @@ public class StanzaController {
 
 	@PostMapping(value = "/save/{createUserId}", consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize("hasRole('admin')")
 	public ResponseEntity<StanzaDto> saveStanza(
 			@RequestBody StanzaDto stanzaDto,
 			@PathVariable("createUserId") Long createUserId
@@ -50,7 +48,6 @@ public class StanzaController {
 	}
 
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize("hasRole('admin')")
 	public ResponseEntity<Boolean> removeStanza(@PathVariable("id") Long id)
 			throws InvalidValueException, MissingValueException, NestedEntityException {
 		return ResponseEntity.ok(stanzaService.removeStanza(id));
@@ -58,7 +55,6 @@ public class StanzaController {
 
 	@PutMapping(value = "/update/{editUserId}", consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize("hasRole('admin')")
 	public ResponseEntity<StanzaDto> updateStanza(
 			@RequestBody StanzaDto stanzaDto,
 			@PathVariable("editUserId") Long editUserId
@@ -67,7 +63,6 @@ public class StanzaController {
 	}
 
 	@DeleteMapping(value = "/all")
-	@PreAuthorize("hasRole('admin')")
 	public boolean removeAll() {
 		return stanzaService.removeAll();
 	}
@@ -79,7 +74,6 @@ public class StanzaController {
 	}
 
 	@GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize("hasRole('admin')")
 	public ResponseEntity<List<StanzaDto>> filter(@RequestBody StanzaFilter filter)
 			throws MissingValueException {
 		return ResponseEntity.ok(stanzaService.filter(filter));

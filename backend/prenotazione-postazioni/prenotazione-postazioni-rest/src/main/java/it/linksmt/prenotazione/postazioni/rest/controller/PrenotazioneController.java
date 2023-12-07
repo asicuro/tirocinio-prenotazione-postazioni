@@ -2,11 +2,9 @@ package it.linksmt.prenotazione.postazioni.rest.controller;
 
 import java.util.Date;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import it.linksmt.prenotazione.postazioni.core.dto.PrenotazioneDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
 import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
@@ -32,19 +29,21 @@ public class PrenotazioneController {
 	PrenotazioneService prenotazioneService;
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PrenotazioneDto> getPrenotazioneDtoEntity(@PathVariable(value = "id") Long id)
-			throws InvalidValueException, MissingValueException {
+	public ResponseEntity<PrenotazioneDto> getPrenotazioneDtoEntity(
+			@PathVariable(value = "id") Long id
+	) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(prenotazioneService.findPrenotazioneById(id));
 	}
 
 	@PostMapping(value = "/save/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PrenotazioneDto> savePrenotazione(@RequestBody PrenotazioneDto prenotazioneDto,
-			@PathVariable(value = "id") Long id) throws InvalidValueException, MissingValueException {
+	public ResponseEntity<PrenotazioneDto> savePrenotazione(
+			@RequestBody PrenotazioneDto prenotazioneDto,
+			@PathVariable(value = "id") Long id
+	) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(prenotazioneService.savePrenotazione(prenotazioneDto, id));
 	}
 
 	@GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize("hasRole('admin')")
 	public ResponseEntity<List<PrenotazioneDto>> getPrenotazioni() {
 		return ResponseEntity.ok(prenotazioneService.getPrenotazioni());
 	}
@@ -56,13 +55,14 @@ public class PrenotazioneController {
 	}
 
 	@PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PrenotazioneDto> updatePrenotazione(@RequestBody PrenotazioneDto prenotazioneDto,
-			@PathVariable(value = "id") Long id) throws InvalidValueException, MissingValueException {
+	public ResponseEntity<PrenotazioneDto> updatePrenotazione(
+			@RequestBody PrenotazioneDto prenotazioneDto,
+			@PathVariable(value = "id") Long id
+	) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(prenotazioneService.updatePrenotazione(prenotazioneDto, id));
 	}
 
 	@DeleteMapping(value = "/all")
-	@PreAuthorize("hasRole('admin')")
 	public boolean removeAll() {
 		return prenotazioneService.removeAll();
 	}
@@ -82,8 +82,9 @@ public class PrenotazioneController {
 	}
 
 	@GetMapping(value = "/prenotazioneutente/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<PrenotazioneDto>> prenotazioneUtente(@PathVariable(value = "id") Long id)
-			throws InvalidValueException, MissingValueException {
+	public ResponseEntity<List<PrenotazioneDto>> prenotazioneUtente(
+			@PathVariable(value = "id") Long id
+	) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(prenotazioneService.findPrenotazioniByUserId(id));
 	}
 

@@ -4,7 +4,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,7 +59,6 @@ public class UtenteController {
 	}
 
 	@DeleteMapping(value = "/all")
-	@PreAuthorize("hasRole('admin')")
 	public boolean removeAll() {
 		return utenteService.removeAll();
 	}
@@ -75,7 +73,6 @@ public class UtenteController {
 
 	@GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize("hasRole('admin')")
 	public ResponseEntity<List<UtenteDto>> filter(@RequestBody UtenteFilter filter)
 			throws MissingValueException {
 		return ResponseEntity.ok(utenteService.filter(filter));
