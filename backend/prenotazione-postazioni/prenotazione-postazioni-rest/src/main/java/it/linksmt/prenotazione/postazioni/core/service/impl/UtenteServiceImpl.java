@@ -30,6 +30,9 @@ import it.linksmt.prenotazione.postazioni.core.repository.UfficioRepository;
 import it.linksmt.prenotazione.postazioni.core.repository.UtenteRepository;
 import it.linksmt.prenotazione.postazioni.core.service.api.UtenteService;
 
+/**
+ * Implementazione del servizio UtenteService che gestisce le operazioni relative agli utenti.
+ */
 @Service
 public class UtenteServiceImpl implements UtenteService {
 
@@ -53,6 +56,14 @@ public class UtenteServiceImpl implements UtenteService {
 	@Autowired
 	private EntityManager entityManager;
 
+	/**
+	 * Trova un utente dato il suo ID.
+	 *
+	 * @param id L'ID dell'utente da cercare.
+	 * @return Il DTO dell'utente trovato.
+	 * @throws MissingValueException se l'utente non viene trovato.
+	 * @throws InvalidValueException se l'ID è nullo o negativo.
+	 */
 	@Override
 	public UtenteDto findUtenteById(Long id) throws MissingValueException, InvalidValueException {
 
@@ -62,6 +73,13 @@ public class UtenteServiceImpl implements UtenteService {
 
 	}
 
+	/**
+	 * Salva un nuovo utente.
+	 *
+	 * @param utenteDto Il DTO dell'utente da salvare.
+	 * @return Il DTO dell'utente salvato.
+	 * @throws InvalidValueException se il DTO contiene valori non validi.
+	 */
 	@Override
 	public UtenteDto saveUtente(UtenteDto utenteDto) throws InvalidValueException {
 
@@ -71,6 +89,11 @@ public class UtenteServiceImpl implements UtenteService {
 
 	}
 
+	/**
+	 * Restituisce la lista di tutti gli utenti.
+	 *
+	 * @return La lista di DTO degli utenti.
+	 */
 	@Override
 	public List<UtenteDto> getUtenti() {
 
@@ -80,6 +103,14 @@ public class UtenteServiceImpl implements UtenteService {
 						.collect(Collectors.toList());
 	}
 
+	/**
+	 * Rimuove un utente dato il suo ID.
+	 *
+	 * @param id L'ID dell'utente da rimuovere.
+	 * @return True se l'utente viene rimosso con successo, false altrimenti.
+	 * @throws InvalidValueException se l'ID è nullo o negativo.
+	 * @throws MissingValueException se l'utente non viene trovato.
+	 */
 	@Override
 	public boolean removeUtente(Long id) throws InvalidValueException, MissingValueException {
 
@@ -94,6 +125,14 @@ public class UtenteServiceImpl implements UtenteService {
 
 	}
 
+	/**
+	 * Aggiorna le informazioni di un utente esistente.
+	 *
+	 * @param utenteDto Il DTO dell'utente da aggiornare.
+	 * @return Il DTO dell'utente aggiornato.
+	 * @throws InvalidValueException se il DTO contiene valori non validi.
+	 * @throws MissingValueException se l'utente non viene trovato.
+	 */
 	@Override
 	public UtenteDto updateUtente(UtenteDto utenteDto)
 			throws InvalidValueException, MissingValueException {
@@ -110,6 +149,11 @@ public class UtenteServiceImpl implements UtenteService {
 
 	}
 
+	/**
+	 * Rimuove tutti gli utenti.
+	 *
+	 * @return True se la rimozione è completata con successo, false altrimenti.
+	 */
 	@Override
 	public boolean removeAll() {
 
@@ -117,6 +161,13 @@ public class UtenteServiceImpl implements UtenteService {
 		return utenteRepository.count() == 0;
 	}
 
+	/**
+	 * Filtra gli utenti in base ai criteri specificati nel filtro.
+	 *
+	 * @param filter Il filtro per la ricerca degli utenti.
+	 * @return La lista filtrata di DTO degli utenti.
+	 * @throws MissingValueException se si verificano valori mancanti durante la ricerca.
+	 */
 	@Override
 	public List<UtenteDto> filter(UtenteFilter filter) throws MissingValueException {
 
@@ -127,21 +178,19 @@ public class UtenteServiceImpl implements UtenteService {
 		Join<Utente, Prenotazione> utenteJoin = prenotazioneRoot.join("utente");
 
 		if (filter.getDataPrenotazione() != null) {
-			Predicate giornoPredicate
-					= criteriaBuilder.equal(
-							utenteJoin.get("dataPrenotazione"),
-							filter.getDataPrenotazione()
-					);
+			Predicate giornoPredicate = criteriaBuilder.equal(
+					utenteJoin.get("dataPrenotazione"),
+					filter.getDataPrenotazione()
+			);
 			predicates.add(giornoPredicate);
 		}
 
 		if (filter.getInizioPeriodo() != null && filter.getFinePeriodo() != null) {
-			Predicate periodoPredicate
-					= criteriaBuilder.between(
-							utenteJoin.get("dataPrenotazione"),
-							filter.getInizioPeriodo(),
-							filter.getFinePeriodo()
-					);
+			Predicate periodoPredicate = criteriaBuilder.between(
+					utenteJoin.get("dataPrenotazione"),
+					filter.getInizioPeriodo(),
+					filter.getFinePeriodo()
+			);
 			predicates.add(periodoPredicate);
 		}
 
@@ -152,8 +201,8 @@ public class UtenteServiceImpl implements UtenteService {
 			if (postazioneOptional.isEmpty())
 				throw new MissingValueException("Postazione", postazioneId);
 
-			Predicate postazionePredicate
-					= criteriaBuilder.equal(utenteJoin.get("postazione"), postazioneOptional.get());
+			Predicate postazionePredicate =
+					criteriaBuilder.equal(utenteJoin.get("postazione"), postazioneOptional.get());
 			predicates.add(postazionePredicate);
 		}
 
@@ -164,12 +213,11 @@ public class UtenteServiceImpl implements UtenteService {
 			if (stanzaOptional.isEmpty())
 				throw new MissingValueException("Stanza", stanzaId);
 
-			Predicate stanzaPredicate
-					= criteriaBuilder.equal(
-							utenteJoin	.get("postazione")
-										.get("stanza"),
-							stanzaOptional.get()
-					);
+			Predicate stanzaPredicate = criteriaBuilder.equal(
+					utenteJoin	.get("postazione")
+								.get("stanza"),
+					stanzaOptional.get()
+			);
 			predicates.add(stanzaPredicate);
 		}
 
@@ -180,30 +228,28 @@ public class UtenteServiceImpl implements UtenteService {
 			if (ufficiOptional.isEmpty())
 				throw new MissingValueException("Ufficio", ufficioId);
 
-			Predicate ufficioPredicate
-					= criteriaBuilder.equal(
-							utenteJoin	.get("postazione")
-										.get("stanza")
-										.get("ufficio"),
-							ufficiOptional.get()
-					);
+			Predicate ufficioPredicate = criteriaBuilder.equal(
+					utenteJoin	.get("postazione")
+								.get("stanza")
+								.get("ufficio"),
+					ufficiOptional.get()
+			);
 			predicates.add(ufficioPredicate);
 		}
 
 		if (filter.getUsername() != null) {
 
-			Predicate usernamePredicate
-					= criteriaBuilder.like(
-							utenteJoin.get("username"),
-							"%" + filter.getUsername() + "%"
-					);
+			Predicate usernamePredicate = criteriaBuilder.like(
+					utenteJoin.get("username"),
+					"%" + filter.getUsername() + "%"
+			);
 			predicates.add(usernamePredicate);
 		}
 
 		if (filter.getRuolo() != null) {
 
-			Predicate ruoloPredicate
-					= criteriaBuilder.like(utenteJoin.get("ruolo"), "%" + filter.getRuolo() + "%");
+			Predicate ruoloPredicate =
+					criteriaBuilder.like(utenteJoin.get("ruolo"), "%" + filter.getRuolo() + "%");
 			predicates.add(ruoloPredicate);
 		}
 
@@ -219,7 +265,12 @@ public class UtenteServiceImpl implements UtenteService {
 					.collect(Collectors.toList());
 	}
 
-	/** Controlla se i campi del DTO non sono nulli */
+	/**
+	 * Controlla se i campi obbligatori del DTO non sono nulli.
+	 *
+	 * @param utenteDto Il DTO dell'utente da validare.
+	 * @throws InvalidValueException se uno dei campi obbligatori è nullo.
+	 */
 	private void validateDto(UtenteDto utenteDto) throws InvalidValueException {
 		if (utenteDto.getUsername() == null)
 			throw new InvalidValueException("username", utenteDto.getId());
@@ -231,13 +282,24 @@ public class UtenteServiceImpl implements UtenteService {
 			throw new InvalidValueException("ruolo", utenteDto.getRuolo());
 	}
 
-	/** Controlla se l'id passato è nullo o minore di 0 */
+	/**
+	 * Controlla se l'ID passato è nullo o minore di 0.
+	 *
+	 * @param id L'ID da controllare.
+	 * @throws InvalidValueException se l'ID è nullo o negativo.
+	 */
 	private void checkId(Long id) throws InvalidValueException {
 		if (id == null || id < 0)
 			throw new InvalidValueException("id", id);
 	}
 
-	/** Controlla se l'utente con l'id passato esiste e lo ritorna */
+	/**
+	 * Controlla se l'utente con l'ID passato esiste e lo restituisce.
+	 *
+	 * @param id L'ID dell'utente da cercare.
+	 * @return L'utente trovato.
+	 * @throws MissingValueException se l'utente non viene trovato.
+	 */
 	private Utente takeUser(Long id) throws MissingValueException {
 		Optional<Utente> utenteOptional = utenteRepository.findById(id);
 

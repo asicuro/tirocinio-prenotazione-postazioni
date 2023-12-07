@@ -31,6 +31,9 @@ import it.linksmt.prenotazione.postazioni.core.repository.UfficioRepository;
 import it.linksmt.prenotazione.postazioni.core.repository.UtenteRepository;
 import it.linksmt.prenotazione.postazioni.core.service.api.StanzaService;
 
+/**
+ * Implementazione del servizio StanzaService che gestisce le operazioni relative alle stanze.
+ */
 @Service
 public class StanzaServiceImpl implements StanzaService {
 
@@ -51,6 +54,14 @@ public class StanzaServiceImpl implements StanzaService {
 	@Autowired
 	private EntityManager entityManager;
 
+	/**
+	 * Restituisce una stanza basata sull'ID specificato.
+	 *
+	 * @param id L'ID della stanza.
+	 * @return La stanza corrispondente all'ID.
+	 * @throws InvalidValueException Se l'ID è nullo o negativo.
+	 * @throws MissingValueException Se la stanza non è trovata.
+	 */
 	@Override
 	public StanzaDto findStanzaById(Long id) throws InvalidValueException, MissingValueException {
 
@@ -59,6 +70,14 @@ public class StanzaServiceImpl implements StanzaService {
 		return stanzaConverter.toDto(takeStanza(id));
 	}
 
+	/**
+	 * Salva una nuova stanza.
+	 *
+	 * @param stanzaDto La stanza da salvare.
+	 * @param createUserId L'ID dell'utente che crea la stanza.
+	 * @return La stanza salvata.
+	 * @throws InvalidValueException Se i valori della stanza sono invalidi.
+	 */
 	@Override
 	public StanzaDto saveStanza(StanzaDto stanzaDto, Long createUserId)
 			throws InvalidValueException {
@@ -71,6 +90,11 @@ public class StanzaServiceImpl implements StanzaService {
 		return stanzaConverter.toDto(stanzaRepository.save(stanzaConverter.toEntity(stanzaDto)));
 	}
 
+	/**
+	 * Restituisce tutte le stanze.
+	 *
+	 * @return Lista di tutte le stanze.
+	 */
 	@Override
 	public List<StanzaDto> getStanze() {
 
@@ -80,6 +104,15 @@ public class StanzaServiceImpl implements StanzaService {
 						.collect(Collectors.toList());
 	}
 
+	/**
+	 * Rimuove una stanza in base all'ID specificato.
+	 *
+	 * @param id L'ID della stanza da rimuovere.
+	 * @return True se la stanza è stata rimossa con successo, altrimenti False.
+	 * @throws InvalidValueException Se l'ID è nullo o negativo.
+	 * @throws MissingValueException Se la stanza non è trovata.
+	 * @throws NestedEntityException Se la stanza ha postazioni collegate.
+	 */
 	@Override
 	public boolean removeStanza(Long id)
 			throws InvalidValueException, MissingValueException, NestedEntityException {
@@ -95,6 +128,15 @@ public class StanzaServiceImpl implements StanzaService {
 		return !stanzaRepository.existsById(id);
 	}
 
+	/**
+	 * Aggiorna una stanza esistente.
+	 *
+	 * @param stanzaDto La stanza da aggiornare.
+	 * @param editUserId L'ID dell'utente che sta modificando la stanza.
+	 * @return La stanza aggiornata.
+	 * @throws InvalidValueException Se i valori della stanza sono invalidi.
+	 * @throws MissingValueException Se la stanza non è trovata.
+	 */
 	@Override
 	public StanzaDto updateStanza(StanzaDto stanzaDto, Long editUserId)
 			throws InvalidValueException, MissingValueException {
@@ -115,6 +157,11 @@ public class StanzaServiceImpl implements StanzaService {
 
 	}
 
+	/**
+	 * Rimuove tutte le stanze.
+	 *
+	 * @return True se tutte le stanze sono state rimosse con successo, altrimenti False.
+	 */
 	@Override
 	public boolean removeAll() {
 
@@ -123,6 +170,13 @@ public class StanzaServiceImpl implements StanzaService {
 		return stanzaRepository.count() == 0;
 	}
 
+	/**
+	 * Filtra le stanze in base ai criteri specificati.
+	 *
+	 * @param filter Il filtro per le stanze.
+	 * @return Lista di stanze filtrate.
+	 * @throws MissingValueException Se mancano valori richiesti per il filtro.
+	 */
 	@Override
 	public List<StanzaDto> filter(StanzaFilter filter) throws MissingValueException {
 
@@ -133,21 +187,19 @@ public class StanzaServiceImpl implements StanzaService {
 		Join<Prenotazione, Postazione> postazioneJoin = prenotazioneRoot.join("postazione");
 		Join<Postazione, Stanza> stanzaJoin = postazioneJoin.join("stanza");
 
-
 		if (filter.getName() != null) {
 
-			Predicate namePredicate
-					= criteriaBuilder.like(stanzaJoin.get("name"), "%" + filter.getName() + "%");
+			Predicate namePredicate =
+					criteriaBuilder.like(stanzaJoin.get("name"), "%" + filter.getName() + "%");
 			predicates.add(namePredicate);
 		}
 
 		if (filter.getWidth() != null && filter.getHeight() != null) {
 
-			Predicate dimensionPredicate
-					= criteriaBuilder.and(
-							criteriaBuilder.equal(stanzaJoin.get("width"), filter.getWidth()),
-							criteriaBuilder.equal(stanzaJoin.get("height"), filter.getHeight())
-					);
+			Predicate dimensionPredicate = criteriaBuilder.and(
+					criteriaBuilder.equal(stanzaJoin.get("width"), filter.getWidth()),
+					criteriaBuilder.equal(stanzaJoin.get("height"), filter.getHeight())
+			);
 			predicates.add(dimensionPredicate);
 		}
 
@@ -159,8 +211,8 @@ public class StanzaServiceImpl implements StanzaService {
 			if (utenteOptional.isEmpty())
 				throw new MissingValueException("Utente", utenteId);
 
-			Predicate utentePredicate
-					= criteriaBuilder.equal(prenotazioneRoot.get("utente"), utenteOptional.get());
+			Predicate utentePredicate =
+					criteriaBuilder.equal(prenotazioneRoot.get("utente"), utenteOptional.get());
 			predicates.add(utentePredicate);
 		}
 
@@ -172,23 +224,19 @@ public class StanzaServiceImpl implements StanzaService {
 			if (ufficioOptional.isEmpty())
 				throw new MissingValueException("Ufficio", ufficioId);
 
-			Predicate ufficioPredicate
-					= criteriaBuilder.equal(
-							prenotazioneRoot.get("postazione")
-											.get("stanza")
-											.get("ufficio"),
-							ufficioOptional.get()
-					);
+			Predicate ufficioPredicate = criteriaBuilder.equal(
+					prenotazioneRoot.get("postazione")
+									.get("stanza")
+									.get("ufficio"),
+					ufficioOptional.get()
+			);
 			predicates.add(ufficioPredicate);
 		}
 
 		if (filter.getCreateUserId() != null) {
 
-			Predicate createUserPredicate
-					= criteriaBuilder.equal(
-							stanzaJoin.get("createUserId"),
-							filter.getCreateUserId()
-					);
+			Predicate createUserPredicate =
+					criteriaBuilder.equal(stanzaJoin.get("createUserId"), filter.getCreateUserId());
 			predicates.add(createUserPredicate);
 		}
 
@@ -207,7 +255,12 @@ public class StanzaServiceImpl implements StanzaService {
 							.collect(Collectors.toList());
 	}
 
-	/** Controlla se i campi del DTO non sono nulli */
+	/**
+	 * Verifica se i valori della stanza sono validi.
+	 *
+	 * @param stanza La stanza da validare.
+	 * @throws InvalidValueException Se uno dei valori è nullo o invalido.
+	 */
 	private void validateDto(StanzaDto stanza) throws InvalidValueException {
 		if (stanza.getNome() == null)
 			throw new InvalidValueException("nome", stanza.getNome());
@@ -228,13 +281,24 @@ public class StanzaServiceImpl implements StanzaService {
 			throw new InvalidValueException("ufficioId", stanza.getUfficioId());
 	}
 
-	/** Controlla se l'id passato è nullo o minore di 0 */
+	/**
+	 * Verifica se l'ID è valido.
+	 *
+	 * @param id L'ID da verificare.
+	 * @throws InvalidValueException Se l'ID è nullo o negativo.
+	 */
 	private void checkId(Long id) throws InvalidValueException {
 		if (id == null || id < 0)
 			throw new InvalidValueException("id", id);
 	}
 
-	/** Controlla se la stanza con l'id passato esiste e la ritorna */
+	/**
+	 * Restituisce una stanza basata sull'ID specificato.
+	 *
+	 * @param id L'ID della stanza.
+	 * @return La stanza corrispondente all'ID.
+	 * @throws MissingValueException Se la stanza non è trovata.
+	 */
 	private Stanza takeStanza(Long id) throws MissingValueException {
 		Optional<Stanza> stanzaOptional = stanzaRepository.findById(id);
 
@@ -242,5 +306,4 @@ public class StanzaServiceImpl implements StanzaService {
 			throw new MissingValueException(NOME_ENTITA, id);
 		return stanzaOptional.get();
 	}
-
 }
