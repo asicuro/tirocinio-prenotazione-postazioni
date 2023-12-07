@@ -203,8 +203,9 @@ public class PostazioneServiceImpl implements PostazioneService {
 		}
 		postazioneQuery.where(cb.and(postazionePredicates.toArray(new Predicate[0])));
 		TypedQuery<Postazione> query = entityManager.createQuery(postazioneQuery);
+		List<Postazione> postazioni = query.getResultList();
 
-		return query.getResultList().stream().map(postazioneConverter::toDto).collect(Collectors.toList());
+		return postazioni.stream().map(postazioneConverter::toDto).collect(Collectors.toList());
 
 	}
 }
