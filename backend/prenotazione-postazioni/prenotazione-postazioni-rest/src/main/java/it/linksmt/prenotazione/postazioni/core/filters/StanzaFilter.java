@@ -2,30 +2,35 @@ package it.linksmt.prenotazione.postazioni.core.filters;
 
 public class StanzaFilter {
 
-  private Long utenteId;
-  private String name;
-  private Float width;
-  private Float height;
-  private Long createUserId;
+	private Long utenteId;
+	private Long ufficioId;
+	private String name;
+	private Float width;
+	private Float height;
+	private Long createUserId;
 
-  public Long getUtenteId() {
-    return utenteId;
-  }
+	public Long getUtenteId() {
+		return utenteId;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public Float getWidth() {
-    return width;
-  }
+	public Float getWidth() {
+		return width;
+	}
 
-  public Float getHeight() {
-    return height;
-  }
+	public Float getHeight() {
+		return height;
+	}
 
-  public Long getCreateUserId() {
-    return createUserId;
-  }
+	public Long getCreateUserId() {
+		return createUserId;
+	}
+
+	public Long getUfficioId() {
+		return ufficioId;
+	}
 
 }

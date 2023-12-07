@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import it.linksmt.prenotazione.postazioni.core.dto.UtenteDto;
 import it.linksmt.prenotazione.postazioni.core.exceptions.InvalidValueException;
@@ -61,14 +60,6 @@ public class UtenteController {
 	@DeleteMapping(value = "/all")
 	public boolean removeAll() {
 		return utenteService.removeAll();
-	}
-
-	@GetMapping(value = "/isPresent", produces = MediaType.APPLICATION_JSON_VALUE)
-	public boolean isPresent(
-			@RequestParam("username") String username,
-			@RequestParam("password") String password
-	) throws InvalidValueException {
-		return utenteService.isPresent(username, password);
 	}
 
 	@GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE,

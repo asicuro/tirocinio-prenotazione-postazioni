@@ -67,12 +67,6 @@ public class StanzaController {
 		return stanzaService.removeAll();
 	}
 
-	@GetMapping(value = "/all/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<StanzaDto>> getStanzeByUfficioId(@PathVariable("id") Long id)
-			throws InvalidValueException, MissingValueException {
-		return ResponseEntity.ok(stanzaService.getStanzeByUfficioId(id));
-	}
-
 	@GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<StanzaDto>> filter(@RequestBody StanzaFilter filter)
 			throws MissingValueException {

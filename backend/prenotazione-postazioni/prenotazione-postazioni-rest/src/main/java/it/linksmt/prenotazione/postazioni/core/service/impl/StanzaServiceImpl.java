@@ -34,211 +34,213 @@ import it.linksmt.prenotazione.postazioni.core.service.api.StanzaService;
 @Service
 public class StanzaServiceImpl implements StanzaService {
 
-  private static final String NOME_ENTITA = "Stanza";
+	private static final String NOME_ENTITA = "Stanza";
 
-  @Autowired
-  private StanzaRepository stanzaRepository;
+	@Autowired
+	private StanzaRepository stanzaRepository;
 
-  @Autowired
-  private UtenteRepository utenteRepository;
+	@Autowired
+	private UtenteRepository utenteRepository;
 
-  @Autowired
-  private StanzaConverter stanzaConverter;
+	@Autowired
+	private StanzaConverter stanzaConverter;
 
-  @Autowired
-  private UfficioRepository ufficioRepository;
+	@Autowired
+	private UfficioRepository ufficioRepository;
 
-  @Autowired
-  private EntityManager entityManager;
+	@Autowired
+	private EntityManager entityManager;
 
-  @Override
-  public StanzaDto findStanzaById(Long id) throws InvalidValueException, MissingValueException {
+	@Override
+	public StanzaDto findStanzaById(Long id) throws InvalidValueException, MissingValueException {
 
-    checkId(id);
+		checkId(id);
 
-    return stanzaConverter.toDto(takeStanza(id));
-  }
+		return stanzaConverter.toDto(takeStanza(id));
+	}
 
-  @Override
-  public StanzaDto saveStanza(StanzaDto stanzaDto, Long createUserId) throws InvalidValueException {
+	@Override
+	public StanzaDto saveStanza(StanzaDto stanzaDto, Long createUserId)
+			throws InvalidValueException {
 
-    validateDto(stanzaDto);
+		validateDto(stanzaDto);
 
-    stanzaDto.setCreateDate(new Date());
-    stanzaDto.setCreateUserId(createUserId);
+		stanzaDto.setCreateDate(new Date());
+		stanzaDto.setCreateUserId(createUserId);
 
-    return stanzaConverter.toDto(stanzaRepository.save(stanzaConverter.toEntity(stanzaDto)));
-  }
+		return stanzaConverter.toDto(stanzaRepository.save(stanzaConverter.toEntity(stanzaDto)));
+	}
 
-  @Override
-  public List<StanzaDto> getStanze() {
+	@Override
+	public List<StanzaDto> getStanze() {
 
-    List<Stanza> stanze = (List<Stanza>) stanzaRepository.findAll();
-    return stanze.parallelStream()
-                 .map(stanzaConverter::toDto)
-                 .collect(Collectors.toList());
-  }
+		List<Stanza> stanze = (List<Stanza>) stanzaRepository.findAll();
+		return stanze	.parallelStream()
+						.map(stanzaConverter::toDto)
+						.collect(Collectors.toList());
+	}
 
-  @Override
-  public boolean removeStanza(Long id)
-      throws InvalidValueException, MissingValueException, NestedEntityException {
+	@Override
+	public boolean removeStanza(Long id)
+			throws InvalidValueException, MissingValueException, NestedEntityException {
 
-    checkId(id);
+		checkId(id);
 
-    Stanza stanza = takeStanza(id);
-    if (!stanza.getPostazioni()
-               .isEmpty())
-      throw new NestedEntityException(NOME_ENTITA, id);
+		Stanza stanza = takeStanza(id);
+		if (!stanza	.getPostazioni()
+					.isEmpty())
+			throw new NestedEntityException(NOME_ENTITA, id);
 
-    stanzaRepository.deleteById(id);
-    return !stanzaRepository.existsById(id);
-  }
+		stanzaRepository.deleteById(id);
+		return !stanzaRepository.existsById(id);
+	}
 
-  @Override
-  public StanzaDto updateStanza(StanzaDto stanzaDto, Long editUserId)
-      throws InvalidValueException, MissingValueException {
+	@Override
+	public StanzaDto updateStanza(StanzaDto stanzaDto, Long editUserId)
+			throws InvalidValueException, MissingValueException {
 
-    if (stanzaDto.getId() == null || stanzaDto.getId() < 0)
-      throw new InvalidValueException("id", stanzaDto.getId());
+		if (stanzaDto.getId() == null || stanzaDto.getId() < 0)
+			throw new InvalidValueException("id", stanzaDto.getId());
 
-    Stanza stanza = takeStanza(stanzaDto.getId());
+		Stanza stanza = takeStanza(stanzaDto.getId());
 
-    validateDto(stanzaDto);
+		validateDto(stanzaDto);
 
-    stanzaDto.setCreateDate(stanza.getCreateDate())
-             .setCreateUserId(stanza.getCreateUserId())
-             .setEditDate(new Date())
-             .setEditUserId(editUserId);
+		stanzaDto	.setCreateDate(stanza.getCreateDate())
+					.setCreateUserId(stanza.getCreateUserId())
+					.setEditDate(new Date())
+					.setEditUserId(editUserId);
 
-    return stanzaConverter.toDto(stanzaRepository.save(stanzaConverter.toEntity(stanzaDto)));
+		return stanzaConverter.toDto(stanzaRepository.save(stanzaConverter.toEntity(stanzaDto)));
 
-  }
+	}
 
-  @Override
-  public boolean removeAll() {
+	@Override
+	public boolean removeAll() {
 
-    stanzaRepository.deleteAll();
+		stanzaRepository.deleteAll();
 
-    return stanzaRepository.count() == 0;
-  }
+		return stanzaRepository.count() == 0;
+	}
 
-  @Override
-  public List<StanzaDto> getStanzeByUfficioId(Long idUfficio)
-      throws InvalidValueException, MissingValueException {
+	@Override
+	public List<StanzaDto> filter(StanzaFilter filter) throws MissingValueException {
 
-    checkId(idUfficio);
-
-    List<Stanza> stanze = stanzaRepository.findByUfficio(takeUfficio(idUfficio));
-
-    return stanze.parallelStream()
-                 .map(stanzaConverter::toDto)
-                 .collect(Collectors.toList());
-  }
-
-  @Override
-  public List<StanzaDto> filter(StanzaFilter filter) throws MissingValueException {
-
-    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Prenotazione> criteriaQuery = criteriaBuilder.createQuery(Prenotazione.class);
-    List<Predicate> predicates = new ArrayList<>();
-    Root<Prenotazione> prenotazioneRoot = criteriaQuery.from(Prenotazione.class);
-    Join<Prenotazione, Postazione> postazioneJoin = prenotazioneRoot.join("postazione");
-    Join<Postazione, Stanza> stanzaJoin = postazioneJoin.join("stanza");
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Prenotazione> criteriaQuery = criteriaBuilder.createQuery(Prenotazione.class);
+		List<Predicate> predicates = new ArrayList<>();
+		Root<Prenotazione> prenotazioneRoot = criteriaQuery.from(Prenotazione.class);
+		Join<Prenotazione, Postazione> postazioneJoin = prenotazioneRoot.join("postazione");
+		Join<Postazione, Stanza> stanzaJoin = postazioneJoin.join("stanza");
 
 
-    if (filter.getName() != null) {
+		if (filter.getName() != null) {
 
-      Predicate namePredicate =
-          criteriaBuilder.like(stanzaJoin.get("name"), "%" + filter.getName() + "%");
-      predicates.add(namePredicate);
-    }
+			Predicate namePredicate
+					= criteriaBuilder.like(stanzaJoin.get("name"), "%" + filter.getName() + "%");
+			predicates.add(namePredicate);
+		}
 
-    if (filter.getWidth() != null && filter.getHeight() != null) {
+		if (filter.getWidth() != null && filter.getHeight() != null) {
 
-      Predicate dimensionPredicate = criteriaBuilder.and(
-          criteriaBuilder.equal(stanzaJoin.get("width"), filter.getWidth()),
-          criteriaBuilder.equal(stanzaJoin.get("height"), filter.getHeight())
-      );
-      predicates.add(dimensionPredicate);
-    }
+			Predicate dimensionPredicate
+					= criteriaBuilder.and(
+							criteriaBuilder.equal(stanzaJoin.get("width"), filter.getWidth()),
+							criteriaBuilder.equal(stanzaJoin.get("height"), filter.getHeight())
+					);
+			predicates.add(dimensionPredicate);
+		}
 
-    if (filter.getUtenteId() != null) {
+		if (filter.getUtenteId() != null) {
 
-      Long utenteId = filter.getUtenteId();
-      Optional<Utente> utenteOptional = utenteRepository.findById(utenteId);
+			Long utenteId = filter.getUtenteId();
+			Optional<Utente> utenteOptional = utenteRepository.findById(utenteId);
 
-      if (utenteOptional.isEmpty())
-        throw new MissingValueException("Utente", utenteId);
+			if (utenteOptional.isEmpty())
+				throw new MissingValueException("Utente", utenteId);
 
-      Predicate utentePredicate =
-          criteriaBuilder.equal(prenotazioneRoot.get("utente"), utenteOptional.get());
-      predicates.add(utentePredicate);
-    }
+			Predicate utentePredicate
+					= criteriaBuilder.equal(prenotazioneRoot.get("utente"), utenteOptional.get());
+			predicates.add(utentePredicate);
+		}
 
-    if (filter.getCreateUserId() != null) {
+		if (filter.getUfficioId() != null) {
 
-      Predicate createUserPredicate =
-          criteriaBuilder.equal(stanzaJoin.get("createUserId"), filter.getCreateUserId());
-      predicates.add(createUserPredicate);
-    }
+			Long ufficioId = filter.getUfficioId();
+			Optional<Ufficio> ufficioOptional = ufficioRepository.findById(ufficioId);
 
-    criteriaQuery.where(criteriaBuilder.and(predicates.toArray(new Predicate[0])));
+			if (ufficioOptional.isEmpty())
+				throw new MissingValueException("Ufficio", ufficioId);
 
-    TypedQuery<Prenotazione> prenotazioneTypedQuery = entityManager.createQuery(criteriaQuery);
+			Predicate ufficioPredicate
+					= criteriaBuilder.equal(
+							prenotazioneRoot.get("postazione")
+											.get("stanza")
+											.get("ufficio"),
+							ufficioOptional.get()
+					);
+			predicates.add(ufficioPredicate);
+		}
 
-    List<Prenotazione> prenotazioni = prenotazioneTypedQuery.getResultList();
+		if (filter.getCreateUserId() != null) {
 
-    return prenotazioni.stream()
-                       .map(Prenotazione::getPostazione)
-                       .map(Postazione::getStanza)
-                       .distinct()
-                       .map(stanzaConverter::toDto)
-                       .sorted(Comparator.comparingLong(StanzaDto::getId))
-                       .collect(Collectors.toList());
-  }
+			Predicate createUserPredicate
+					= criteriaBuilder.equal(
+							stanzaJoin.get("createUserId"),
+							filter.getCreateUserId()
+					);
+			predicates.add(createUserPredicate);
+		}
 
-  /** Controlla se i campi del DTO non sono nulli */
-  private void validateDto(StanzaDto stanza) throws InvalidValueException {
-    if (stanza.getNome() == null)
-      throw new InvalidValueException("nome", stanza.getNome());
+		criteriaQuery.where(criteriaBuilder.and(predicates.toArray(new Predicate[0])));
 
-    if (stanza.getWidth() == null)
-      throw new InvalidValueException("width", stanza.getWidth());
+		TypedQuery<Prenotazione> prenotazioneTypedQuery = entityManager.createQuery(criteriaQuery);
 
-    if (stanza.getHeight() == null)
-      throw new InvalidValueException("height", stanza.getHeight());
+		List<Prenotazione> prenotazioni = prenotazioneTypedQuery.getResultList();
 
-    if (stanza.getX() == null)
-      throw new InvalidValueException("x", stanza.getX());
+		return prenotazioni	.stream()
+							.map(Prenotazione::getPostazione)
+							.map(Postazione::getStanza)
+							.distinct()
+							.map(stanzaConverter::toDto)
+							.sorted(Comparator.comparingLong(StanzaDto::getId))
+							.collect(Collectors.toList());
+	}
 
-    if (stanza.getY() == null)
-      throw new InvalidValueException("y", stanza.getY());
+	/** Controlla se i campi del DTO non sono nulli */
+	private void validateDto(StanzaDto stanza) throws InvalidValueException {
+		if (stanza.getNome() == null)
+			throw new InvalidValueException("nome", stanza.getNome());
 
-    if (stanza.getUfficioId() == null)
-      throw new InvalidValueException("ufficioId", stanza.getUfficioId());
-  }
+		if (stanza.getWidth() == null)
+			throw new InvalidValueException("width", stanza.getWidth());
 
-  /** Controlla se l'id passato è nullo o minore di 0 */
-  private void checkId(Long id) throws InvalidValueException {
-    if (id == null || id < 0)
-      throw new InvalidValueException("id", id);
-  }
+		if (stanza.getHeight() == null)
+			throw new InvalidValueException("height", stanza.getHeight());
 
-  /** Controlla se la stanza con l'id passato esiste e la ritorna */
-  private Stanza takeStanza(Long id) throws MissingValueException {
-    Optional<Stanza> stanzaOptional = stanzaRepository.findById(id);
+		if (stanza.getX() == null)
+			throw new InvalidValueException("x", stanza.getX());
 
-    if (stanzaOptional.isEmpty())
-      throw new MissingValueException(NOME_ENTITA, id);
-    return stanzaOptional.get();
-  }
+		if (stanza.getY() == null)
+			throw new InvalidValueException("y", stanza.getY());
 
-  /** Controlla se l'ufficio con l'id passato esiste e lo ritorna */
-  private Ufficio takeUfficio(Long idUfficio) throws MissingValueException {
-    Optional<Ufficio> ufficioOptional = ufficioRepository.findById(idUfficio);
-    if (ufficioOptional.isEmpty())
-      throw new MissingValueException("Ufficio", idUfficio);
-    return ufficioOptional.get();
-  }
+		if (stanza.getUfficioId() == null)
+			throw new InvalidValueException("ufficioId", stanza.getUfficioId());
+	}
+
+	/** Controlla se l'id passato è nullo o minore di 0 */
+	private void checkId(Long id) throws InvalidValueException {
+		if (id == null || id < 0)
+			throw new InvalidValueException("id", id);
+	}
+
+	/** Controlla se la stanza con l'id passato esiste e la ritorna */
+	private Stanza takeStanza(Long id) throws MissingValueException {
+		Optional<Stanza> stanzaOptional = stanzaRepository.findById(id);
+
+		if (stanzaOptional.isEmpty())
+			throw new MissingValueException(NOME_ENTITA, id);
+		return stanzaOptional.get();
+	}
 
 }
