@@ -177,23 +177,28 @@ public class UtenteServiceImpl implements UtenteService {
 		Root<Prenotazione> prenotazioneRoot = criteriaQuery.from(Prenotazione.class);
 		Join<Utente, Prenotazione> utenteJoin = prenotazioneRoot.join("utente");
 
+		// Filtro: Utenti prenotati in una determinata data
 		if (filter.getDataPrenotazione() != null) {
-			Predicate giornoPredicate = criteriaBuilder.equal(
-					utenteJoin.get("dataPrenotazione"),
-					filter.getDataPrenotazione()
-			);
+			Predicate giornoPredicate
+					= criteriaBuilder.equal(
+							utenteJoin.get("dataPrenotazione"),
+							filter.getDataPrenotazione()
+					);
 			predicates.add(giornoPredicate);
 		}
 
+		// Filtro: Utenti prenotati in un determinato periodo
 		if (filter.getInizioPeriodo() != null && filter.getFinePeriodo() != null) {
-			Predicate periodoPredicate = criteriaBuilder.between(
-					utenteJoin.get("dataPrenotazione"),
-					filter.getInizioPeriodo(),
-					filter.getFinePeriodo()
-			);
+			Predicate periodoPredicate
+					= criteriaBuilder.between(
+							utenteJoin.get("dataPrenotazione"),
+							filter.getInizioPeriodo(),
+							filter.getFinePeriodo()
+					);
 			predicates.add(periodoPredicate);
 		}
 
+		// Filtro: Utenti che hanno prenotato una determinata Postazione
 		if (filter.getPostazioneId() != null) {
 			Long postazioneId = filter.getPostazioneId();
 			Optional<Postazione> postazioneOptional = postazioneRepository.findById(postazioneId);
@@ -201,11 +206,12 @@ public class UtenteServiceImpl implements UtenteService {
 			if (postazioneOptional.isEmpty())
 				throw new MissingValueException("Postazione", postazioneId);
 
-			Predicate postazionePredicate =
-					criteriaBuilder.equal(utenteJoin.get("postazione"), postazioneOptional.get());
+			Predicate postazionePredicate
+					= criteriaBuilder.equal(utenteJoin.get("postazione"), postazioneOptional.get());
 			predicates.add(postazionePredicate);
 		}
 
+		// Filtro: Utenti che hanno prenotato in una determinata Stanza
 		if (filter.getStanzaId() != null) {
 			Long stanzaId = filter.getStanzaId();
 			Optional<Stanza> stanzaOptional = stanzaRepository.findById(stanzaId);
@@ -213,14 +219,16 @@ public class UtenteServiceImpl implements UtenteService {
 			if (stanzaOptional.isEmpty())
 				throw new MissingValueException("Stanza", stanzaId);
 
-			Predicate stanzaPredicate = criteriaBuilder.equal(
-					utenteJoin	.get("postazione")
-								.get("stanza"),
-					stanzaOptional.get()
-			);
+			Predicate stanzaPredicate
+					= criteriaBuilder.equal(
+							utenteJoin	.get("postazione")
+										.get("stanza"),
+							stanzaOptional.get()
+					);
 			predicates.add(stanzaPredicate);
 		}
 
+		// Filtro: Utenti che hanno prenotato in un determinato Ufficio
 		if (filter.getUfficioId() != null) {
 			Long ufficioId = filter.getUfficioId();
 			Optional<Ufficio> ufficiOptional = ufficioRepository.findById(ufficioId);
@@ -228,28 +236,32 @@ public class UtenteServiceImpl implements UtenteService {
 			if (ufficiOptional.isEmpty())
 				throw new MissingValueException("Ufficio", ufficioId);
 
-			Predicate ufficioPredicate = criteriaBuilder.equal(
-					utenteJoin	.get("postazione")
-								.get("stanza")
-								.get("ufficio"),
-					ufficiOptional.get()
-			);
+			Predicate ufficioPredicate
+					= criteriaBuilder.equal(
+							utenteJoin	.get("postazione")
+										.get("stanza")
+										.get("ufficio"),
+							ufficiOptional.get()
+					);
 			predicates.add(ufficioPredicate);
 		}
 
+		// Filtro: username dell'Utente
 		if (filter.getUsername() != null) {
 
-			Predicate usernamePredicate = criteriaBuilder.like(
-					utenteJoin.get("username"),
-					"%" + filter.getUsername() + "%"
-			);
+			Predicate usernamePredicate
+					= criteriaBuilder.like(
+							utenteJoin.get("username"),
+							"%" + filter.getUsername() + "%"
+					);
 			predicates.add(usernamePredicate);
 		}
 
+		// Filtro: ruolo dell'Utente
 		if (filter.getRuolo() != null) {
 
-			Predicate ruoloPredicate =
-					criteriaBuilder.like(utenteJoin.get("ruolo"), "%" + filter.getRuolo() + "%");
+			Predicate ruoloPredicate
+					= criteriaBuilder.like(utenteJoin.get("ruolo"), "%" + filter.getRuolo() + "%");
 			predicates.add(ruoloPredicate);
 		}
 
@@ -266,7 +278,7 @@ public class UtenteServiceImpl implements UtenteService {
 	}
 
 	/**
-	 * Controlla se i campi obbligatori del DTO non sono nulli.
+	 * (Funzione estratta) Controlla se i campi obbligatori del DTO non sono nulli.
 	 *
 	 * @param utenteDto Il DTO dell'utente da validare.
 	 * @throws InvalidValueException se uno dei campi obbligatori è nullo.
@@ -283,7 +295,7 @@ public class UtenteServiceImpl implements UtenteService {
 	}
 
 	/**
-	 * Controlla se l'ID passato è nullo o minore di 0.
+	 * (Funzione estratta) Controlla se l'ID passato è nullo o minore di 0.
 	 *
 	 * @param id L'ID da controllare.
 	 * @throws InvalidValueException se l'ID è nullo o negativo.
@@ -294,7 +306,7 @@ public class UtenteServiceImpl implements UtenteService {
 	}
 
 	/**
-	 * Controlla se l'utente con l'ID passato esiste e lo restituisce.
+	 * (Funzione estratta) Controlla se l'utente con l'ID passato esiste e lo restituisce.
 	 *
 	 * @param id L'ID dell'utente da cercare.
 	 * @return L'utente trovato.

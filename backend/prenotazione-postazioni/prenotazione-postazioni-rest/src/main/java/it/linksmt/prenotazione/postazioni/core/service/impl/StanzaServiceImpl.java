@@ -187,22 +187,26 @@ public class StanzaServiceImpl implements StanzaService {
 		Join<Prenotazione, Postazione> postazioneJoin = prenotazioneRoot.join("postazione");
 		Join<Postazione, Stanza> stanzaJoin = postazioneJoin.join("stanza");
 
+		// Filtro: nome della Stanza
 		if (filter.getName() != null) {
 
-			Predicate namePredicate =
-					criteriaBuilder.like(stanzaJoin.get("name"), "%" + filter.getName() + "%");
+			Predicate namePredicate
+					= criteriaBuilder.like(stanzaJoin.get("name"), "%" + filter.getName() + "%");
 			predicates.add(namePredicate);
 		}
 
+		// Filtro: dimensioni della Stanza
 		if (filter.getWidth() != null && filter.getHeight() != null) {
 
-			Predicate dimensionPredicate = criteriaBuilder.and(
-					criteriaBuilder.equal(stanzaJoin.get("width"), filter.getWidth()),
-					criteriaBuilder.equal(stanzaJoin.get("height"), filter.getHeight())
-			);
+			Predicate dimensionPredicate
+					= criteriaBuilder.and(
+							criteriaBuilder.equal(stanzaJoin.get("width"), filter.getWidth()),
+							criteriaBuilder.equal(stanzaJoin.get("height"), filter.getHeight())
+					);
 			predicates.add(dimensionPredicate);
 		}
 
+		// Filtro: Stanze usate da un Utente
 		if (filter.getUtenteId() != null) {
 
 			Long utenteId = filter.getUtenteId();
@@ -211,11 +215,12 @@ public class StanzaServiceImpl implements StanzaService {
 			if (utenteOptional.isEmpty())
 				throw new MissingValueException("Utente", utenteId);
 
-			Predicate utentePredicate =
-					criteriaBuilder.equal(prenotazioneRoot.get("utente"), utenteOptional.get());
+			Predicate utentePredicate
+					= criteriaBuilder.equal(prenotazioneRoot.get("utente"), utenteOptional.get());
 			predicates.add(utentePredicate);
 		}
 
+		// Filtro: Stanze contenute in un Ufficio
 		if (filter.getUfficioId() != null) {
 
 			Long ufficioId = filter.getUfficioId();
@@ -224,19 +229,24 @@ public class StanzaServiceImpl implements StanzaService {
 			if (ufficioOptional.isEmpty())
 				throw new MissingValueException("Ufficio", ufficioId);
 
-			Predicate ufficioPredicate = criteriaBuilder.equal(
-					prenotazioneRoot.get("postazione")
-									.get("stanza")
-									.get("ufficio"),
-					ufficioOptional.get()
-			);
+			Predicate ufficioPredicate
+					= criteriaBuilder.equal(
+							prenotazioneRoot.get("postazione")
+											.get("stanza")
+											.get("ufficio"),
+							ufficioOptional.get()
+					);
 			predicates.add(ufficioPredicate);
 		}
 
+		// Filtro: Stanze create da un Utente
 		if (filter.getCreateUserId() != null) {
 
-			Predicate createUserPredicate =
-					criteriaBuilder.equal(stanzaJoin.get("createUserId"), filter.getCreateUserId());
+			Predicate createUserPredicate
+					= criteriaBuilder.equal(
+							stanzaJoin.get("createUserId"),
+							filter.getCreateUserId()
+					);
 			predicates.add(createUserPredicate);
 		}
 
@@ -256,7 +266,7 @@ public class StanzaServiceImpl implements StanzaService {
 	}
 
 	/**
-	 * Verifica se i valori della stanza sono validi.
+	 * (Funzione estratta) Verifica se i valori della stanza sono validi.
 	 *
 	 * @param stanza La stanza da validare.
 	 * @throws InvalidValueException Se uno dei valori è nullo o invalido.
@@ -282,7 +292,7 @@ public class StanzaServiceImpl implements StanzaService {
 	}
 
 	/**
-	 * Verifica se l'ID è valido.
+	 * (Funzione estratta) Verifica se l'ID è valido.
 	 *
 	 * @param id L'ID da verificare.
 	 * @throws InvalidValueException Se l'ID è nullo o negativo.
@@ -293,7 +303,7 @@ public class StanzaServiceImpl implements StanzaService {
 	}
 
 	/**
-	 * Restituisce una stanza basata sull'ID specificato.
+	 * (Funzione estratta) Restituisce una stanza basata sull'ID specificato.
 	 *
 	 * @param id L'ID della stanza.
 	 * @return La stanza corrispondente all'ID.
