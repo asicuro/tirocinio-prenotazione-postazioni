@@ -11,14 +11,9 @@ public class PrenotazioneFilter {
 	private Long ufficioId;
 	private Date inizioPeriodo;
 	private Date finePeriodo;
-	private Integer isScaduta;
 
 	public Long getUfficioId() {
 		return ufficioId;
-	}
-
-	public Integer isScaduta() {
-		return isScaduta;
 	}
 
 	public Long getCreateUserId() {
