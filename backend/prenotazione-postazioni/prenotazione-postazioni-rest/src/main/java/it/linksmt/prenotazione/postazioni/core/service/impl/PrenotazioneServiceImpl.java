@@ -1,5 +1,6 @@
 package it.linksmt.prenotazione.postazioni.core.service.impl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,9 +25,11 @@ import it.linksmt.prenotazione.postazioni.core.exceptions.MissingValueException;
 import it.linksmt.prenotazione.postazioni.core.filters.PrenotazioneFilter;
 import it.linksmt.prenotazione.postazioni.core.model.Postazione;
 import it.linksmt.prenotazione.postazioni.core.model.Prenotazione;
+import it.linksmt.prenotazione.postazioni.core.model.Ufficio;
 import it.linksmt.prenotazione.postazioni.core.model.Utente;
 import it.linksmt.prenotazione.postazioni.core.repository.PostazioneRepository;
 import it.linksmt.prenotazione.postazioni.core.repository.PrenotazioneRepository;
+import it.linksmt.prenotazione.postazioni.core.repository.UfficioRepository;
 import it.linksmt.prenotazione.postazioni.core.repository.UtenteRepository;
 import it.linksmt.prenotazione.postazioni.core.service.api.PrenotazioneService;
 
@@ -50,6 +53,9 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 
 	@Autowired
 	EntityManager entityManager;
+
+	@Autowired
+	UfficioRepository ufficioRepository;
 
 	public PrenotazioneDto findPrenotazioneById(Long id) throws InvalidValueException, MissingValueException {
 
@@ -163,48 +169,6 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 	}
 
 	@Override
-	public boolean controlloUserPrenotazione(Date data, Long id) throws MissingValueException, InvalidValueException {
-
-		Optional<Utente> utente = utenteRepository.findById(id);
-
-		if (id == null || id < 0) {
-			throw new InvalidValueException("id", id);
-		}
-
-		if (utente.isEmpty()) {
-			throw new MissingValueException("utente", id);
-		}
-		for (Prenotazione p : prenotazioneRepository.findByUtente(utente.get())) {
-			if (p.getDataPrenotazione().equals(data)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	@Override
-	public List<PrenotazioneDto> findPrenotazioniByUserId(Long id) throws InvalidValueException, MissingValueException {
-
-		List<PrenotazioneDto> prenotazioniUtente = new ArrayList<>();
-
-		if (prenotazioneRepository.findAll() == null) {
-			throw new MissingValueException("Prenotazioni", id);
-		}
-
-		if (id == null || id < 0) {
-			throw new InvalidValueException("id", id);
-		}
-
-		for (Prenotazione prenotazione : prenotazioneRepository.findAll()) {
-
-			if (prenotazione.getUtente().getId() == id) {
-				prenotazioniUtente.add(prenotazioneConverter.toDto(prenotazione));
-			}
-		}
-		return prenotazioniUtente;
-	}
-
-	@Override
 	public List<PrenotazioneDto> filter(PrenotazioneFilter filtro) throws MissingValueException, InvalidValueException {
 		CriteriaBuilder cBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Prenotazione> cQuery = cBuilder.createQuery(Prenotazione.class);
@@ -242,6 +206,27 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 		if (filtro.getCreateUserId() != null) {
 			Predicate createUserPredicate = cBuilder.equal(preRoot.get("createUserId"), filtro.getCreateUserId());
 			predicates.add(createUserPredicate);
+		}
+
+		if (filtro.isScaduta() != null && filtro.isScaduta() == 1) {
+
+			LocalDate nuovaData = LocalDate.now();
+
+			Predicate scadenzaPredicate = cBuilder.greaterThan(preRoot.get("dataPrenotazione"), nuovaData);
+			predicates.add(scadenzaPredicate);
+		}
+
+		if (filtro.getUfficioId() != null) {
+			Long ufficioId = filtro.getUfficioId();
+			Optional<Ufficio> ufficiOptional = ufficioRepository.findById(ufficioId);
+
+			if (ufficiOptional.isEmpty()) {
+				throw new MissingValueException("Ufficio", ufficioId);
+			}
+
+			Predicate ufficioPredicate = cBuilder.equal(preRoot.get("postazione").get("stanza").get("ufficio"),
+					ufficiOptional.get());
+			predicates.add(ufficioPredicate);
 		}
 
 		cQuery.where(cBuilder.and(predicates.toArray(new Predicate[0])));

@@ -8,6 +8,12 @@ public class PostazioneFilter {
 	private Date createdate;
 	private int width;
 	private int length;
+	private Long stanza;
+	private Long ufficio;
+
+	public Long getUfficio() {
+		return ufficio;
+	}
 
 	public Long getCreateUserId() {
 		return createUserId;
@@ -23,6 +29,10 @@ public class PostazioneFilter {
 
 	public int getLength() {
 		return length;
+	}
+
+	public Long getStanza() {
+		return stanza;
 	}
 
 }

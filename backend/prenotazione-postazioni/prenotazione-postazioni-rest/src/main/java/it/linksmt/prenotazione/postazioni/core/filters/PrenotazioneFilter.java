@@ -8,8 +8,18 @@ public class PrenotazioneFilter {
 	private Long createUserId;
 	private Long postazioneId;
 	private Long stanzaId;
+	private Long ufficioId;
 	private Date inizioPeriodo;
 	private Date finePeriodo;
+	private Integer isScaduta;
+
+	public Long getUfficioId() {
+		return ufficioId;
+	}
+
+	public Integer isScaduta() {
+		return isScaduta;
+	}
 
 	public Long getCreateUserId() {
 		return createUserId;

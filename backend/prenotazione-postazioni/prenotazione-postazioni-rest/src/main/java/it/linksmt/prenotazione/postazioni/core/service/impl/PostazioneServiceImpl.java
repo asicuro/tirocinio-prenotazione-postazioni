@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -24,8 +25,10 @@ import it.linksmt.prenotazione.postazioni.core.filters.PostazioneFilter;
 import it.linksmt.prenotazione.postazioni.core.model.Postazione;
 import it.linksmt.prenotazione.postazioni.core.model.Prenotazione;
 import it.linksmt.prenotazione.postazioni.core.model.Stanza;
+import it.linksmt.prenotazione.postazioni.core.model.Ufficio;
 import it.linksmt.prenotazione.postazioni.core.repository.PostazioneRepository;
 import it.linksmt.prenotazione.postazioni.core.repository.StanzaRepository;
+import it.linksmt.prenotazione.postazioni.core.repository.UfficioRepository;
 import it.linksmt.prenotazione.postazioni.core.service.api.PostazioneService;
 
 @Service
@@ -39,6 +42,9 @@ public class PostazioneServiceImpl implements PostazioneService {
 
 	@Autowired
 	StanzaRepository stanzaRepository;
+
+	@Autowired
+	UfficioRepository ufficioRepository;
 
 	@Autowired
 	EntityManager entityManager;
@@ -147,65 +153,60 @@ public class PostazioneServiceImpl implements PostazioneService {
 	}
 
 	@Override
-	public List<PostazioneDto> getPostazioniByStanzaId(Long stanzaId)
-			throws InvalidValueException, MissingValueException {
-
-		if (stanzaId == null || stanzaId < 0) {
-			throw new InvalidValueException("stanzaId", stanzaId);
-		}
-
-		List<PostazioneDto> postazioni = new ArrayList<>();
-
-		Optional<Stanza> stanzaOptional = stanzaRepository.findById(stanzaId);
-
-		if (stanzaOptional.isEmpty()) {
-			throw new MissingValueException("Stanza", stanzaId);
-		}
-
-		for (Postazione postazione : postazioneRepository.findByStanza(stanzaOptional.get())) {
-
-			postazioni.add(postazioneConverter.toDto(postazione));
-		}
-
-		return postazioni;
-	}
-
-	@Override
 	public List<PostazioneDto> filter(PostazioneFilter filtro) throws MissingValueException {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Prenotazione> prenotazioneQuery = cb.createQuery(Prenotazione.class);
-		CriteriaQuery<Postazione> postazioneQuery = cb.createQuery(Postazione.class);
 		Root<Prenotazione> prenotazioneRoot = prenotazioneQuery.from(Prenotazione.class);
-		Root<Postazione> postazioneRoot = postazioneQuery.from(Postazione.class);
+		Join<Prenotazione, Postazione> postazioneJoin = prenotazioneRoot.join("postazione");
 		List<Predicate> postazionePredicates = new ArrayList<>();
 
-		if (filtro.getCreateUserId() > 0 && filtro.getCreateUserId() != null) {
+		if (filtro.getCreateUserId() != null) {
 			Long postazioneId = filtro.getCreateUserId();
 			Optional<Postazione> postazioneOptional = postazioneRepository.findById(postazioneId);
 
 			if (postazioneOptional.isEmpty())
 				throw new MissingValueException("Postazione", postazioneId);
 
-			Predicate postazionePredicate = cb.equal(prenotazioneRoot.get("postazione"), postazioneOptional.get());
+			Predicate postazionePredicate = cb.equal(postazioneJoin.get("postazione"), postazioneOptional.get());
 			postazionePredicates.add(postazionePredicate);
 		}
 
 		if (filtro.getCreateDate() != null) {
-			Predicate findByCreateDate = cb.equal(postazioneRoot.get("createDate"), filtro.getCreateDate());
+			Predicate findByCreateDate = cb.equal(postazioneJoin.get("createDate"), filtro.getCreateDate());
 			postazionePredicates.add(findByCreateDate);
 		}
 
-		if (filtro.getWidth() < 0 && filtro.getLength() < 0) {
+		if (filtro.getWidth() > 0 && filtro.getLength() > 0) {
 
-			Predicate dimensioniPredicate = cb.and(cb.equal(postazioneRoot.get("width"), filtro.getWidth()),
-					cb.equal(postazioneRoot.get("length"), filtro.getLength()));
+			Predicate dimensioniPredicate = cb.and(cb.equal(postazioneJoin.get("width"), filtro.getWidth()),
+					cb.equal(postazioneJoin.get("length"), filtro.getLength()));
 			postazionePredicates.add(dimensioniPredicate);
 		}
-		postazioneQuery.where(cb.and(postazionePredicates.toArray(new Predicate[0])));
-		TypedQuery<Postazione> query = entityManager.createQuery(postazioneQuery);
-		List<Postazione> postazioni = query.getResultList();
 
-		return postazioni.stream().map(postazioneConverter::toDto).collect(Collectors.toList());
+		if (filtro.getStanza() != null) {
+			Long stanzaId = filtro.getStanza();
+			Optional<Stanza> stanzaOptional = stanzaRepository.findById(stanzaId);
+			if (stanzaOptional.isEmpty()) {
+				throw new MissingValueException("Stanza", stanzaId);
+			}
+			Predicate stanzaPredicate = cb.equal(postazioneJoin.get("stanza"), stanzaOptional.get());
+			postazionePredicates.add(stanzaPredicate);
+		}
+
+		if (filtro.getUfficio() != null) {
+			Long ufficioId = filtro.getUfficio();
+			Optional<Ufficio> uffOptional = ufficioRepository.findById(ufficioId);
+			if (uffOptional.isEmpty()) {
+				throw new MissingValueException("Ufficio", ufficioId);
+			}
+			Predicate ufficioPredicate = cb.equal(postazioneJoin.get("stanza").get("ufficio"), uffOptional.get());
+			postazionePredicates.add(ufficioPredicate);
+		}
+
+		prenotazioneQuery.where(cb.and(postazionePredicates.toArray(new Predicate[0])));
+		TypedQuery<Prenotazione> query = entityManager.createQuery(prenotazioneQuery);
+		return query.getResultList().stream().map(Prenotazione::getPostazione).map(postazioneConverter::toDto)
+				.distinct().collect(Collectors.toList());
 
 	}
 }

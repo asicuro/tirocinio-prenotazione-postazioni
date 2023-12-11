@@ -23,9 +23,6 @@ public interface PostazioneService {
 
 	public boolean removeAll();
 
-	public List<PostazioneDto> getPostazioniByStanzaId(Long stanzaId)
-			throws InvalidValueException, MissingValueException;
-
 	public List<PostazioneDto> filter(PostazioneFilter filtro) throws MissingValueException;
 
 }
