@@ -9,6 +9,7 @@ export const Calendario = ({ setGiorno }) => {
                 onClickDay={setGiorno}
                 selectRange={false}
                 allowPartialRange={false}
+                minDetail="year"
             />
         </div>
     );
