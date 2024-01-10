@@ -1,12 +1,8 @@
 import "./App.css";
-import Counter from "./Counter";
+import { Dashboard } from "./Dashboard";
 
 function App() {
-    return (
-        <div className="App">
-            <Counter />
-        </div>
-    );
+    return <Dashboard />;
 }
 
 export default App;

@@ -1,0 +1,61 @@
+@font-face {
+    font-family: Exo2;
+    src: url(./Fonts/Exo2/Exo2-VariableFont_wght.ttf);
+}
+
+.react-calendar {
+    border: 0px;
+    border-left: 3px solid #36b9cc;
+    border-radius: 10px;
+    font-family: Exo2;
+    font-size: large;
+    background-color: white;
+}
+
+.main-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.react-calendar__tile--now {
+    background: #36b9cc;
+    border-radius: 10px;
+}
+
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+    background: #4e73df;
+    border-radius: 10px;
+}
+
+.react-calendar__tile--hasActive {
+    background: #36b9cc;
+    border-radius: 10px;
+}
+
+.react-calendar__tile--hasActive:enabled:hover,
+.react-calendar__tile--hasActive:enabled:focus {
+    background: #224abe;
+    border-radius: 10px;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+    border-radius: 10px;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+    border-radius: 10px;
+}
+
+.react-calendar--selectRange .react-calendar__tile--hover {
+    border-radius: 10px;
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled {
+    background: #224abe;
+    border-radius: 10px;
+}
