@@ -10,6 +10,7 @@
     font-family: Exo2;
     font-size: large;
     background-color: white;
+    box-shadow: 3px 3px 4px 2px #cacaca9d;
 }
 
 .main-container {
