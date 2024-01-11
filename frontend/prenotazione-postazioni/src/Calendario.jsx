@@ -1,6 +1,7 @@
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./Calendario.css";
+import PropTypes from "prop-types";
 
 export const Calendario = ({ giorno, setGiorno }) => {
     return (
@@ -14,4 +15,9 @@ export const Calendario = ({ giorno, setGiorno }) => {
             />
         </div>
     );
+};
+
+Calendario.propTypes = {
+    giorno: PropTypes.instanceOf(Date).isRequired,
+    setGiorno: PropTypes.func.isRequired,
 };
