@@ -1,0 +1,84 @@
+.cardcontainer {
+        font-family: Exo2;
+        font-size: large;
+        background-color: white;
+        box-shadow: 3px 3px 4px 2px #cacaca9d;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        max-height: 400px;
+        overflow-y: auto;
+}
+
+.menu{
+    border: 0px;
+        border-left: 3px solid #36b9cc;
+        border-radius: 10px;
+        font-family: Exo2;
+        font-size: large;
+        background-color: white;
+        box-shadow: 3px 3px 4px 2px #cacaca9d;
+        width: 25%;
+}
+
+.titolocontainer{
+    font-family: Exo2;
+    font-size: large;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: white;
+    box-shadow: 3px 3px 4px 2px #cacaca9d;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.tiny-btn {
+    display: inline-block;
+    margin-left: 10px;
+    width:fit-content;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 10px;
+}
+
+.titolo{
+    font-family: Exo2;
+    font-size: large;
+    display: inline-block;
+    margin-left: 40px;
+}
+
+.carta{
+    text-align: left;
+    flex-direction: left;
+    justify-content: left;
+    align-items: left;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    box-shadow: 1px 1px 2px 1px #cacaca9d;
+}
+
+
+.btn1{
+    text-align: left !important;
+    padding: 0;
+    width: 50px;
+}
+
+.card-text{
+    font-size:12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.bottoni{
+    margin-left: 25px;
+}
+
+@font-face {
+    font-family: Exo2;
+    src: url(./Fonts/Exo2/Exo2-VariableFont_wght.ttf);
+}
