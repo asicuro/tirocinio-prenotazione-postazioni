@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 export const Calendario = ({ giorno, setGiorno }) => {
     return (
-        <div className="main-container mx-5 my-5">
+        <div className="main-container">
             <Calendar
                 onClickDay={setGiorno}
                 selectRange={false}
