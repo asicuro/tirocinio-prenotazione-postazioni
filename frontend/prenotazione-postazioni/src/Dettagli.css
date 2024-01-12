@@ -3,11 +3,9 @@
     src: url(./Fonts/Exo2/Exo2-VariableFont_wght.ttf);
 }
 
-
-.Dettagli-prenotazione{
+.Dettagli-prenotazione {
     width: 99%;
     padding: 20px;
-    border: 1px solid #ccc;
     border-radius: 15px;
     border-left: 4px solid #36b9cc;
     background-color: white;
@@ -15,41 +13,37 @@
     margin: 0.25%;
     flex-direction: auto;
     font-size: medium;
-    overflow-y: auto; 
-  }
+    overflow-y: auto;
+}
 
-  .Dettagli-row2{
+.Dettagli-row2 {
     display: flex;
     justify-content: left;
     margin-bottom: 5px;
     margin-block: 8px;
-    
-  }
-  
-  .Dettagli-label2 {
+}
+
+.Dettagli-label2 {
     color: #36b9cc;
     font-weight: bold;
+}
 
-  }
-
-  .Dettagli-row {
+.Dettagli-row {
     display: flex;
     justify-content: left;
     margin-bottom: 5px;
     margin-block: 8px;
-  }
-  
-  .Dettagli-label {
+}
+
+.Dettagli-label {
     color: #36b9cc;
     font-weight: bold;
+}
 
-  }
-
-  .Dettagli-value {
-    
+.Dettagli-value {
     text-align: right;
-  }
-  .Dettagli-columns {
+}
+.Dettagli-columns {
     display: flex;
 }
 
@@ -57,5 +51,3 @@
     flex: 1;
     margin-right: 20px;
 }
-
-  
