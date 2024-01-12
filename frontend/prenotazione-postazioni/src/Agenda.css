@@ -11,14 +11,16 @@
 }
 
 .menu{
-    border: 0px;
-        border-left: 3px solid #36b9cc;
-        border-radius: 10px;
-        font-family: Exo2;
-        font-size: large;
-        background-color: white;
-        box-shadow: 3px 3px 4px 2px #cacaca9d;
-        width: 25%;
+    width: 17%;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    border-left: 4px solid #36b9cc;
+    background-color: white;
+    box-shadow: 3px 3px 4px 2px #cacaca9d;
+    margin: 0.25%;
+    flex-direction: auto;
+    font-size: medium;
+    overflow-y: auto; 
 }
 
 .titolocontainer{
@@ -60,13 +62,6 @@
     box-shadow: 1px 1px 2px 1px #cacaca9d;
 }
 
-
-.btn1{
-    text-align: left !important;
-    padding: 0;
-    width: 50px;
-}
-
 .card-text{
     font-size:12px;
     text-overflow: ellipsis;
@@ -75,7 +70,9 @@
 }
 
 .bottoni{
-    margin-left: 25px;
+    flex-direction: auto;
+    font-size: medium;
+    overflow-y: auto; 
 }
 
 @font-face {
