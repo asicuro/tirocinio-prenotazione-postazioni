@@ -4,45 +4,17 @@
 }
 
 .Dettagli-prenotazione {
-    width: 99%;
-    padding: 20px;
     border-radius: 15px;
     border-left: 4px solid #36b9cc;
     background-color: white;
     box-shadow: 3px 3px 4px 2px #cacaca9d;
-    margin: 0.25%;
-    flex-direction: auto;
     font-size: medium;
-    overflow-y: auto;
-}
 
-.Dettagli-row2 {
-    display: flex;
-    justify-content: left;
-    margin-bottom: 5px;
-    margin-block: 8px;
 }
-
-.Dettagli-label2 {
-    color: #36b9cc;
-    font-weight: bold;
-}
-
-.Dettagli-row {
-    display: flex;
-    justify-content: left;
-    margin-bottom: 5px;
-    margin-block: 8px;
-}
-
 .Dettagli-label {
-    color: #36b9cc;
     font-weight: bold;
 }
 
-.Dettagli-value {
-    text-align: right;
-}
 .Dettagli-columns {
     display: flex;
 }
