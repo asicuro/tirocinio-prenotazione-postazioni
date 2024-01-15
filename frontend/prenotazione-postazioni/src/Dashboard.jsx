@@ -8,15 +8,15 @@ export const Dashboard = () => {
 
     return (
         <div className="container">
-            <div className="row my-5">
-                <div className="col-md-3 mx-5">
+            <div className="row my-4">
+                <div className="col-md-3">
                     <Calendario giorno={giorno} setGiorno={setGiorno} />
                 </div>
-                <div className="col-md-3 mx-5">
+                <div className="col-md-3">
                     <Agenda giorno={giorno} setGiorno={setGiorno} />
                 </div>
             </div>
-            <div className="row my-5">
+            <div className="row">
                 <DettagliPreno giorno={giorno} setGiorno={setGiorno} />
             </div>
         </div>
