@@ -4,6 +4,8 @@
 }
 
 .Dettagli-prenotazione {
+    font-family: Exo2, sans-serif;
+    width: 60%;
     border-radius: 15px;
     border-left: 4px solid #36b9cc;
     background-color: white;
@@ -14,11 +16,9 @@
     color: #36b9cc;
 }
 .Title {
-    font-family: Exo2, sans-serif;
     color: #36b9cc;
 }
 .Dettagli-label {
-    font-family: Exo2, sans-serif;
     font-weight: bold;
 }
 
