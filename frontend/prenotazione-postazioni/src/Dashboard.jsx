@@ -7,16 +7,17 @@ export const Dashboard = () => {
     const [giorno, setGiorno] = useState(new Date());
 
     return (
+        //TODO sistemare positioning
         <div className="container">
-            <div className="row my-4">
-                <div className="col-md-3">
+            <div className="row my-2 justify-content-center">
+                <div className="col-md-3 my-3">
                     <Calendario giorno={giorno} setGiorno={setGiorno} />
                 </div>
-                <div className="col-md-3">
+                <div className="col-md-3 my-3">
                     <Agenda giorno={giorno} setGiorno={setGiorno} />
                 </div>
             </div>
-            <div>
+            <div className="row justify-content-center mx-5">
                 <DettagliPreno giorno={giorno} setGiorno={setGiorno} />
             </div>
         </div>
