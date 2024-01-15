@@ -16,7 +16,7 @@ export const Dashboard = () => {
                     <Agenda giorno={giorno} setGiorno={setGiorno} />
                 </div>
             </div>
-            <div className="row">
+            <div>
                 <DettagliPreno giorno={giorno} setGiorno={setGiorno} />
             </div>
         </div>
