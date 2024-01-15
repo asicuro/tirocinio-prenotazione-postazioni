@@ -1,13 +1,15 @@
-.cardcontainer {
+
+.verocard{
+    margin-top: 5px;
+    border-bottom: 1px solid #ccc;
+    border-radius: 15px;
+    max-height: 300px;
     font-family: Exo2, sans-serif;
     font-size: large;
     background-color: white;
-    box-shadow: 3px 3px 4px 2px #cacaca9d;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    max-height: 400px;
-    overflow-y: auto;
 }
 
 .menu {
@@ -17,9 +19,7 @@
     background-color: white;
     box-shadow: 3px 3px 4px 2px #cacaca9d;
     margin: 0.25%;
-    flex-direction: auto;
-    font-size: medium;
-    overflow-y: auto;
+    max-height: 420px;
 }
 
 .titolocontainer {
@@ -55,7 +55,7 @@
     flex-direction: left;
     justify-content: left;
     align-items: left;
-    margin-top: 10px;
+    margin-top: 5px;
     margin-left: 10px;
     margin-right: 10px;
     box-shadow: 1px 1px 2px 1px #cacaca9d;
@@ -71,7 +71,6 @@
 .bottoni {
     flex-direction: auto;
     font-size: medium;
-    overflow-y: auto;
 }
 
 @font-face {
