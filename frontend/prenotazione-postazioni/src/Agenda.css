@@ -3,7 +3,8 @@
     margin-top: 5px;
     border-bottom: 1px solid #ccc;
     border-radius: 15px;
-    max-height: 245px;
+    max-height: 260px;
+    height: 100%;
     font-family: Exo2, sans-serif;
     font-size: large;
     background-color: white;
@@ -18,7 +19,7 @@
     background-color: white;
     box-shadow: 3px 3px 4px 2px #cacaca9d;
     margin: 0.25%;
-    max-height: 300px;
+    height: 100%;
 }
 
 .titolocontainer {
