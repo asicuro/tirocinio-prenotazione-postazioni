@@ -17,7 +17,7 @@ export const Dashboard = () => {
                     <Agenda giorno={giorno} setGiorno={setGiorno} />
                 </div>
             </div>
-            <div className="row justify-content-center mx-5">
+            <div className="row justify-content-center">
                 <DettagliPreno giorno={giorno} setGiorno={setGiorno} />
             </div>
         </div>
