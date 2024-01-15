@@ -7,7 +7,7 @@ export const Agenda = ({ giorno, setGiorno }) => {
         <div className="card carta pl-0 text-left">
             <div className="card-body d-flex align-items-center">
                 <div style={{ display: 'inline-block' }}>
-                    <p className="card-title text-info font-weight-bold h6 text-left">Bari-Academy-A2</p>
+                    <p className="card-title font-weight-bold h6 text-left" style={{ color: "#3AA4B3" }}>Bari-Academy-A2</p>
                     <p className="card-text mb-2 text-muted">Effettuato da Daniel Zotti</p>
                 </div>
                 <div style={{ display: 'inline-block' }} className=''>
