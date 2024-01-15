@@ -9,9 +9,16 @@
     background-color: white;
     box-shadow: 3px 3px 4px 2px #cacaca9d;
     font-size: medium;
-
+}
+.colore{
+    color:#36b9cc
+}
+.Title{
+    font-family: Exo2,sans-serif;
+    color:#36b9cc
 }
 .Dettagli-label {
+    font-family: Exo2, sans-serif;
     font-weight: bold;
 }
 
