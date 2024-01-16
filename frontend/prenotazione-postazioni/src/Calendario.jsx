@@ -5,15 +5,13 @@ import PropTypes from "prop-types";
 
 export const Calendario = ({ giorno, setGiorno }) => {
     return (
-        <div className="main-container">
-            <Calendar
-                onClickDay={setGiorno}
-                selectRange={false}
-                allowPartialRange={false}
-                minDetail="year"
-                value={giorno}
-            />
-        </div>
+        <Calendar
+            onClickDay={setGiorno}
+            selectRange={false}
+            allowPartialRange={false}
+            minDetail="year"
+            value={giorno}
+        />
     );
 };
 

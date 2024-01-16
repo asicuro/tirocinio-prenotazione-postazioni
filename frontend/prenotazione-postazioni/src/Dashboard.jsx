@@ -8,17 +8,19 @@ export const Dashboard = () => {
 
     return (
         //TODO sistemare positioning
-        <div className="container">
-            <div className="row my-2 justify-content-center">
-                <div className="col-md-3 my-3">
+        <div className="container my-5">
+            <div className="row">
+                <div className="col-md-3">
                     <Calendario giorno={giorno} setGiorno={setGiorno} />
                 </div>
-                <div className="col-md-3 my-3">
+                <div className="col-md-4 mx-3">
                     <Agenda giorno={giorno} setGiorno={setGiorno} />
                 </div>
             </div>
-            <div className="row justify-content-center">
-                <DettagliPreno giorno={giorno} setGiorno={setGiorno} />
+            <div className="row my-3">
+                <div className="col-md-10">
+                    <DettagliPreno giorno={giorno} setGiorno={setGiorno} />
+                </div>
             </div>
         </div>
     );

@@ -14,12 +14,6 @@
     padding: 5px;
 }
 
-.main-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .react-calendar__tile--now {
     background: #36b9cc;
     border-radius: 10px;
