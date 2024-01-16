@@ -7,7 +7,6 @@ export const Dashboard = () => {
     const [giorno, setGiorno] = useState(new Date());
 
     return (
-        //TODO sistemare positioning
         <div className="container my-5" style={{ width: "50%" }}>
             <div className="row">
                 <div className="col-md-6">
