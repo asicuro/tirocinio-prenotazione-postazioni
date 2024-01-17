@@ -36,7 +36,10 @@ export const Dashboard = () => {
                     />
                 </div>
                 <div className="col-md-6">
-                    <Agenda giorno={giorno} setGiorno={setGiorno} />
+                    <Agenda giorno={giorno}
+                        setGiorno={setGiorno}
+                        prenotazione={setPrenotazione}
+                        prenotazioni={prenotazioni} />
                 </div>
             </div>
             <div className="row my-2">

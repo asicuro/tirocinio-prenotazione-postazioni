@@ -1,7 +1,7 @@
 import React from "react";
 import "./Dettagli.css";
 
-export const DettagliPreno = ({ giorno, setGiorno }) => {
+export const DettagliPreno = ({ giorno }) => {
     const dettagli = {
         id: 1,
         ufficio: "Bari",

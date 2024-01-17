@@ -1,7 +1,7 @@
 import React from 'react';
 import "./Agenda.css";
 
-export const Agenda = ({ giorno, setGiorno }) => {
+export const Agenda = ({ giorno, setGiorno, prenotazioni }) => {
 
     const carta = (
         <div className="card btn carta pl-0" >
@@ -27,10 +27,6 @@ export const Agenda = ({ giorno, setGiorno }) => {
         </div >
     );
 
-
-
-
-
     const premuto = () => {
         const nuovaData = new Date();
         setGiorno(nuovaData);
@@ -45,11 +41,7 @@ export const Agenda = ({ giorno, setGiorno }) => {
             </div>
             <div className='overflow-y-auto verocard'>
                 <div>
-                    {carta}
-                    {carta}
-                    {carta}
-                    {carta}
-                    {carta}
+                    {prenotazioni.map((prenotazione) => [carta])}
                 </div>
             </div>
         </div>
