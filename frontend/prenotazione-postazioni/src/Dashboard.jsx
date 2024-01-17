@@ -7,6 +7,7 @@ import axios from "axios";
 export const Dashboard = () => {
     const [giorno, setGiorno] = useState(new Date());
     const [prenotazioni, setPrenotazioni] = useState([]);
+    const [prenotazione, setPrenotazione] = useState({});
 
     const fetch = () => {
         axios
