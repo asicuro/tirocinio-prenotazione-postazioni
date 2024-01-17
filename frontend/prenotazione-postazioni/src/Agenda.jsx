@@ -7,7 +7,7 @@ export const Agenda = ({ giorno, setGiorno, prenotazioni }) => {
         <div className="card btn carta pl-0" >
             <div className="card-body d-flex">
                 <div className='col-md-8'>
-                    <p className="card-title font-weight-bold h5 text-left" style={{ color: "#3AA4B3" }}>Bari-Academy-A2</p>
+                    <p className="card-title font-weight-bold h5 text-left" style={{ color: "#3AA4B3" }}>Academy-A2</p>
                     <p className="card-text mb-2 text-muted">Effettuato da Daniel Zotti</p>
                 </div>
                 <div className='col-md-4'>
