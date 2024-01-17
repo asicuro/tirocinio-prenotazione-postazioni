@@ -3,7 +3,14 @@ import "react-calendar/dist/Calendar.css";
 import "./Calendario.css";
 import PropTypes from "prop-types";
 
-export const Calendario = ({ giorno, setGiorno }) => {
+export const Calendario = ({ giorno, setGiorno, prenotazioni }) => {
+    const disponibilita =
+        prenotazioni.length === 0
+            ? "disponibile"
+            : prenotazioni.length < 3
+            ? "poca-disponibilita"
+            : "non-disponibile";
+
     return (
         <Calendar
             onClickDay={setGiorno}
@@ -11,6 +18,7 @@ export const Calendario = ({ giorno, setGiorno }) => {
             allowPartialRange={false}
             minDetail="year"
             value={giorno}
+            className={disponibilita}
         />
     );
 };
@@ -18,4 +26,5 @@ export const Calendario = ({ giorno, setGiorno }) => {
 Calendario.propTypes = {
     giorno: PropTypes.instanceOf(Date).isRequired,
     setGiorno: PropTypes.func.isRequired,
+    prenotazioni: PropTypes.arrayOf(PropTypes.instanceOf(Object)).isRequired,
 };
