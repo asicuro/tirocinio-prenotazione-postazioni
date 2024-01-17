@@ -23,9 +23,7 @@ export const Dashboard = () => {
             .catch((err) => console.log(err));
     };
 
-    console.clear();
     useEffect(fetch, [giorno]);
-    prenotazioni.map((p) => console.log(p));
 
     return (
         <div className="container my-5" style={{ width: "50%" }}>
