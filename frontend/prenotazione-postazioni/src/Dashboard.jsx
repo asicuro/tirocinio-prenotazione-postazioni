@@ -29,17 +29,15 @@ export const Dashboard = () => {
         <div className="container my-5" style={{ width: "50%" }}>
             <div className="row">
                 <div className="col-md-6">
-                    <Calendario
-                        giorno={giorno}
-                        setGiorno={setGiorno}
-                        prenotazioni={prenotazioni}
-                    />
+                    <Calendario giorno={giorno} setGiorno={setGiorno} />
                 </div>
                 <div className="col-md-6">
-                    <Agenda giorno={giorno}
+                    <Agenda
+                        giorno={giorno}
                         setGiorno={setGiorno}
                         prenotazione={setPrenotazione}
-                        prenotazioni={prenotazioni} />
+                        prenotazioni={prenotazioni}
+                    />
                 </div>
             </div>
             <div className="row my-2">

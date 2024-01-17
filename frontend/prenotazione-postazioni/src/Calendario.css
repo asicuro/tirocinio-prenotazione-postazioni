@@ -50,46 +50,24 @@
     border-radius: 10px;
 }
 
+.react-calendar__tile--active:enabled {
+    background: #2243a0;
+    border-radius: 10px;
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+    background: #4e70cf;
+}
+
 .disponibile {
-    .react-calendar__tile--active:enabled {
-        background: #2243a0;
-        border-radius: 10px;
-    }
-
-    .react-calendar__tile--active:enabled:hover,
-    .react-calendar__tile--active:enabled:focus {
-        background: #4e70cf;
-    }
+    color: rgba(19, 20, 56, 0.623);
 }
 
 .poca-disponibilita {
-    .react-calendar__tile--active:enabled {
-        background: #fae739;
-        border-radius: 10px;
-    }
-
-    .react-calendar__tile--active:enabled:hover,
-    .react-calendar__tile--active:enabled:focus {
-        background: #fff570;
-    }
+    color: rgb(206, 149, 26);
 }
 
 .non-disponibile {
-    .react-calendar__tile--active:enabled {
-        background: #ff2c2c;
-        border-radius: 10px;
-    }
-
-    .react-calendar__tile--active:enabled:hover,
-    .react-calendar__tile--active:enabled:focus {
-        background: #ff5d5d;
-    }
-}
-
-.poca-disponibilita {
-    color: #fae739;
-}
-
-.non-disponibile {
-    color: #ff2c2c;
+    color: rgb(192, 24, 24);
 }

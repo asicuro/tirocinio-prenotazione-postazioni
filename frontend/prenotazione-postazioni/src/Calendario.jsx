@@ -2,34 +2,37 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./Calendario.css";
 import PropTypes from "prop-types";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
-export const Calendario = ({ giorno, setGiorno, prenotazioni }) => {
+export const Calendario = ({ giorno, setGiorno }) => {
     const [prenotazioniTutte, setPrenotazioniTutte] = useState([]);
 
-    /* const fetchTutte = () => {
+    useEffect(() => {
         axios
             .get("http://localhost:9890/prenotazione/all")
-            .then((response) => setPrenotazioniTutte(response.data))
+            .then((response) => {
+                setPrenotazioniTutte(response.data);
+            })
             .catch((err) => console.log(err));
+    }, []);
+
+    const getPrenotazioni = (data) => {
+        const p = prenotazioniTutte.filter(
+            (p) => p.dataPrenotazione === data.getTime()
+        ).length;
+        return p;
     };
 
-    console.clear();
-    useEffect(fetchTutte); */
-
-    const disponibilita =
-        prenotazioni.length === 0
-            ? "disponibile"
-            : prenotazioni.length < 3
-            ? "poca-disponibilita"
-            : "non-disponibile";
-
-    /* const disponibilitaMese = ({ date, view }) => {
-        if (view === "month" && date.getDate() === 15) {
-            return "poca-disponibilita";
+    const disponibilita = ({ date, view }) => {
+        if (view === "month") {
+            return getPrenotazioni(date) === 0
+                ? "disponibile"
+                : getPrenotazioni(date) < 2
+                ? "poca-disponibilita"
+                : "non-disponibile";
         }
-    }; */
+    };
 
     return (
         <Calendar
@@ -38,8 +41,8 @@ export const Calendario = ({ giorno, setGiorno, prenotazioni }) => {
             allowPartialRange={false}
             minDetail="year"
             value={giorno}
-            className={disponibilita}
-            //tileClassName={disponibilitaMese}
+            showNeighboringMonth={false}
+            tileClassName={disponibilita}
         />
     );
 };
@@ -47,5 +50,4 @@ export const Calendario = ({ giorno, setGiorno, prenotazioni }) => {
 Calendario.propTypes = {
     giorno: PropTypes.instanceOf(Date).isRequired,
     setGiorno: PropTypes.func.isRequired,
-    prenotazioni: PropTypes.arrayOf(PropTypes.instanceOf(Object)).isRequired,
 };
