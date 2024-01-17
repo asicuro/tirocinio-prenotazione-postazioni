@@ -66,7 +66,7 @@ public class UfficioController {
 		return ufficioService.removeUfficioall();
 	}
 
-	@GetMapping(value = "/filter")
+	@PostMapping(value = "/filter")
 	public ResponseEntity<List<UfficioDto>> filtraUffici(@RequestBody UfficioFilter ufficioFilter)
 			throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(ufficioService.filter(ufficioFilter));

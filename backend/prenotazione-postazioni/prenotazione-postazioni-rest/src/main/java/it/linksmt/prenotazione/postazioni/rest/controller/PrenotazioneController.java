@@ -29,14 +29,17 @@ public class PrenotazioneController {
 	PrenotazioneService prenotazioneService;
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PrenotazioneDto> getPrenotazioneDtoEntity(@PathVariable(value = "id") Long id)
-			throws InvalidValueException, MissingValueException {
+	public ResponseEntity<PrenotazioneDto> getPrenotazioneDtoEntity(
+			@PathVariable(value = "id") Long id
+	) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(prenotazioneService.findPrenotazioneById(id));
 	}
 
 	@PostMapping(value = "/save/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PrenotazioneDto> savePrenotazione(@RequestBody PrenotazioneDto prenotazioneDto,
-			@PathVariable(value = "id") Long id) throws InvalidValueException, MissingValueException {
+	public ResponseEntity<PrenotazioneDto> savePrenotazione(
+			@RequestBody PrenotazioneDto prenotazioneDto,
+			@PathVariable(value = "id") Long id
+	) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(prenotazioneService.savePrenotazione(prenotazioneDto, id));
 	}
 
@@ -52,8 +55,10 @@ public class PrenotazioneController {
 	}
 
 	@PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PrenotazioneDto> updatePrenotazione(@RequestBody PrenotazioneDto prenotazioneDto,
-			@PathVariable(value = "id") Long id) throws InvalidValueException, MissingValueException {
+	public ResponseEntity<PrenotazioneDto> updatePrenotazione(
+			@RequestBody PrenotazioneDto prenotazioneDto,
+			@PathVariable(value = "id") Long id
+	) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(prenotazioneService.updatePrenotazione(prenotazioneDto, id));
 	}
 
@@ -69,7 +74,7 @@ public class PrenotazioneController {
 
 	}
 
-	@GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<PrenotazioneDto>> filtro(@RequestBody PrenotazioneFilter filter)
 			throws MissingValueException, InvalidValueException {
 		return ResponseEntity.ok(prenotazioneService.filter(filter));

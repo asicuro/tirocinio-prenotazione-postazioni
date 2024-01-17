@@ -113,7 +113,7 @@ public class UtenteController {
 	 * @return ResponseEntity contenente la lista di utenti filtrati.
 	 * @throws MissingValueException Se il filtro contiene valori mancanti.
 	 */
-	@GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE,
+	@PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<UtenteDto>> filter(@RequestBody UtenteFilter filter)
 			throws MissingValueException {

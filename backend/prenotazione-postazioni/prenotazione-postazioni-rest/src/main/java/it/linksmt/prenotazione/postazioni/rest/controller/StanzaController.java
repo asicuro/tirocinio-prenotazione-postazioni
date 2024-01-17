@@ -55,7 +55,8 @@ public class StanzaController {
 	@PostMapping(value = "/save/{createUserId}", consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<StanzaDto> saveStanza(
-			@RequestBody StanzaDto stanzaDto, @PathVariable("createUserId") Long createUserId
+			@RequestBody StanzaDto stanzaDto,
+			@PathVariable("createUserId") Long createUserId
 	) throws InvalidValueException {
 		return ResponseEntity.ok(stanzaService.saveStanza(stanzaDto, createUserId));
 	}
@@ -98,7 +99,8 @@ public class StanzaController {
 	@PutMapping(value = "/update/{editUserId}", consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<StanzaDto> updateStanza(
-			@RequestBody StanzaDto stanzaDto, @PathVariable("editUserId") Long editUserId
+			@RequestBody StanzaDto stanzaDto,
+			@PathVariable("editUserId") Long editUserId
 	) throws InvalidValueException, MissingValueException {
 		return ResponseEntity.ok(stanzaService.updateStanza(stanzaDto, editUserId));
 	}
@@ -120,7 +122,7 @@ public class StanzaController {
 	 * @return ResponseEntity contenente la lista di stanze filtrate.
 	 * @throws MissingValueException Se il filtro contiene valori mancanti.
 	 */
-	@GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<StanzaDto>> filter(@RequestBody StanzaFilter filter)
 			throws MissingValueException {
 		return ResponseEntity.ok(stanzaService.filter(filter));
