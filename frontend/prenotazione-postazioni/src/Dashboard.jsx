@@ -12,7 +12,7 @@ export const Dashboard = () => {
         ufficio: 0,
         stanza: 0,
         createUser: 0,
-        createdDate: 0,
+        createDate: 0,
         editUser: 0,
         utente: 0,
         postazione: 0,
