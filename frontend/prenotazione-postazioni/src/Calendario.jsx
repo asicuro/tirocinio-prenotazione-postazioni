@@ -52,7 +52,7 @@ export const Calendario = ({ giorno, setGiorno }) => {
         </button>
     );
     const prev = (
-        <span
+        <button
             style={{ fontSize: "x-large" }}
             onClick={() => {
                 setGiorno(
@@ -61,7 +61,7 @@ export const Calendario = ({ giorno, setGiorno }) => {
             }}
         >
             {"<"}
-        </span>
+        </button>
     );
 
     return (
