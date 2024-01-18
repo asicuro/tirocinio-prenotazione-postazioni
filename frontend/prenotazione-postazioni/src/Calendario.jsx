@@ -7,6 +7,7 @@ import axios from "axios";
 
 export const Calendario = ({ giorno, setGiorno }) => {
     const [prenotazioniTutte, setPrenotazioniTutte] = useState([]);
+    const [maxPostazioni, setMaxPostazioni] = useState(0);
 
     useEffect(() => {
         axios
@@ -15,6 +16,10 @@ export const Calendario = ({ giorno, setGiorno }) => {
                 setPrenotazioniTutte(response.data);
             })
             .catch((err) => console.log(err));
+
+        axios.get("http://localhost:9890/postazione/all").then((response) => {
+            setMaxPostazioni(response.data.length);
+        });
     }, []);
 
     const getPrenotazioni = (data) => {
@@ -26,9 +31,9 @@ export const Calendario = ({ giorno, setGiorno }) => {
 
     const disponibilita = ({ date, view }) => {
         if (view === "month") {
-            return getPrenotazioni(date) === 0
+            return getPrenotazioni(date) < maxPostazioni / 2
                 ? "disponibile"
-                : getPrenotazioni(date) < 2
+                : getPrenotazioni(date) < maxPostazioni
                 ? "poca-disponibilita"
                 : "non-disponibile";
         }
