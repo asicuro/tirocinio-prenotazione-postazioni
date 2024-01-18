@@ -7,7 +7,18 @@ import axios from "axios";
 export const Dashboard = () => {
     const [giorno, setGiorno] = useState(new Date());
     const [prenotazioni, setPrenotazioni] = useState([]);
-    const [prenotazione, setPrenotazione] = useState({});
+    const [prenotazione, setPrenotazione] = useState({
+        id: 0,
+        ufficio: 0,
+        stanza: 0,
+        createUser: 0,
+        createdDate: 0,
+        editUser: 0,
+        utente: 0,
+        postazione: 0,
+        editDate: 0,
+        dataPrenotazione: 0
+    });
 
     const fetch = () => {
         axios
@@ -42,7 +53,7 @@ export const Dashboard = () => {
             </div>
             <div className="row my-2">
                 <div className="col-md-12">
-                    <DettagliPreno giorno={giorno} setGiorno={setGiorno} />
+                    <DettagliPreno giorno={giorno} prenotazione={prenotazione} />
                 </div>
             </div>
         </div>

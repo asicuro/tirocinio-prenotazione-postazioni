@@ -1,21 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
 import "./Dettagli.css";
 
-export const DettagliPreno = ({ giorno }) => {
-    const dettagli = {
-        id: 1,
-        ufficio: "Bari",
-        stanza: "Stanza Piccola",
-        postazione: "P1",
-        utente: "Andres Carrillo",
-    };
-    const dettagli1 = {
-        CreataDa: "Giorgio Minerba",
-        DataPrenotazione: "",
-        DataCreazione: "12/01/2024",
-        ModificataDa: "",
-        DataModificazione: "",
-    };
+export const DettagliPreno = ({ giorno, prenotazione }) => {
+
 
     return (
         <div className="Dettagli-prenotazione px-2">
@@ -25,50 +13,57 @@ export const DettagliPreno = ({ giorno }) => {
             <div className="Dettagli-columns">
                 <div className="Dettagli-column">
                     <p className="Dettagli-label">
-                        <span className="colore">Id:</span> {dettagli.id}
+                        <span className="colore">Id:</span> {prenotazione.id}
                     </p>
                     <p className="Dettagli-label">
                         <span className="colore">Ufficio:</span>{" "}
-                        {dettagli.ufficio}
+                        {prenotazione.ufficio}
                     </p>
                     <p className="Dettagli-label">
                         <span className="colore">Stanza:</span>{" "}
-                        {dettagli.stanza}
+                        {prenotazione.stanza}
                     </p>
                     <p className="Dettagli-label">
                         <span className="colore">Postazione:</span>{" "}
-                        {dettagli.postazione}
+                        {prenotazione.postazione}
                     </p>
                     <p className="Dettagli-label">
                         <span className="colore">Utente:</span>{" "}
-                        {dettagli.utente}
+                        {prenotazione.utente}
                     </p>
                 </div>
                 <div className="Dettagli-column">
                     <p className="Dettagli-label">
                         <span className="colore">Creato da:</span>{" "}
-                        {dettagli1.CreataDa}
+                        {prenotazione.createUser}
                     </p>
                     <p className="Dettagli-label">
                         <span className="colore">Data di prenotazione:</span>
-                        {giorno.toLocaleDateString()}
+                        {prenotazione.dataPrenotazione}
                     </p>
                     <p className="Dettagli-label">
                         <span className="colore">Data di Creazione:</span>{" "}
-                        {dettagli1.DataCreazione}
+                        {prenotazione.createDate}
                     </p>
                     <p className="Dettagli-label">
                         <span className="colore">Modificato da:</span>{" "}
-                        {dettagli1.ModificataDa}
+                        {prenotazione.editUser}
                     </p>
                     <p className="Dettagli-label">
                         <span className="colore">Data di Modifica :</span>{" "}
-                        {dettagli1.DataModificazione}
+                        {prenotazione.editDate}
                     </p>
                 </div>
             </div>
         </div>
     );
+
+
 };
+
+DettagliPreno.propTypes = {
+    giorno: PropTypes.instanceOf(Date).isRequired
+};
+
 
 export default DettagliPreno;
