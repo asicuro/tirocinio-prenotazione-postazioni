@@ -1,13 +1,47 @@
-import React from 'react';
+import React from "react";
 import "./Agenda.css";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export const Agenda = ({ giorno, setGiorno, prenotazioni }) => {
+    const [createUser, setCreateUser] = useState(null);
 
-    const carta = (
+    const cardData = prenotazioni.map((prenotazione) => {
+        const id = prenotazione.id;
+        const createUserId = prenotazione.createUserId;
+        const postazione = prenotazione.postazioneId;
+        return {
+            id,
+            postazione,
+            createUserId,
+        };
+    });
+
+    const fetchUser = (createUserId) => {
+        axios
+            .get(`http://localhost:9890/user/${createUserId}`)
+            .then((response) => setCreateUser(response.data))
+            .catch((err) => console.log(err));
+    };
+
+    useEffect(() => {
+        if (prenotazioni) {
+            const uniqueUserIds = new Set(
+                prenotazioni.map((prenotazione) => prenotazione.createUserId)
+            );
+
+            // Fetch user data for each unique createUserId
+            uniqueUserIds.forEach((createUserId) => {
+                fetchUser(createUserId);
+            });
+        }
+    }, [prenotazioni]);
+
+    /*const carta = (
         <div className="card btn carta pl-0" >
             <div className="card-body d-flex">
                 <div className='col-md-8'>
-                    <p className="card-title font-weight-bold h5 text-left" style={{ color: "#3AA4B3" }}>Academy-A2</p>
+                    <p className="card-title font-weight-bold h5 text-left" style={{ color: "#3AA4B3" }}>{cardData.id}</p>
                     <p className="card-text mb-2 text-muted">Effettuato da Daniel Zotti</p>
                 </div>
                 <div className='col-md-4'>
@@ -25,7 +59,7 @@ export const Agenda = ({ giorno, setGiorno, prenotazioni }) => {
                 </div>
             </div>
         </div >
-    );
+    );*/
 
     const premuto = () => {
         const nuovaData = new Date();
@@ -42,9 +76,7 @@ export const Agenda = ({ giorno, setGiorno, prenotazioni }) => {
                 >
                     Oggi
                 </button>
-                <h4 className="titolo">
-                    {new Date(giorno).toLocaleDateString()}
-                </h4>
+                <h4 className="titolo">{giorno.toLocaleDateString()}</h4>
             </div>
             <div className="overflow-y-auto verocard">
                 <div>{prenotazioni.map((prenotazione) => [carta])}</div>
