@@ -39,6 +39,31 @@ export const Calendario = ({ giorno, setGiorno }) => {
         }
     };
 
+    const next = (
+        <button
+            style={{ fontSize: "x-large" }}
+            onClick={() => {
+                setGiorno(
+                    new Date(giorno).setMonth(new Date(giorno).getMonth() + 1)
+                );
+            }}
+        >
+            {">"}
+        </button>
+    );
+    const prev = (
+        <span
+            style={{ fontSize: "x-large" }}
+            onClick={() => {
+                setGiorno(
+                    new Date(giorno).setMonth(new Date(giorno).getMonth() - 1)
+                );
+            }}
+        >
+            {"<"}
+        </span>
+    );
+
     return (
         <Calendar
             onClickDay={setGiorno}
@@ -48,6 +73,11 @@ export const Calendario = ({ giorno, setGiorno }) => {
             value={giorno}
             showNeighboringMonth={false}
             tileClassName={disponibilita}
+            nextLabel={next}
+            prevLabel={prev}
+            next2Label={""}
+            prev2Label={""}
+            activeStartDate={new Date(giorno)}
         />
     );
 };

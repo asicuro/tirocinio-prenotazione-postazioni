@@ -5,7 +5,7 @@ import DettagliPreno from "./Dettagli";
 import axios from "axios";
 
 export const Dashboard = () => {
-    const [giorno, setGiorno] = useState(new Date());
+    const [giorno, setGiorno] = useState(new Date().getTime());
     const [prenotazioni, setPrenotazioni] = useState([]);
     const [prenotazione, setPrenotazione] = useState({
         id: 0,
@@ -17,7 +17,7 @@ export const Dashboard = () => {
         utente: 0,
         postazione: 0,
         editDate: 0,
-        dataPrenotazione: 0
+        dataPrenotazione: 0,
     });
 
     const fetch = () => {
@@ -25,8 +25,8 @@ export const Dashboard = () => {
             .post(
                 "http://localhost:9890/prenotazione/filter",
                 {
-                    inizioPeriodo: giorno.toJSON(),
-                    finePeriodo: giorno.toJSON(),
+                    inizioPeriodo: giorno,
+                    finePeriodo: giorno,
                 },
                 { headers: { "Content-Type": "application/json" } }
             )

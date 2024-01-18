@@ -34,15 +34,20 @@ export const Agenda = ({ giorno, setGiorno, prenotazioni }) => {
     };
 
     return (
-        <div className='menu'>
-            <div className='titolocontainer'>
-                <button className="tiny-btn btn btn-primary" onClick={() => premuto()}>Oggi</button>
-                <h4 className='titolo'>{giorno.toLocaleDateString()}</h4>
+        <div className="menu">
+            <div className="titolocontainer">
+                <button
+                    className="tiny-btn btn btn-primary"
+                    onClick={() => premuto()}
+                >
+                    Oggi
+                </button>
+                <h4 className="titolo">
+                    {new Date(giorno).toLocaleDateString()}
+                </h4>
             </div>
-            <div className='overflow-y-auto verocard'>
-                <div>
-                    {prenotazioni.map((prenotazione) => [carta])}
-                </div>
+            <div className="overflow-y-auto verocard">
+                <div>{prenotazioni.map((prenotazione) => [carta])}</div>
             </div>
         </div>
     );
