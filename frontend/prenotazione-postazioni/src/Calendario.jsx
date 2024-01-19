@@ -30,6 +30,8 @@ export const Calendario = ({ giorno, setGiorno }) => {
     };
 
     const disponibilita = ({ date, view }) => {
+        if (date.getMonth() !== new Date(giorno).getMonth()) return "preview";
+        if (date.getDay() === 0 || date.getDay() === 6) return "weekend";
         if (view === "month") {
             return getPrenotazioni(date) < maxPostazioni / 2
                 ? "disponibile"
@@ -71,7 +73,7 @@ export const Calendario = ({ giorno, setGiorno }) => {
             allowPartialRange={false}
             minDetail="year"
             value={giorno}
-            showNeighboringMonth={false}
+            showNeighboringMonth={true}
             tileClassName={disponibilita}
             nextLabel={next}
             prevLabel={prev}
