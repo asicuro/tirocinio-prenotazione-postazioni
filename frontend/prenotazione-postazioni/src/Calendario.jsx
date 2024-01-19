@@ -30,8 +30,12 @@ export const Calendario = ({ giorno, setGiorno }) => {
     };
 
     const disponibilita = ({ date, view }) => {
-        if (date.getMonth() !== new Date(giorno).getMonth()) return "preview";
-        if (date.getDay() === 0 || date.getDay() === 6) return "weekend";
+        if (view === "month" && date.getMonth() !== new Date(giorno).getMonth())
+            return "preview";
+
+        if (view === "month" && (date.getDay() === 0 || date.getDay() === 6))
+            return "weekend";
+        
         if (view === "month") {
             return getPrenotazioni(date) < maxPostazioni / 2
                 ? "disponibile"
