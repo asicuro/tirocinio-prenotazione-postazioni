@@ -1,8 +1,7 @@
 .verocard {
     margin-top: 5px;
-    border-bottom: 1px solid #ccc;
     border-radius: 15px;
-    max-height: 260px;
+    max-height: 250px;
     font-family: Exo2, sans-serif;
     font-size: large;
     background-color: white;
