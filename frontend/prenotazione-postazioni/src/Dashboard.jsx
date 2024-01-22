@@ -46,7 +46,7 @@ export const Dashboard = () => {
                     <Agenda
                         giorno={giorno}
                         setGiorno={setGiorno}
-                        prenotazione={setPrenotazione}
+                        setPrenotazione={setPrenotazione}
                         prenotazioni={prenotazioni}
                     />
                 </div>
