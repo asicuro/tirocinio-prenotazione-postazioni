@@ -90,7 +90,7 @@ export const Agenda = ({ giorno, setGiorno, prenotazioni }) => {
                         <div className="card btn carta pl-0" key={index}>
                             <div className="card-body d-flex">
                                 <div className='col-md-8'>
-                                    <p className="card-title font-weight-bold h5 text-left" style={{ color: "#3AA4B3" }}>{card.nomeuf} {card.nome} {card.postazioneId}</p>
+                                    <p className="card-title font-weight-bold h5 text-left" style={{ color: "#3AA4B3" }}>{card.nomeuf}-{card.nome}-{card.postazioneId}</p>
                                     <p className="card-text mb-2 text-muted">Per {card.username}</p>
                                 </div>
                                 <div className='col-md-4'>
