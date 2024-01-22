@@ -39,11 +39,11 @@ export const DettagliPreno = ({ giorno, prenotazione }) => {
                     </p>
                     <p className="Dettagli-label">
                         <span className="colore">Data di prenotazione:</span>
-                        {prenotazione.dataPrenotazione}
+                        {new Date(prenotazione.dataPrenotazione).toLocaleDateString()}
                     </p>
                     <p className="Dettagli-label">
                         <span className="colore">Data di Creazione:</span>{" "}
-                        {prenotazione.createDate}
+                        {new Date(prenotazione.createDate).toLocaleDateString()}
                     </p>
                     <p className="Dettagli-label">
                         <span className="colore">Modificato da:</span>{" "}
