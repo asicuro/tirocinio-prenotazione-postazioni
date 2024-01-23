@@ -58,9 +58,10 @@ export const Agenda = ({ giorno, setGiorno, prenotazioni, setPrenotazione }) => 
 
     return (
         <div className='menu'>
-            <div className='titolocontainer'>
-                <button className="tiny-btn btn btn-primary" onClick={() => premuto()}>Oggi</button>
-                <h4 className='titolo'>{new Date(giorno).toLocaleDateString()}</h4>
+            <div className='titolocontainer containter d-flex flex-wrap"'>
+                <button className="tiny-btn btn btn-primary col-md-2" onClick={() => premuto()}>Oggi</button>
+                <span className='titolo col-md-7 text-center'>{new Date(giorno).toLocaleDateString()}</span>
+                <button className="tiny-btn btn btn-primary col-2" onClick={() => alert("aggiungi")}>+</button>
             </div>
             <div className='overflow-y-auto verocard'>
                 <div>
