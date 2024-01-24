@@ -2,9 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./Dettagli.css";
 
-export const DettagliPreno = ({ giorno, prenotazione }) => {
-
-
+export const DettagliPreno = ({ prenotazione }) => {
     return (
         <div className="Dettagli-prenotazione px-2">
             <h2 className="card-title text-info font-weight-bold text-left my-3">
@@ -58,15 +56,15 @@ export const DettagliPreno = ({ giorno, prenotazione }) => {
                     <p className="Dettagli-label">
                         <span className="colore">Data di Modifica :</span>{" "}
                         {prenotazione.editDate
-                            ? new Date(prenotazione.editDate)
+                            ? new Date(
+                                  prenotazione.editDate
+                              ).toLocaleDateString()
                             : "/"}
                     </p>
                 </div>
             </div>
         </div>
     );
-
-
 };
 
 DettagliPreno.propTypes = {
