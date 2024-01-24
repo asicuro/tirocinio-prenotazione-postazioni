@@ -51,7 +51,7 @@ export const DettagliPreno = ({ prenotazione }) => {
                     </p>
                     <p className="Dettagli-label">
                         <span className="colore">Modificato da:</span>{" "}
-                        {prenotazione.editUser ? prenotazione.editUser : "/"}
+                        {prenotazione.editUser ? prenotazione.editUser : ""}
                     </p>
                     <p className="Dettagli-label">
                         <span className="colore">Data di Modifica :</span>{" "}
@@ -59,7 +59,7 @@ export const DettagliPreno = ({ prenotazione }) => {
                             ? new Date(
                                   prenotazione.editDate
                               ).toLocaleDateString()
-                            : "/"}
+                            : ""}
                     </p>
                 </div>
             </div>
