@@ -68,7 +68,8 @@ export const DettagliPreno = ({ giorno, prenotazione }) => {
 };
 
 DettagliPreno.propTypes = {
-    giorno: PropTypes.instanceOf(Date).isRequired
+    giorno: PropTypes.instanceOf(Date).isRequired,
+    prenotazione: PropTypes.instanceOf().isRequired,
 };
 
 
