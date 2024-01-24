@@ -7,7 +7,8 @@ import axios from "axios";
 export const Dashboard = () => {
     const [giorno, setGiorno] = useState(new Date().getTime());
     const [prenotazioni, setPrenotazioni] = useState([]);
-    const [prenotazione, setPrenotazione] = useState({
+
+    const prenotazioneVuota = {
         id: null,
         ufficio: null,
         stanza: null,
@@ -18,9 +19,11 @@ export const Dashboard = () => {
         postazione: null,
         editDate: null,
         dataPrenotazione: null,
-    });
+    };
 
-    const fetch = () => {
+    const [prenotazione, setPrenotazione] = useState(prenotazioneVuota);
+
+    const synchronize = () => {
         axios
             .post(
                 "http://localhost:9890/prenotazione/filter",
@@ -32,9 +35,10 @@ export const Dashboard = () => {
             )
             .then((response) => setPrenotazioni(response.data))
             .catch((err) => console.log(err));
+        setPrenotazione(prenotazioneVuota);
     };
 
-    useEffect(fetch, [giorno]);
+    useEffect(synchronize, [giorno]);
 
     return (
         <div className="container my-5" style={{ width: "50%" }}>
