@@ -53,11 +53,13 @@ export const DettagliPreno = ({ giorno, prenotazione }) => {
                     </p>
                     <p className="Dettagli-label">
                         <span className="colore">Modificato da:</span>{" "}
-                        {prenotazione.editUser}
+                        {prenotazione.editUser ? prenotazione.editUser : "/"}
                     </p>
                     <p className="Dettagli-label">
                         <span className="colore">Data di Modifica :</span>{" "}
-                        {prenotazione.editDate}
+                        {prenotazione.editDate
+                            ? new Date(prenotazione.editDate)
+                            : "/"}
                     </p>
                 </div>
             </div>
