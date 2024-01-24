@@ -17,8 +17,13 @@ export const Agenda = ({ giorno, setGiorno, prenotazioni, setPrenotazione }) => 
                         const utentiData = utenti.data;
                         const utentiAdm = await axios.get(`http://localhost:9890/user/${prenotazione.createUserId}`);
                         const utenteAdmData = utentiAdm.data;
-                        /*const utentiAdmMod = await axios.get(`http://localhost:9890/user/${prenotazione.editUserId}`);
-                        const utenteAdmModData = utentiAdm.data;*/
+                        let utenteAdmModData;
+                        if (prenotazione.editUserId == null) {
+                            utenteAdmModData = 0;
+                        } else {
+                            const utentiAdmMod = await axios.get(`http://localhost:9890/user/${prenotazione.editUserId}`);
+                            utenteAdmModData = utentiAdmMod.data;
+                        }
                         const postazione = await axios.get(`http://localhost:9890/postazione/${prenotazione.postazioneId}`)
                         const postazioneData = postazione.data;
                         const stanza = await axios.get(`http://localhost:9890/stanza/${postazioneData.stanzaId}`)
@@ -29,7 +34,7 @@ export const Agenda = ({ giorno, setGiorno, prenotazioni, setPrenotazione }) => 
                             ...prenotazione,
                             username: utentiData.username,
                             utenteAdmin: utenteAdmData.username,
-                            /*utenteAdminMod: utenteAdmModData.username,*/
+                            utenteAdminMod: utenteAdmModData.username,
                             ...postazione,
                             stanzaId: postazioneData.stanzaId,
                             ...stanza,
@@ -72,15 +77,15 @@ export const Agenda = ({ giorno, setGiorno, prenotazioni, setPrenotazione }) => 
                             stanza: card.nome,
                             createUser: card.utenteAdmin,
                             createDate: card.createDate,
-                            editUser: 0,
+                            editUser: card.utenteAdminMod,
                             utente: card.username,
                             postazione: card.postazioneId,
-                            editDate: 0,
+                            editDate: card.editDate,
                             dataPrenotazione: card.dataPrenotazione,
                         })}>
                             <div className="card-body d-flex">
                                 <div>
-                                    <span className='text-start text-muted fs-5'>{index + 1} </span>
+                                    <span className='text-start text-muted pe-3 fs-5'>{index + 1} </span>
                                 </div>
                                 <div className='col-md-8'>
                                     <p className="card-title font-weight-bold h5 text-left" style={{ color: "#3AA4B3" }}>{card.nomeuf}-{card.nome}-{card.postazioneId}</p>
